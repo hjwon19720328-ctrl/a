@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OVERSOUL: THE FINAL STAGE</title>
     <style>
-        /* 우아하고 큼직한 폰트 적용 */
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+KR:wght@300;400;500;700&display=swap');
         
         * { box-sizing: border-box; word-break: keep-all; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         :root {
-            /* 깊고 우아한 다크 브라운/블랙 & 리치 골드 */
             --bg-base: #050404;
             --bg-card: rgba(20, 16, 15, 0.85);
             
@@ -25,29 +23,32 @@
 
         body {
             background-color: var(--bg-base);
-            /* 무대 위 은은한 조명 느낌의 배경 그라데이션 애니메이션 */
             background-image: radial-gradient(circle at 50% 10%, rgba(203, 160, 82, 0.08) 0%, transparent 60%);
             color: var(--text-body); 
             font-family: 'Noto Serif KR', serif; 
-            font-size: 16px; /* 기본 글자 크기 확대 */
+            font-size: 16px; 
             line-height: 1.7; 
             overflow: hidden; /* 인트로 중 스크롤 방지 */
             min-height: 100vh;
         }
 
+        /* 인트로 완료 후 기본 스크롤 활성화 */
         body.intro-done { overflow-y: auto; overflow-x: hidden; }
+        
+        /* 모달 열렸을 때 배경 스크롤 강제 잠금 */
+        body.no-scroll { overflow: hidden !important; }
 
         .eng-sub {
             font-family: 'Cormorant Garamond', serif; font-size: 0.8em; letter-spacing: 2px;
             color: var(--gold-main); opacity: 0.9; margin-left: 8px; font-weight: 500; text-transform: uppercase;
         }
 
-        /* 🎬 클래식 극장 인트로 (음표 + 안개 효과) */
+        /* 🎬 인트로 */
         #intro-screen {
             position: fixed; inset: 0; width: 100vw; height: 100vh;
             background: #020101;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; animation: fadeOutIntro 1.5s ease forwards; animation-delay: 2.5s; 
+            z-index: 99999; animation: fadeOutIntro 1.5s ease forwards; animation-delay: 2.5s; 
         }
 
         .intro-main {
@@ -57,13 +58,10 @@
             text-shadow: 0 0 30px rgba(203, 160, 82, 0.4);
         }
         
-        @keyframes fadeInClassic {
-            0% { opacity: 0; transform: scale(0.95); filter: blur(5px); }
-            100% { opacity: 1; transform: scale(1); filter: blur(0); }
-        }
+        @keyframes fadeInClassic { 0% { opacity: 0; transform: scale(0.95); filter: blur(5px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
         @keyframes fadeOutIntro { to { opacity: 0; visibility: hidden; } }
 
-        /* 무대 떠다니는 먼지/음표 파티클 효과 */
+        /* 무대 파티클 효과 */
         .particle {
             position: fixed; background: var(--gold-bright); border-radius: 50%;
             pointer-events: none; opacity: 0; z-index: -1; box-shadow: 0 0 10px var(--gold-bright);
@@ -71,10 +69,19 @@
         }
         @keyframes floatParticle {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            20% { opacity: 0.3; }
-            80% { opacity: 0.3; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+            20% { opacity: 0.35; } 80% { opacity: 0.35; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
+
+        /* 짙은 안개(블러) 오버레이 배경 */
+        #blur-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 9990; opacity: 0; visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        #blur-overlay.show { opacity: 1; visibility: visible; }
 
         /* 메인 래퍼 */
         .main-wrapper {
@@ -83,10 +90,8 @@
         }
         @keyframes revealMain { to { opacity: 1; } }
 
-        /* 화려하지만 우아한 헤더 */
-        header {
-            text-align: center; padding: 50px 0 30px; position: relative;
-        }
+        /* 헤더 디자인 */
+        header { text-align: center; padding: 50px 0 30px; position: relative; }
         .header-ornament { font-size: 1.8rem; color: var(--gold-main); margin-bottom: 15px; opacity: 0.9; text-shadow: 0 0 15px var(--gold-dim); }
         h1 {
             font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 8vw, 3rem); color: var(--gold-bright);
@@ -97,7 +102,7 @@
             font-weight: 400; color: var(--text-body); letter-spacing: 0.4em; margin-top: 10px;
         }
 
-        /* 고급스러운 버튼형 메뉴 토글 */
+        /* 메뉴 토글 */
         .menu-toggle-btn {
             background: linear-gradient(180deg, rgba(203, 160, 82, 0.1), transparent); 
             color: var(--gold-bright); border: 1px solid var(--gold-dim);
@@ -109,7 +114,7 @@
         .menu-toggle-btn:hover { background: rgba(203, 160, 82, 0.2); border-color: var(--gold-main); }
         .menu-toggle-btn.open { background: transparent; border-color: transparent; box-shadow: none; }
 
-        /* 아코디언 메뉴 */
+        /* 네비게이션 탭 */
         nav {
             display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
             max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -135,37 +140,21 @@
         .content-section.active { display: block; }
         @keyframes fadeInContent { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 우아한 섹션 타이틀 (장식 추가) */
+        /* 섹션 타이틀 */
         .section-title {
-            font-family: 'Noto Serif KR', serif; font-size: 1.4rem;
-            color: var(--gold-bright); text-align: center; margin-bottom: 40px; 
+            font-family: 'Noto Serif KR', serif; font-size: 1.4rem; color: var(--gold-bright); text-align: center; margin-bottom: 30px; 
             font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 15px;
         }
-        .section-title::before, .section-title::after {
-            content: ''; height: 1px; flex-grow: 1; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-        }
+        .section-title::before, .section-title::after { content: ''; height: 1px; flex-grow: 1; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
 
-        /* 명품 필터 탭 */
-        .filter-container {
-            display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 15px; margin-bottom: 40px;
-            padding-bottom: 10px; scrollbar-width: none; justify-content: center;
-        }
-        .filter-container::-webkit-scrollbar { display: none; }
-        
-        .filter-btn {
-            background: none; border: 1px solid transparent; color: var(--text-body); font-size: 0.85rem;
-            font-family: 'Cormorant Garamond', serif; cursor: pointer; transition: all 0.3s ease;
-            letter-spacing: 1px; padding: 8px 15px; border-radius: 20px; white-space: nowrap;
-        }
-        .filter-btn.active { color: var(--gold-bright); border-color: var(--gold-main); background: rgba(203,160,82,0.1); }
+        p.worldview-desc { text-align: center; margin: -10px auto 40px; color: var(--text-paper); font-weight: 400; font-size: 1.1rem; max-width: 90%; }
 
-        /* 🏰 클래식 액자 프레임 카드 (심심함 완벽 타파) */
+        /* 카드 공통 설정 */
         .card {
             background: var(--bg-card); border: 1px solid var(--gold-dim); padding: 30px 25px;
             margin-bottom: 20px; text-align: center; color: var(--text-body); position: relative;
             transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        /* 모서리 금장 장식 */
         .card::before, .card::after {
             content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid var(--gold-main); opacity: 0.5; transition: all 0.4s;
         }
@@ -173,31 +162,96 @@
         .card::after { bottom: 5px; right: 5px; border-left: none; border-top: none; }
         
         .card:hover { border-color: var(--gold-main); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(203,160,82,0.1); }
-        .card:hover::before { top: 0; left: 0; opacity: 1; }
-        .card:hover::after { bottom: 0; right: 0; opacity: 1; }
+        .card:hover::before, .card:hover::after { opacity: 1; }
+        .card:hover::before { top: 0; left: 0; }
+        .card:hover::after { bottom: 0; right: 0; }
         
         .card h3 { font-family: 'Noto Serif KR', serif; color: var(--gold-bright); font-size: 1.3rem; margin-bottom: 12px; font-weight: 500; letter-spacing: 1px; }
         .card p { margin: 0; font-size: 1rem; line-height: 1.7; color: var(--text-body); }
-        
-        /* 팝 장르용 현대적 텍스트 (명도 높임) */
         .modern-pop-text { font-family: 'sans-serif'; color: #Fdfbf7; letter-spacing: -0.3px; font-weight: 400; }
 
-        /* 리스트형 아이템 (간격 및 글자 크기 확대) */
-        .info-list { display: flex; flex-direction: column; gap: 20px; }
-        .info-item { background: var(--bg-card); padding: 25px; border-left: 3px solid var(--gold-main); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        .info-item h4 { font-family: 'Noto Serif KR', serif; color: var(--gold-bright); font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; }
-        .info-item p { font-size: 1.05rem; color: var(--text-body); }
+        /* 🕰️ 혁신적인 모달(Modal) 고유명사 리스트 */
+        .glossary-list { display: flex; flex-direction: column; gap: 15px; }
+        .glossary-item { 
+            background: var(--bg-card); border: 1px solid var(--gold-dim); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s;
+        }
+        .glossary-item:hover { border-color: var(--gold-main); background: rgba(203, 160, 82, 0.05); }
 
-        /* 인물 그리드 */
+        .glossary-title { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 25px; border-left: 3px solid var(--gold-main); 
+        }
+        .glossary-title h4 { font-family: 'Noto Serif KR', serif; color: var(--gold-bright); font-size: 1.2rem; font-weight: 500; }
+        
+        /* 세모 아이콘 기본 상태 */
+        .glossary-icon { 
+            font-size: 0.9rem; color: var(--gold-main); opacity: 0.7; 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; top: 0; left: 0;
+        }
+
+        /* 숨겨진 내용 기본 상태 */
+        .glossary-content { display: none; }
+
+        /* 👑 모달창(화면 가득 채움) 활성화 상태 */
+        .glossary-item.open-modal { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90vw; max-width: 500px; height: 75vh; margin: 0; z-index: 9991;
+            display: flex; flex-direction: column; background: var(--bg-card);
+            border: 1px solid var(--gold-main); border-radius: 4px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(203,160,82,0.1);
+            animation: modalExpand 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            cursor: default; /* 모달 안에서는 커서 기본 */
+        }
+
+        @keyframes modalExpand {
+            0% { transform: translate(-50%, -40%) scale(0.9); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* 열렸을 때 세모 아이콘이 좌측 상단으로 슉! 이동하고 커짐 */
+        .glossary-item.open-modal .glossary-icon {
+            position: absolute; top: 25px; left: 25px;
+            font-size: 1.5rem; color: var(--gold-bright);
+            transform: rotate(180deg) scale(1.2); opacity: 1;
+            z-index: 9992; cursor: pointer;
+        }
+
+        /* 모달 안에서의 제목 */
+        .glossary-item.open-modal .glossary-title {
+            border-left: none; border-bottom: 1px solid rgba(203,160,82,0.3);
+            padding: 30px 25px 25px 60px; /* 좌측에 세모를 위한 여백 */
+            justify-content: center; background: transparent;
+        }
+        .glossary-item.open-modal .glossary-title h4 { font-size: 1.4rem; text-align: center; width: 100%; }
+
+        /* 모달 안에서의 내용 표시 */
+        .glossary-item.open-modal .glossary-content {
+            display: block; padding: 35px 30px; overflow-y: auto; flex-grow: 1;
+            animation: fadeInContent 0.8s ease;
+        }
+        .glossary-item.open-modal .glossary-content p { font-size: 1.1rem; color: var(--text-body); line-height: 1.8; }
+
+        /* 필터 및 그리드 */
+        .filter-container { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 15px; margin-bottom: 40px; padding-bottom: 10px; scrollbar-width: none; justify-content: center; }
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-btn { background: none; border: 1px solid transparent; color: var(--text-body); font-size: 0.95rem; font-family: 'Noto Serif KR', serif; cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; padding: 8px 18px; border-radius: 20px; white-space: nowrap; }
+        .filter-btn.active { color: var(--gold-bright); border-color: var(--gold-main); background: rgba(203,160,82,0.15); }
         .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
     </style>
 </head>
 <body>
 
-    <div class="particle" style="width: 3px; height: 3px; left: 20%; animation-duration: 6s; animation-delay: 4s;"></div>
-    <div class="particle" style="width: 4px; height: 4px; left: 50%; animation-duration: 9s; animation-delay: 5s;"></div>
-    <div class="particle" style="width: 2px; height: 2px; left: 80%; animation-duration: 7s; animation-delay: 6s;"></div>
+    <div id="blur-overlay" onclick="closeAllModals()"></div>
+
+    <div class="particle" style="width: 3px; height: 3px; left: 15%; animation-duration: 6s; animation-delay: 1s;"></div>
+    <div class="particle" style="width: 4px; height: 4px; left: 35%; animation-duration: 9s; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 2px; height: 2px; left: 50%; animation-duration: 7s; animation-delay: 3s;"></div>
+    <div class="particle" style="width: 5px; height: 5px; left: 65%; animation-duration: 10s; animation-delay: 0.5s;"></div>
+    <div class="particle" style="width: 3px; height: 3px; left: 85%; animation-duration: 8s; animation-delay: 1.5s;"></div>
+    <div class="particle" style="width: 2px; height: 2px; left: 95%; animation-duration: 6.5s; animation-delay: 2.5s;"></div>
 
     <div id="intro-screen">
         <div class="intro-main">OVERSOUL</div>
@@ -208,9 +262,7 @@
             <div class="header-ornament">✦ ✧ ✦</div>
             <h1>OVERSOUL<br><span>THE FINAL STAGE</span></h1>
             
-            <button class="menu-toggle-btn" onclick="toggleMenu()" id="menuBtn">
-                MENU
-            </button>
+            <button class="menu-toggle-btn" onclick="toggleMenu()" id="menuBtn">MENU</button>
 
             <nav id="mainNav">
                 <button class="tab-btn active" onclick="openTab('worldview')">Worldview</button>
@@ -223,22 +275,44 @@
         <main>
             <section id="worldview" class="content-section active">
                 <h2 class="section-title">세계관 <span class="eng-sub">WORLDVIEW</span></h2>
-                <div class="info-list">
-                    <div class="info-item">
-                        <h4>템포 <span class="eng-sub">TEMPO</span></h4>
-                        <p>이 세계의 유일한 생존 화폐. 조율이나 거래에 쓰입니다. 템포가 없으면 소멸합니다.</p>
+                <p class="worldview-desc">소리의 주파수가 물리 법칙을 대체한 비정한 음악적 디스토피아, 네오 아메리카. 이곳에서 소리는 곧 권력이자 마력이며, 가문들이 연주하는 완벽한 화음만이 지배하는 질서입니다.</p>
+
+                <div class="glossary-list">
+                    <div class="glossary-item" onclick="toggleGlossary(event, this)">
+                        <div class="glossary-title">
+                            <h4>템포 <span class="eng-sub">TEMPO</span></h4>
+                            <span class="glossary-icon">▼</span>
+                        </div>
+                        <div class="glossary-content">
+                            <p>이 세계의 유일한 생존 화폐입니다. (1$ = 1템포)<br><br>가난한 자들은 능력을 조율하거나 일용할 양식을 구하기 위해 매일 템포를 벌어야 합니다. 체내의 템포가 바닥나 조율을 받지 못하면 결국 시스템에 의해 소멸하게 됩니다.</p>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <h4>레조넌스 <span class="eng-sub">RESONANCE</span></h4>
-                        <p>물리 법칙을 비트는 소리의 마력과 진동입니다. 이를 다루는 자들을 '연주자'라 부릅니다.</p>
+                    <div class="glossary-item" onclick="toggleGlossary(event, this)">
+                        <div class="glossary-title">
+                            <h4>레조넌스 <span class="eng-sub">RESONANCE</span></h4>
+                            <span class="glossary-icon">▼</span>
+                        </div>
+                        <div class="glossary-content">
+                            <p>소리의 진동으로 물리 법칙을 비트는 이 세계 고유의 마력이자 생명력입니다.<br><br>일반인보다 방대한 레조넌스를 지니고 태어나 소리를 다루는 자들을 '연주자'라 부릅니다. 이들은 각자의 악기와 선율로 화염을 일으키거나 공간을 지배할 수 있습니다.</p>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <h4>로파이 <span class="eng-sub">LO-FI</span></h4>
-                        <p>레조넌스를 영구적으로 망가뜨리는 금기된 마약성 주파수입니다.</p>
+                    <div class="glossary-item" onclick="toggleGlossary(event, this)">
+                        <div class="glossary-title">
+                            <h4>로파이 <span class="eng-sub">LO-FI</span></h4>
+                            <span class="glossary-icon">▼</span>
+                        </div>
+                        <div class="glossary-content">
+                            <p>뒷골목에서 암암리에 유통되는 금기된 마약성 주파수입니다.<br><br>청취자에게 극강의 쾌락과 환각, 가짜 행복을 주지만, 그 대가로 체내 레조넌스를 영구적으로 뒤틀리게 만들어 종국에는 이성을 잃고 노이즈 덩어리가 되게 만듭니다.</p>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <h4>더 뮤트 <span class="eng-sub">THE MUTE</span></h4>
-                        <p>주파수와 존재 자체가 영구 삭제되는 미스터리 현상입니다.</p>
+                    <div class="glossary-item" onclick="toggleGlossary(event, this)">
+                        <div class="glossary-title">
+                            <h4>더 뮤트 <span class="eng-sub">THE MUTE</span></h4>
+                            <span class="glossary-icon">▼</span>
+                        </div>
+                        <div class="glossary-content">
+                            <p>어느 날 갑자기 일어나는 미스터리한 공간 삭제 현상입니다.<br><br>어떤 소리나 전조증상도 없이, 특정 구역의 모든 주파수와 그 안의 건물, 존재하던 사람들의 기억까지 세상에서 완벽하게 소거시켜 버리는 가장 두려운 재앙입니다.</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -247,15 +321,15 @@
                 <h2 class="section-title">구역 안내 <span class="eng-sub">DISTRICTS</span></h2>
                 <div class="card">
                     <h3>화이트 아리아 <span class="eng-sub">WHITE ARIA</span></h3>
-                    <p>애스터 가문이 지배하는, 완벽하게 조율된 정적인 클래식 구역.</p>
+                    <p>애스터 가문 지배. 한 치의 오차도 없이 조율된 정적인 클래식 구역.</p>
                 </div>
                 <div class="card">
                     <h3>블루 앨리 <span class="eng-sub">BLUE ALLEY</span></h3>
-                    <p>델라크루아 가문의 안개와 엇박자가 섞인 밤의 낭만적인 재즈 구역.</p>
+                    <p>델라크루아 가문 지배. 안개와 엇박자가 섞인 밤의 낭만적인 재즈 구역.</p>
                 </div>
                 <div class="card">
                     <h3 class="modern-pop-text">네온 캐슬 <span class="eng-sub" style="font-family: sans-serif;">NEON CASTLE</span></h3>
-                    <p class="modern-pop-text">스타더스트 가문 소유. 오토튠과 홀로그램이 번쩍이는 트렌디한 메가시티.</p>
+                    <p class="modern-pop-text">스타더스트 가문 지배. 오토튠과 홀로그램이 번쩍이는 트렌디한 메가시티.</p>
                 </div>
             </section>
 
@@ -263,11 +337,11 @@
                 <h2 class="section-title">등장인물 <span class="eng-sub">CHARACTERS</span></h2>
                 
                 <div class="filter-container">
-                    <button class="filter-btn active" onclick="filterChars('all', this)">ALL</button>
-                    <button class="filter-btn" onclick="filterChars('aster', this)">ASTER</button>
-                    <button class="filter-btn" onclick="filterChars('delacroix', this)">DELACROIX</button>
-                    <button class="filter-btn" onclick="filterChars('stardust', this)">STARDUST</button>
-                    <button class="filter-btn" onclick="filterChars('independent', this)">INDEPENDENT</button>
+                    <button class="filter-btn active" onclick="filterChars('all', this)">전체</button>
+                    <button class="filter-btn" onclick="filterChars('aster', this)">애스터</button>
+                    <button class="filter-btn" onclick="filterChars('delacroix', this)">델라크루아</button>
+                    <button class="filter-btn" onclick="filterChars('stardust', this)">스타더스트</button>
+                    <button class="filter-btn" onclick="filterChars('independent', this)">무소속</button>
                 </div>
 
                 <div class="character-grid">
@@ -289,34 +363,25 @@
                     </div>
                     <div class="card char-card independent">
                         <h3>노이</h3>
-                        <p>무소속 용병</p>
+                        <p>뒷골목 용병</p>
                     </div>
                 </div>
             </section>
 
             <section id="system" class="content-section">
                 <h2 class="section-title">시스템 <span class="eng-sub">SYSTEM</span></h2>
-                <div class="info-list">
-                    <div class="info-item">
-                        <h4>오버 소울 <span class="eng-sub">OVER-SOUL</span></h4>
-                        <p>공명 흉터를 극복한 각성 상태. 모든 출력이 2배 강화됩니다.</p>
-                    </div>
-                    <div class="info-item">
-                        <h4>커튼콜 <span class="eng-sub">CURTAIN CALL</span></h4>
-                        <p>각성자의 절대 무대 영역. 종료 후 1분간 능력을 잃는 페널티가 존재합니다.</p>
-                    </div>
-                    <div class="info-item">
-                        <h4>백스테이지 <span class="eng-sub">BACKSTAGE</span></h4>
-                        <p>커튼콜 강제 중화 영역. 유지 중 공간 내 모두의 능력이 봉쇄되어 물리전으로 전환됩니다.</p>
-                    </div>
-                </div>
+                <div class="card"><h3>오버 소울 <span class="eng-sub">OVER-SOUL</span></h3><p>공명 흉터를 극복한 각성 상태. 모든 출력이 2배 강화됩니다.</p></div>
+                <div class="card"><h3>커튼콜 <span class="eng-sub">CURTAIN CALL</span></h3><p>각성자의 절대 무대 영역. 종료 후 1분간 능력을 잃는 페널티가 있습니다.</p></div>
+                <div class="card"><h3>백스테이지 <span class="eng-sub">BACKSTAGE</span></h3><p>커튼콜 강제 중화 영역. 공간 내 모두의 능력이 봉쇄되어 물리전으로 전환됩니다.</p></div>
             </section>
         </main>
     </div>
 
     <script>
+        // 인트로 후 스크롤 활성화
         setTimeout(() => { document.body.classList.add('intro-done'); }, 4000);
 
+        // 메뉴 토글
         function toggleMenu() {
             const nav = document.getElementById('mainNav');
             const btn = document.getElementById('menuBtn');
@@ -331,6 +396,7 @@
             }
         }
 
+        // 탭 이동
         function openTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
@@ -345,6 +411,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
         }
 
+        // 인물 필터
         function filterChars(faction, btnElement) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
@@ -353,6 +420,35 @@
             cards.forEach(card => {
                 card.style.display = (faction === 'all' || card.classList.contains(faction)) ? 'block' : 'none';
             });
+        }
+
+        // 🔮 고유명사 모달(팝업) 토글
+        function toggleGlossary(event, element) {
+            const isOpened = element.classList.contains('open-modal');
+            
+            // 만약 이미 열려있는 창의 내부 텍스트를 클릭했다면 무시 (창이 닫히지 않게)
+            if (isOpened) {
+                // 단, 좌측 상단으로 이동한 '세모 아이콘'을 클릭했다면 창을 닫음
+                if (event.target.classList.contains('glossary-icon')) {
+                    closeAllModals();
+                }
+                return;
+            }
+
+            // 열려있지 않은 상자를 클릭하면, 혹시 열려있는 다른 창을 닫고 현재 창을 크게 엶
+            closeAllModals();
+            element.classList.add('open-modal');
+            document.getElementById('blur-overlay').classList.add('show');
+            document.body.classList.add('no-scroll'); // 배경 스크롤 방지
+        }
+
+        // 모든 모달창 닫기 (흐려진 배경 터치 시 실행됨)
+        function closeAllModals() {
+            document.querySelectorAll('.glossary-item.open-modal').forEach(el => {
+                el.classList.remove('open-modal');
+            });
+            document.getElementById('blur-overlay').classList.remove('show');
+            document.body.classList.remove('no-scroll');
         }
     </script>
 </body>
