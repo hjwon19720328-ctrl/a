@@ -3,582 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATABASE : SECRET ACCESS</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <title>NEO AMERICA - Sound Futurism Archive</title>
     <style>
-        /* --- 기본 설정 --- */
+        /* 기본 설정 및 폰트 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+        
         :root {
-            --bg-color: #050a0e;
-            --text-color: #80ffea;
-            --villain-color: #ff3333;
-            --hero-color: #33ccff;
-            --neutral-color: #ffffff;
-            --all-color: #ffd700;
-            --border-style: 2px solid var(--text-color);
-            --crt-glow: 0 0 10px var(--text-color), 0 0 20px var(--text-color);
+            --bg-dark: #0a0a0c;
+            --text-main: #e0e0e0;
+            --text-muted: #666;
+            --neon-white: #f8f9fa;
+            --neon-blue: #4d94ff;
+            --neon-pink: #ff3399;
+            --glitch-green: #00ffcc;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'IBM Plex Mono', 'Noto Sans KR', monospace;
-            margin: 0; padding: 40px 20px; text-align: center;
-            min-height: 100vh; cursor: crosshair; overflow-x: hidden;
-            animation: text-flicker 0.01s infinite alternate;
-        }
-        body.locked { overflow: hidden; }
-
-        /* CRT 효과 */
-        .crt-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 3px, 3px 100%; pointer-events: none; z-index: 99999;
-            animation: scanline-move 10s linear infinite;
-        }
-        @keyframes scanline-move { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
-        @keyframes text-flicker { 0% { opacity: 0.98; } 100% { opacity: 1; } }
-
-        /* --- ⭐ 터미널 인트로 스타일 ⭐ --- */
-        #intro-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; z-index: 60000;
-            display: flex; flex-direction: column;
-            padding: 40px; box-sizing: border-box;
-            font-family: 'IBM Plex Mono', monospace;
-            transition: opacity 1s ease;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* 1. 입력창 (최상단) */
-        #intro-input-area {
-            width: 100%; max-width: 900px; margin: 0 auto;
+        /* 헤더 & 네비게이션 */
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            border-bottom: 1px solid #222;
+            background: linear-gradient(180deg, #111 0%, transparent 100%);
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        h1 span.glitch {
+            color: var(--neon-pink);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid #333;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn:hover {
+            color: var(--neon-white);
+            border-color: var(--neon-white);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn.active {
+            color: var(--glitch-green);
+            border-color: var(--glitch-green);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+            text-shadow: 0 0 5px var(--glitch-green);
+        }
+
+        /* 콘텐츠 영역 */
+        .content-section {
+            display: none;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.8rem;
             border-bottom: 2px solid #333;
-            padding-bottom: 15px; margin-bottom: 15px;
-            text-align: left;
-            font-size: 1.3em;
-            color: var(--text-color);
-            display: flex; align-items: center;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--neon-white);
         }
 
-        #prompt-char { color: #0f0; margin-right: 10px; text-shadow: 0 0 5px #0f0; white-space: nowrap; }
-        #current-typing-text { display: inline; text-shadow: var(--crt-glow); }
-        
-        /* 커서 */
-        .cursor {
-            display: inline-block; width: 10px; height: 1.2em;
-            background-color: var(--text-color);
-            margin-left: 5px;
-            animation: blink 0.8s infinite;
-            vertical-align: bottom;
-        }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        /* 2. 히스토리 로그 */
-        #intro-history {
-            flex: 1; 
-            width: 100%; max-width: 900px; margin: 0 auto;
-            display: flex; flex-direction: column; 
-            align-items: flex-start;
-            overflow-y: auto;
-            color: #888;
-            font-size: 1.1em; line-height: 1.6;
-            text-align: left;
-        }
-        
-        .history-line { animation: fadeInLine 0.2s ease-out; margin-bottom: 8px; width: 100%; }
-        @keyframes fadeInLine { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .intro-highlight-red { color: var(--villain-color); text-shadow: 0 0 10px var(--villain-color); font-weight: bold; }
-        .intro-highlight-blue { color: var(--hero-color); text-shadow: 0 0 10px var(--hero-color); font-weight: bold; }
-        
-        #skip-btn { position: absolute; bottom: 30px; right: 30px; background: transparent; border: 1px solid var(--text-color); color: var(--text-color); padding: 10px 20px; cursor: pointer; font-family: inherit; z-index: 60001; }
-
-        /* --- 로그인 화면 --- */
-        #login-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000000; z-index: 50000; display: none;
-            flex-direction: column; justify-content: center; align-items: center; transition: opacity 1s ease;
-        }
-        .login-box { border: 2px solid var(--text-color); padding: 40px; box-shadow: 0 0 30px var(--text-color); width: 90%; max-width: 500px; background: rgba(0, 10, 15, 0.9); }
-        .login-input { background: transparent; border: none; border-bottom: 2px solid var(--text-color); color: var(--text-color); font-family: inherit; font-size: 1.5em; text-align: center; width: 80%; margin-bottom: 30px; outline: none; text-transform: uppercase; }
-        .login-btn { background-color: rgba(0, 20, 30, 0.8); color: var(--text-color); border: 2px solid var(--text-color); padding: 10px 30px; cursor: pointer; font-weight: bold; font-family: inherit; }
-        #login-error { color: var(--villain-color); margin-top: 20px; display: none; font-weight: bold; }
-        
-        #welcome-screen { display: none; text-align: center; }
-        .access-granted { color: var(--hero-color); font-size: 1.5em; font-weight: bold; margin-bottom: 20px; }
-        .user-greeting { font-size: 1.3em; line-height: 1.5; }
-        .user-name-highlight { color: #fff; font-weight: bold; text-decoration: underline; }
-        .doc-info { font-size: 0.9em; color: #aaa; border-top: 1px dashed #555; padding-top: 20px; margin-top: 20px; animation: text-flicker 2s infinite; }
-        
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -2px); } 100% { transform: translate(1px, -2px); } }
-        .shake-active { animation: shake 0.5s; }
-
-        /* --- 메인 레이아웃 --- */
-        #main-content-wrapper { display: none; opacity: 0; transition: opacity 1s ease; }
-
-        h1 { font-size: 2.5em; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px; color: var(--text-color); border-bottom: var(--border-style); display: inline-block; padding-bottom: 10px; animation: glitch-skew 3s infinite; }
-        @keyframes glitch-skew { 95% { transform: skew(0deg); } 97% { transform: skew(2deg); } 100% { transform: skew(0deg); } }
-
-        .main-nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-        .main-nav-btn { background: transparent; color: var(--text-color); border: 2px solid var(--text-color); padding: 12px 30px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: inherit; }
-        .main-nav-btn.active, .main-nav-btn:hover { background: var(--text-color); color: #000; box-shadow: var(--crt-glow); }
-
-        .main-section { display: none; width: 100%; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.5s; }
-        .main-section.active-section { display: block; }
-
-        .info-box { border: 1px solid #333; background: rgba(0, 20, 30, 0.8); padding: 30px; text-align: left; margin-bottom: 30px; }
-        .info-title { font-size: 1.5em; color: var(--hero-color); margin-bottom: 15px; border-bottom: 1px solid #555; padding-bottom: 5px; font-weight: bold; }
-        .rank-item { margin-bottom: 10px; }
-        .rank-label { font-weight: bold; width: 60px; display: inline-block; }
-
-        .org-container { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
-        .org-card { flex: 1; min-width: 300px; border: 2px solid #444; background: rgba(10, 10, 10, 0.9); padding: 25px; transition: 0.3s; text-align: left; }
-        .org-card:hover { transform: translateY(-5px); }
-        .org-logo { width: 140px; height: 140px; object-fit: contain; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; }
-
-        .tab-menu { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-        .tab-btn { background: rgba(0,20,30,0.8); color: #888; border: 1px solid #555; padding: 8px 20px; cursor: pointer; font-family: inherit; }
-        .tab-btn.active { border-width: 2px; }
-        .tab-btn.active.all-tab { color: var(--all-color); border-color: var(--all-color); }
-        .tab-btn.active.villain-tab { color: var(--villain-color); border-color: var(--villain-color); }
-        .tab-btn.active.hero-tab { color: var(--hero-color); border-color: var(--hero-color); }
-        .tab-btn.active.neutral-tab { color: var(--neutral-color); border-color: var(--neutral-color); }
-
-        .tab-content { display: none; }
-        .tab-content.show { display: block; }
-
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; }
-        .card { background: rgba(5, 20, 25, 0.9); border: 1px solid #444; padding: 10px; cursor: pointer; transition: 0.3s; text-align: left; }
-        .card:hover { transform: translateY(-5px); border-color: #fff; }
-        
-        /* ⭐ 소속별 색상 지정 ⭐ */
-        #villain .section-title { color: var(--villain-color); text-shadow: 0 0 10px var(--villain-color); border-color: var(--villain-color); }
-        #villain .card:hover { border-color: var(--villain-color); box-shadow: 0 0 15px var(--villain-color); }
-        #villain .card .name { color: var(--villain-color); text-shadow: 0 0 5px var(--villain-color); }
-
-        #hero .section-title { color: var(--hero-color); text-shadow: 0 0 10px var(--hero-color); border-color: var(--hero-color); }
-        #hero .card:hover { border-color: var(--hero-color); box-shadow: 0 0 15px var(--hero-color); }
-        #hero .card .name { color: var(--hero-color); text-shadow: 0 0 5px var(--hero-color); }
-
-        #neutral .section-title { color: var(--neutral-color); text-shadow: 0 0 10px var(--neutral-color); border-color: var(--neutral-color); }
-        #neutral .card:hover { border-color: var(--neutral-color); box-shadow: 0 0 15px var(--neutral-color); }
-        #neutral .card .name { color: var(--neutral-color); text-shadow: 0 0 5px var(--neutral-color); }
-
-        .card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 1px solid #333; }
-        .special-pos-render { object-position: top; }
-        .name { font-size: 1.2em; font-weight: bold; margin-top: 10px; }
-
-        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(5px); overflow: auto; }
-        .modal-content { background: #0a0f14; margin: 5% auto; padding: 40px; border: 2px solid var(--text-color); width: 85%; max-width: 900px; display: flex; gap: 40px; position: relative; }
-        .close { position: absolute; right: 20px; top: 10px; font-size: 40px; cursor: pointer; color: #fff; }
-        .modal-img-box { flex: 1; border: 1px solid #444; }
-        .modal-img-box img { width: 100%; display: block; }
-        .modal-text-box { flex: 1.5; text-align: left; }
-        .modal-name { font-size: 2.5em; font-weight: bold; border-bottom: 2px solid; padding-bottom: 10px; margin-bottom: 20px; }
-        .modal-desc { line-height: 1.8; white-space: pre-line; color: #ccc; }
-        .alt-personality-btn { display: none; position: absolute; top: 15px; right: 70px; background: rgba(138,43,226,0.2); color: #c48aff; border: 2px solid #8a2be2; padding: 8px 15px; cursor: pointer; font-weight: bold; font-family: inherit; }
-
-        .modal-content[data-theme="villain"] { border-color: var(--villain-color); box-shadow: 0 0 20px var(--villain-color); }
-        .modal-content[data-theme="villain"] .modal-name { color: var(--villain-color); }
-        .modal-content[data-theme="hero"] { border-color: var(--hero-color); box-shadow: 0 0 20px var(--hero-color); }
-        .modal-content[data-theme="hero"] .modal-name { color: var(--hero-color); }
-        .modal-content[data-theme="neutral"] { border-color: var(--neutral-color); box-shadow: 0 0 20px var(--neutral-color); }
-        .modal-content[data-theme="neutral"] .modal-name { color: var(--neutral-color); }
-
-        .is-red-mode { border-color: var(--villain-color)!important; background: #1a0000!important; }
-        .is-red-mode .modal-name { color: var(--villain-color)!important; }
-        
-        @keyframes intense-glitch {
-            0% { clip-path: inset(20% 0 50% 0); transform: translate(-5px, 2px); filter: hue-rotate(90deg) contrast(1.5); }
-            10% { clip-path: inset(60% 0 10% 0); transform: translate(5px, -2px); filter: invert(1); }
-            20% { clip-path: inset(10% 0 70% 0); transform: translate(-5px, 5px); filter: grayscale(1); }
-            30% { clip-path: inset(80% 0 5% 0); transform: translate(5px, -5px); filter: sepia(1); }
-            40% { clip-path: inset(30% 0 20% 0); transform: translate(-5px, 0); filter: hue-rotate(-90deg); }
-            50% { clip-path: inset(10% 0 40% 0); transform: translate(5px, 0); opacity: 0.5; }
-            60% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, 5px); }
-            70% { clip-path: inset(0 0 80% 0); transform: translate(2px, -5px); filter: saturate(5); }
-            80% { clip-path: inset(40% 0 10% 0); transform: translate(0, 5px); }
-            90% { clip-path: inset(90% 0 0 0); transform: translate(5px, 2px); }
-            100% { clip-path: inset(0 0 0 0); transform: translate(0); filter: none; }
+        p {
+            line-height: 1.8;
+            color: #b0b0b0;
         }
 
-        .glitch-active img { animation: intense-glitch 0.3s linear infinite; }
-        .glitch-active .modal-text-box { animation: intense-glitch 0.4s linear infinite reverse; opacity: 0.8; }
-        
-        #page-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9000; opacity: 0; pointer-events: none; transition: 0.4s; }
-        .black-out { opacity: 1 !important; pointer-events: auto !important; }
+        /* 임시 카드 디자인 (인물/구역용) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-        @media (max-width: 768px) { .modal-content { flex-direction: column; } .alt-personality-btn { position: static; margin-top: 20px; width: 100%; } }
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .card {
+            background: #111;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 5px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--neon-white);
+        }
+
+        .card.white-aria { border-top: 3px solid var(--neon-white); }
+        .card.blue-alley { border-top: 3px solid var(--neon-blue); }
+        .card.neon-castle { border-top: 3px solid var(--neon-pink); }
     </style>
 </head>
-<body class="locked">
+<body>
 
-    <div id="intro-layer">
-        <div id="intro-input-area">
-            <span id="prompt-char">시안송:~$</span>
-            <span id="current-typing-text"></span><span class="cursor"></span>
-        </div>
-
-        <div id="intro-history"></div>
+    <header>
+        <h1>NEO <span class="glitch">AMERICA</span></h1>
+        <div class="subtitle">THE CITY OF DISSONANCE</div>
         
-        <button id="skip-btn" onclick="endIntro()">SKIP >></button>
-    </div>
+        <nav>
+            <button class="tab-btn active" onclick="openTab('worldview')">세계관</button>
+            <button class="tab-btn" onclick="openTab('districts')">구역 안내</button>
+            <button class="tab-btn" onclick="openTab('characters')">주요 인물</button>
+            <button class="tab-btn" onclick="openTab('system')">시스템 / 규칙</button>
+        </nav>
+    </header>
 
-    <div id="login-layer">
-        <div class="login-box">
-            <div id="login-content">
-                <div class="login-title">🔒 IDENTIFICATION</div>
-                <p>성함을 입력하여 접속 승인을 요청하십시오.</p>
-                <input type="text" id="nameInput" class="login-input" placeholder="USER NAME" onkeypress="handleEnter(event)">
-                <button class="login-btn" onclick="submitLogin()">CONNECT</button>
-                <div id="login-error"></div>
-            </div>
-            <div id="welcome-screen">
-                <div class="access-granted">ACCESS GRANTED</div>
-                <div class="user-greeting">환영합니다, <br><span id="display-name" class="user-name-highlight"></span> 요원님.</div>
-                <div class="doc-info">
-                    ※ 본 문서는 천의(天衣)에서 작성한<br>1급 기밀 데이터입니다.
+    <main>
+        <section id="worldview" class="content-section active">
+            <h2>🌍 세계관: 사운드 퓨처리즘</h2>
+            <p>소리의 주파수가 물리 법칙을 대체한 음악적 제국. 우아한 클래식과 화려한 팝의 선율 아래, 소외된 자들의 비명이 노이즈로 덮여가는 비정한 음악적 디스토피아입니다.</p>
+            <p><strong>레조넌스 (Resonance):</strong> 소리의 진동으로 물리 법칙을 비트는 이 세계의 마력.</p>
+            <p><strong>템포 (Tempo):</strong> 생존을 위한 유일한 화폐. 조율을 받지 못하면 결국 소거됩니다.</p>
+        </section>
+
+        <section id="districts" class="content-section">
+            <h2>🏙️ 3대 주요 구역</h2>
+            <div class="card-grid">
+                <div class="card white-aria">
+                    <h3>화이트 아리아</h3>
+                    <p>애스터 가문 지배. 품격 있는 조화와 정돈된 선율이 흐르는 고결한 구역.</p>
+                </div>
+                <div class="card blue-alley">
+                    <h3>블루 앨리</h3>
+                    <p>델라크루아 가문 지배. 남색 안개와 가스등이 켜진 낭만적이고 비밀스러운 밤의 거리.</p>
+                </div>
+                <div class="card neon-castle">
+                    <h3>네온 캐슬</h3>
+                    <p>스타더스트 가문 지배. 24시간 네온사인이 반짝이는 엔터테인먼트와 축제의 구역.</p>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="crt-overlay"></div>
-    <div id="page-transition"></div>
-
-    <div id="main-content-wrapper" style="display: none;">
-        <h1>DATABASE : CHARACTER ARCHIVE</h1>
-
-        <div class="main-nav">
-            <button class="main-nav-btn active" onclick="switchMainSection(event, 'world')">WORLDVIEW</button>
-            <button class="main-nav-btn" onclick="switchMainSection(event, 'org')">ORGANIZATION</button>
-            <button class="main-nav-btn" onclick="switchMainSection(event, 'char')">PERSONNEL</button>
-        </div>
-
-        <div id="sec-world" class="main-section active-section">
-            <div class="info-box">
-                <div class="info-title">⚠️ CURRENT STATUS</div>
-                <p>
-                    조직 <strong>EDEN</strong>은 능력자 중심의 신세계를 구축하기 위해 인류 말살 계획을 실행 중입니다.<br>
-                    현재 EDEN은 <strong>엑스칼리버, 그리스도의 피(성혈), 롱기누스의 창</strong>을 모두 탈취한 상태이며,<br>
-                    최후의 열쇠인 <strong>[사방신의 핵]</strong>을 노리고 있습니다.
-                </p>
-            </div>
-            <div class="info-box">
-                <div class="info-title">📊 ABILITY RANKS</div>
-                <div class="rank-item"><span class="rank-label" style="color:var(--villain-color)">S급</span>: 국가 재앙급 전력. 단독으로 지형 개변 및 도시 파괴 가능.</div>
-                <div class="rank-item"><span class="rank-label" style="color:var(--all-color)">A급</span>: 전술 핵심. 대규모 군대와 대등한 전투력 보유.</div>
-                <div class="rank-item"><span class="rank-label" style="color:#fff">B급</span>: 정예요원. 특수 임무 및 고위험 전투 수행 가능.</div>
-                <div class="rank-item"><span class="rank-label">C급</span>: 표준 능력자. 군대 소대 규모의 화력을 가짐.</div>
-                <div class="rank-item"><span class="rank-label">D급</span>: 보조 능력. 일상 유틸리티 및 비전투 보조 위주.</div>
-                <div class="rank-item"><span class="rank-label">E급</span>: 잠재적 능력자. 일반인보다 미세하게 강한 신체 능력.</div>
-            </div>
-        </div>
-
-        <div id="sec-org" class="main-section">
-            <div class="org-container">
-                <div class="org-card" style="border-color:var(--villain-color)">
-                    <img src="https://raw.githubusercontent.com/sy-an0/Po/refs/heads/main/1769520481569.png" class="org-logo">
-                    <div class="info-title" style="color:var(--villain-color); text-align: center;">EDEN (에덴)</div>
-                    <p><strong>"구시대의 종말, 능력자의 낙원"</strong><br><br>능력자 우월주의를 내세우는 극단적 결사. 수장 아드리안 아래 7인의 강력한 간부들이 고대 유물을 수집해 세상을 재편하려 합니다.</p>
+        <section id="characters" class="content-section">
+            <h2>🎭 사중주 (The Final 4)</h2>
+            <p>네오 아메리카의 운명을 쥐고 있는 핵심 인물들입니다. (캐릭터 프로필 추가 예정)</p>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>엘라라 (Elara)</h3>
+                    <p>애스터 가주 / 커튼콜: [종지부: 심판의 레퀴엠]</p>
                 </div>
-                <div class="org-card" style="border-color:var(--hero-color)">
-                    <img src="https://raw.githubusercontent.com/sy-an0/Po/refs/heads/main/1769521423671.png" class="org-logo">
-                    <div class="info-title" style="color:var(--hero-color); text-align: center;">천의 (天衣)</div>
-                    <p><strong>"질서의 수호자, 인류의 방패"</strong><br><br>국제 방위 기구. 본래는 흉악 범죄자를 체포하는 사법 기관이었으나, EDEN의 등장 이후 세계 멸망을 막기 위해 체제를 전환하여 총력전을 펼치고 있습니다.</p>
+                <div class="card">
+                    <h3>시몬 (Simone)</h3>
+                    <p>델라크루아 가주 / 커튼콜: [심야의 앙코르]</p>
+                </div>
+                <div class="card">
+                    <h3>루나 (Luna)</h3>
+                    <p>애스터 후계자 / 클래식과 재즈의 리믹스</p>
+                </div>
+                <div class="card">
+                    <h3>노이 (Noi)</h3>
+                    <p>무소속 용병 / 디지털 글리치 및 시스템 해킹</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="sec-char" class="main-section">
-            <div class="tab-menu">
-                <button class="tab-btn all-tab active" onclick="openTabWithTransition(event, 'all')">ALL</button>
-                <button class="tab-btn villain-tab" onclick="openTabWithTransition(event, 'villain')">VILLAIN</button>
-                <button class="tab-btn hero-tab" onclick="openTabWithTransition(event, 'hero')">HERO</button>
-                <button class="tab-btn neutral-tab" onclick="openTabWithTransition(event, 'neutral')">NEUTRAL</button>
-            </div>
-
-            <div id="villain" class="tab-content show">
-                <h2 class="section-title villain-title">VILLAIN_DATA</h2>
-                <div class="container">
-                    <div class="card" onclick="openModal('아드리안 (ADRIAN)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%95%84%EB%93%9C%EB%A6%AC%EC%95%88.png', 'MBTI: INFJ\nRank: S (BOSS)\nAbility: 중력 조작\n\n평소 부드러운 미소를 짓는 신사적 태도이나 비능력자를 극도로 경멸하는 내향적 소시오패스.', 'villain')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%95%84%EB%93%9C%EB%A6%AC%EC%95%88.png"><div class="name">아드리안</div></div>
-                    <div class="card" onclick="openModal('이사벨 (ISABEL)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%9D%B4%EC%82%AC%EB%B2%A8.png', 'MBTI: ESTJ\nRank: S\nAbility: 영혼의 계약\n\n아드리안의 전담 비서. 계획의 오차를 싫어하는 완벽주의자이며 항상 정중한 존댓말을 구사한다.', 'villain')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%9D%B4%EC%82%AC%EB%B2%A8.png"><div class="name">이사벨</div></div>
-                    <div class="card" onclick="openModal('요루 (YORU)', 'https://igx.kr/u/MJ/g/1', 'MBTI: INTP\nRank: S\nAbility: 맹독 영역\n\n최강의 화력을 가졌으나 게으름의 정점. 누워서 후배들에게 명령하는 것을 즐김.', 'villain')"><img src="https://igx.kr/u/MJ/g/1"><div class="name">요루</div></div>
-                    <div class="card" onclick="openModal('바란 (BARAN)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B0%94%EB%9E%80.png', 'MBTI: ISTJ\nRank: A\nAbility: 촉수 & 암살 가스\n\n누구보다 성실한 현장 요원. 겉으로는 무뚝뚝하지만 동료를 은근히 챙기는 츤데레.', 'villain')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B0%94%EB%9E%80.png"><div class="name">바란</div></div>
-                    <div class="card" onclick="openModal('닥터 L (DR. L)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%8B%A5%ED%84%B0%20L.png', 'MBTI: INTJ\nRank: S\nAbility: 붉은 실 (방어 무시)\n\n자신의 지능에 취한 나르시시스트. 연구실에 박혀 유물과 사체를 해부하는 것에 집착한다.', 'villain')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%8B%A5%ED%84%B0%20L.png"><div class="name">닥터 L</div></div>
-                    <div class="card" onclick="openModal('벨라 (BELLA)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B2%A8%EB%9D%BC.png', 'MBTI: ESFP\nRank: S\nAbility: 석화\n\n보석을 수집하듯 사람들을 석화시켜 전시하는 것을 즐기는 화려한 나르시시스트.', 'villain')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B2%A8%EB%9D%BC.png"><div class="name">벨라</div></div>
-                    <div class="card" onclick="openModal('웬디 (WENDY)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%9B%90%EB%94%94%EA%B3%A0.png', 'MBTI: ISTP\nRank: S\nAbility: 빙결\n\n야생에서 자라나 문명을 거부하는 빙결 능력자. 말이 없고 본능에 충실하다.', 'villain')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%9B%90%EB%94%94%EA%B3%A0.png"><div class="name">웬디</div></div>
-                    <div class="card" onclick="openModal('페로 (PERO)', 'https://igx.kr/u/LJ/c/d', 'MBTI: ENFP\nRank: S\nAbility: 능력 포식\n\n봉인된 에덴의 최종 병기. 능력을 먹을수록 강해지며 주인에게만 충성을 다한다.', 'villain')"><img src="https://igx.kr/u/LJ/c/d"><div class="name">페로</div></div>
-                </div>
-            </div>
-
-            <div id="hero" class="tab-content show">
-                <h2 class="section-title hero-title">HERO_DATA</h2>
-                <div class="container">
-                    <div class="card" onclick="openModal('춘자 (CHUNJA)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%82%BC%EC%8B%A0%ED%95%A0%EB%A7%A4.png', 'MBTI: ENFJ\nRank: SS (BOSS)\nAbility: 생명 조작\n\n천의의 수장. 온화한 미소 뒤에 확실한 결단력을 지닌 정신적 지주.', 'hero')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%82%BC%EC%8B%A0%ED%95%A0%EB%A7%A4.png"><div class="name">춘자</div></div>
-                    <div class="card" onclick="openModal('미르 (MIR)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%95%84%EC%A3%BC%EB%A5%B4.png', 'MBTI: INTP\nRank: S (청룡)\nAbility: 날씨 조작\n\n엄청난 능력을 가졌으나 만사가 귀찮아 백우에게 업무를 떠넘기는 게 일상.', 'hero')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%95%84%EC%A3%BC%EB%A5%B4.png"><div class="name">미르</div></div>
-                    <div class="card" onclick="openModal('적화 (JEOKHWA)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%A0%81%ED%99%94.png', 'MBTI: ESFP\nRank: S (주작)\nAbility: 화염 & 조건형 부활\n\n활발하고 나서는 것을 좋아하는 행동파. 쓰러져도 다시 일어나는 불굴의 투지를 지녔다.', 'hero')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%A0%81%ED%99%94.png"><div class="name">적화</div></div>
-                    <div class="card" onclick="openModal('백우 (BAEKW)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B0%B1%EC%9A%B0.png', 'MBTI: ISFP\nRank: S (백호)\nAbility: 순간이동 & 괴력\n\n스스로를 무서운 맹수라 생각하지만 남들에겐 귀여운 호랑이. 간식(츄르)을 좋아한다.', 'hero')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B0%B1%EC%9A%B0.png"><div class="name">백우</div></div>
-                    <div class="card" onclick="openModal('현묘 (거북이)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%ED%98%84%EB%AC%98.png', 'MBTI: INFJ\nRank: S (현무)\nAbility: 절대 배리어\n\n평소 실눈을 뜨고 온화하게 웃는 조용한 성격.', 'hero', true, 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%B1%80.png', '【현묘 (뱀)】\nMBTI: ESTP / Ability: 신경독\n\n폭주 상태. 거치적거리는 옷을 다 벗어 던지고 날뛰는 광기 어린 인격.', '현묘 (뱀)')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%ED%98%84%EB%AC%98.png"><div class="name">현묘 <span style="font-size:0.7em">(거북이)</span></div></div>
-                    <div class="card" onclick="openModal('하린 (HARIN)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%ED%95%B4%ED%83%9C.png', 'MBTI: ESFJ\nRank: A (해태)\nAbility: 업화 (Karma Fire)\n\n군인 출신의 열혈 신입. 매사에 너무 신나 있고 활발해서 탈인 문제아.', 'hero')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%ED%95%B4%ED%83%9C.png"><div class="name">하린</div></div>
-                    <div class="card" onclick="openModal('쿠로 (KURO)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%82%BC%EC%A1%B1%EC%98%A4.png', 'MBTI: ISTJ\nRank: A (삼족오)\nAbility: 천리안 & 저격\n\n말수가 적고 냉철한 저격수. 보이지 않는 곳에서 확실하게 임무를 완수한다.', 'hero')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EC%82%BC%EC%A1%B1%EC%98%A4.png"><div class="name">쿠로</div></div>
-                </div>
-            </div>
-
-            <div id="neutral" class="tab-content show">
-                <h2 class="section-title neutral-title">NEUTRAL_DATA</h2>
-                <div class="container">
-                    <div class="card" onclick="openModal('렌더 (RENDER)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%A0%8C%EB%8D%94.png', 'MBTI: ISTP\nAbility: 그림자 숨기\n\n학살을 유희로 즐기는 소시오패스. [go to sleep]이라는 메시지만 남기고 사라진다.', 'neutral')"><img class="special-pos-render" src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%EB%A0%8C%EB%8D%94.png"><div class="name">렌더</div></div>
-                    <div class="card" onclick="openModal('페스타 (FESTA)', 'https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%ED%8E%98%EC%8A%A4%ED%83%80.png', 'MBTI: ENFP\nAbility: 대규모 서커스 영역\n\n싸움이 격렬해지면 나타나 전장을 화려한 파티장으로 바꿔버리는 혼돈의 인물.', 'neutral')"><img src="https://raw.githubusercontent.com/sy-an0/Lo/refs/heads/main/%ED%8E%98%EC%8A%A4%ED%83%80.png"><div class="name">페스타</div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="characterModal" class="modal">
-        <div id="modalContentBox" class="modal-content">
-            <button id="altBtn" class="alt-personality-btn" onclick="togglePersonalityWithGlitch()">[ ↻ ACCESS: ALT_FORM ]</button>
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div class="modal-img-box"><img id="modalImg" src=""></div>
-            <div class="modal-text-box">
-                <div id="modalName" class="modal-name">이름</div>
-                <div id="modalDesc" class="modal-desc">설명</div>
-            </div>
-        </div>
-    </div>
+        <section id="system" class="content-section">
+            <h2>⚙️ 룰 & 시스템</h2>
+            <p><strong>커튼콜 (Curtain Call):</strong> 각성자(오버 소울)의 절대 영역. 무대가 끝난 후 1분간 능력을 상실합니다.</p>
+            <p><strong>백스테이지 (Backstage):</strong> 커튼콜 중화 기술. 전개 시 시전자 포함 전원 레조넌스 사용이 불가해지며 순수 물리전으로 돌입합니다.</p>
+            <p><strong>노이즈 (Noise) & 로파이 (Lo-fi):</strong> 공명 흉터를 극복하지 못하거나 불법 주파수에 중독된 상태. 100% 도달 시 이성을 상실합니다.</p>
+        </section>
+    </main>
 
     <script>
-        // 파일 경로 안전하게 지정 (같은 폴더 기준)
-        const typingSound = new Audio('./typing.mp3'); 
-        typingSound.loop = true; // 타이핑 소리 루프 설정
+        function openTab(tabId) {
+            // 모든 탭 버튼과 콘텐츠 섹션 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
 
-        const bgmSound = new Audio('./bgm.mp3');
-        bgmSound.loop = true; 
-
-        // 사용자 상호작용 후 BGM 재생 (브라우저 정책)
-        document.body.addEventListener('click', () => { 
-            bgmSound.play().catch(e=>{}); 
-        }, {once:true});
-
-        // ⭐ 안전한 섹션 전환
-        function switchMainSection(event, sectionId) {
-            const curtain = document.getElementById("page-transition");
-            const clickedBtn = event.currentTarget; 
-            curtain.classList.add("black-out");
-            
-            setTimeout(() => {
-                try {
-                    const sections = document.querySelectorAll(".main-section");
-                    sections.forEach(s => s.classList.remove("active-section"));
-                    const btns = document.querySelectorAll(".main-nav-btn");
-                    btns.forEach(b => b.classList.remove("active"));
-                    
-                    const target = document.getElementById("sec-" + sectionId);
-                    if (target) {
-                        target.classList.add("active-section");
-                        if(clickedBtn) clickedBtn.classList.add("active");
-                    }
-                } catch(e) { console.error(e); } 
-                finally { curtain.classList.remove("black-out"); }
-            }, 400);
+            // 클릭된 탭과 연결된 콘텐츠 섹션 활성화
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
         }
-
-        // ⭐ 인트로 터미널 로직 (속도 0.05초, 사운드 1.05초 유지)
-        const storyLines = [
-            "SYSTEM BOOT SEQUENCE INITIATED...", "LOADING HISTORY LOG...", "...",
-            "조직 <span class='intro-highlight-red'>[EDEN]</span>의 최종 목표:",
-            "모든 인간을 말살하고, 오직 능력자들만의 낙원을 건설하는 것.", "...",
-            "하지만 그들의 야망은 <span class='intro-highlight-blue'>[천의(天衣)]</span>에 의해 저지당하고 있다.", "...",
-            "경고: EDEN이 다차원 유물 데이터를 확보했습니다.",
-            "> 엑스칼리버 [ACQUIRED]", "> 그리스도의 피(성혈) [ACQUIRED]", "> 롱기누스의 창 [ACQUIRED]", "...",
-            "현재 상황: 최종 단계 진입.", "이제 그들에게 남은 마지막 열쇠...",
-            "오직 [사방신의 핵]만이 남았다."
-        ];
-
-        let lIdx = 0; let cIdx = 0; let isSkipped = false;
-        
-        function playTypingSound() {
-            try {
-                if (isSkipped) return;
-                // 루프가 켜져 있으므로 play()만 호출하면 계속 나옴. pause는 setTimeout으로 제어.
-                if (typingSound.paused) { 
-                    typingSound.currentTime = 0; 
-                    typingSound.play().catch(e=>{}); 
-                }
-                // 기존 정지 타이머 취소 (계속 타이핑 중이면 소리 안 끊김)
-                clearTimeout(typingSound.stopTimer);
-                // 타이핑 멈추고 1.05초 뒤에 소리 끔
-                typingSound.stopTimer = setTimeout(() => { typingSound.pause(); }, 1050); 
-            } catch(e){}
-        }
-
-        function typeWriter() {
-            if (isSkipped) return;
-            
-            const historyLog = document.getElementById("intro-history");
-            const typingSpan = document.getElementById("current-typing-text");
-
-            if (lIdx < storyLines.length) {
-                let fullText = storyLines[lIdx];
-
-                if (fullText.includes("<span")) {
-                    const p = document.createElement("div");
-                    p.className = "history-line";
-                    p.innerHTML = fullText;
-                    historyLog.appendChild(p);
-                    
-                    // 태그 출력시 소리 멈춤
-                    typingSound.pause();
-                    clearTimeout(typingSound.stopTimer);
-
-                    lIdx++;
-                    setTimeout(typeWriter, 800); 
-                } 
-                else {
-                    if (cIdx < fullText.length) {
-                        playTypingSound(); // 소리 재생 관리
-
-                        typingSpan.innerHTML += fullText.charAt(cIdx);
-                        cIdx++;
-                        setTimeout(typeWriter, 50); // ⭐ 속도 0.05초
-                    } else {
-                        // 줄바꿈 시 소리 멈춤
-                        typingSound.pause();
-                        clearTimeout(typingSound.stopTimer);
-
-                        const p = document.createElement("div");
-                        p.className = "history-line";
-                        
-                        if (fullText.includes("사방신의 핵")) {
-                            p.innerHTML = "오직 <span class='intro-highlight-blue'>[사방신의 핵]</span>만이 남았다.";
-                        } else {
-                            p.innerText = typingSpan.innerText;
-                        }
-                        
-                        historyLog.appendChild(p);
-                        typingSpan.innerText = ""; 
-                        cIdx = 0;
-                        lIdx++;
-                        setTimeout(typeWriter, 500); 
-                    }
-                }
-                historyLog.scrollTop = historyLog.scrollHeight;
-            } else {
-                endIntro();
-            }
-        }
-
-        function endIntro() {
-            if (isSkipped) return;
-            isSkipped = true;
-            
-            // ⭐ 스킵 즉시 모든 소리와 타이머 종료
-            typingSound.pause();
-            typingSound.loop = false;
-            typingSound.currentTime = 0;
-            if(typingSound.stopTimer) clearTimeout(typingSound.stopTimer);
-
-            document.getElementById("intro-layer").style.opacity = "0";
-            setTimeout(() => {
-                document.getElementById("intro-layer").style.display = "none";
-                document.getElementById("login-layer").style.display = "flex";
-            }, 1000);
-        }
-        window.onload = typeWriter;
-
-        // 로그인
-        function submitLogin() {
-            const name = document.getElementById("nameInput").value.trim();
-            if (!name) return;
-            const blocked = ["아드리안","이사벨","요루","바란","닥터L","벨라","웬디","페로","렌더","페스타"].map(n=>n.toLowerCase());
-            if (blocked.includes(name.toLowerCase())) {
-                document.querySelector(".login-box").classList.add("shake-active");
-                document.getElementById("login-error").innerText = "⛔ ACCESS DENIED: [" + name + "]";
-                document.getElementById("login-error").style.display = "block";
-                setTimeout(() => document.querySelector(".login-box").classList.remove("shake-active"), 500);
-                return;
-            }
-            document.getElementById("login-content").style.display = "none";
-            document.getElementById("display-name").innerText = name;
-            document.getElementById("welcome-screen").style.display = "block";
-            
-            setTimeout(() => {
-                document.getElementById("login-layer").style.opacity = "0";
-                setTimeout(() => { 
-                    document.getElementById("login-layer").style.display="none"; 
-                    document.body.classList.remove("locked");
-                    const main = document.getElementById("main-content-wrapper");
-                    main.style.display = "block";
-                    setTimeout(() => { main.style.opacity = "1"; }, 50);
-                }, 1000);
-            }, 2000);
-        }
-        function handleEnter(e) { if(e.key==="Enter") submitLogin(); }
-
-        // 캐릭터 탭 및 모달 로직
-        function openTabWithTransition(event, tab) {
-            const curtain = document.getElementById("page-transition");
-            const clickedBtn = event.currentTarget; 
-            curtain.classList.add("black-out");
-            setTimeout(() => {
-                try {
-                    const contents = document.querySelectorAll(".tab-content");
-                    contents.forEach(c => c.style.display = "none");
-                    const btns = document.querySelectorAll(".tab-btn");
-                    btns.forEach(b => b.classList.remove("active"));
-                    
-                    if (tab === 'all') {
-                        document.getElementById('villain').style.display = 'block';
-                        document.getElementById('hero').style.display = 'block';
-                        document.getElementById('neutral').style.display = 'block';
-                    } else {
-                        document.getElementById(tab).style.display = 'block';
-                    }
-                    if(clickedBtn) clickedBtn.classList.add("active");
-                } catch(e) { console.error(e); } 
-                finally { curtain.classList.remove("black-out"); }
-            }, 400);
-        }
-
-        let curData = {};
-        function openModal(name, img, desc, faction, hasAlt=false, altImg='', altDesc='', altName='') {
-            const m = document.getElementById("characterModal");
-            const box = document.getElementById("modalContentBox");
-            box.classList.remove("is-red-mode", "glitch-active");
-            box.setAttribute("data-theme", faction);
-            curData = { name, img, desc, hasAlt, altImg, altDesc, altName, isAlt: false };
-            document.getElementById("modalName").innerText = name;
-            document.getElementById("modalImg").src = img;
-            document.getElementById("modalDesc").innerText = desc;
-            document.getElementById("altBtn").style.display = hasAlt ? "block" : "none";
-            document.getElementById("altBtn").innerText = "[ ↻ ACCESS: ALT_FORM ]";
-            m.style.display = "block"; document.body.style.overflow = "hidden";
-        }
-
-        function togglePersonalityWithGlitch() {
-            const box = document.getElementById("modalContentBox");
-            box.classList.add("glitch-active");
-            setTimeout(() => {
-                if (!curData.isAlt) {
-                    document.getElementById("modalImg").src = curData.altImg;
-                    document.getElementById("modalDesc").innerText = curData.altDesc;
-                    if(curData.altName) document.getElementById("modalName").innerText = curData.altName;
-                    box.classList.add("is-red-mode"); curData.isAlt = true;
-                    document.getElementById("altBtn").innerText = "[ ↺ RESTORE: ORIGINAL ]";
-                } else {
-                    document.getElementById("modalImg").src = curData.img;
-                    document.getElementById("modalDesc").innerText = curData.desc;
-                    document.getElementById("modalName").innerText = curData.name;
-                    box.classList.remove("is-red-mode"); curData.isAlt = false;
-                    document.getElementById("altBtn").innerText = "[ ↻ ACCESS: ALT_FORM ]";
-                }
-                box.classList.remove("glitch-active");
-            }, 500);
-        }
-
-        function closeModal() { document.getElementById("characterModal").style.display = "none"; document.body.style.overflow = "auto"; }
-        window.onclick = e => { if(e.target == document.getElementById("characterModal")) closeModal(); }
     </script>
 </body>
 </html>
