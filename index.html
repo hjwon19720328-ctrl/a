@@ -3,311 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>오버 소울: 마지막 무대</title>
+    <title>OVERSOUL: THE FINAL STAGE</title>
     <style>
-        /* 기본 폰트 및 리셋 */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Pretendard:wght@300;400;600&display=swap');
+        /* 클래식 명조체, 영문은 화려한 세리프체(Cinzel) 적용 */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Noto+Serif+KR:wght@300;400;700&display=swap');
         
         * {
             box-sizing: border-box;
-            word-break: keep-all; /* 단어 단위로 줄바꿈 (글자 깨짐 방지) */
+            word-break: keep-all; 
             margin: 0;
             padding: 0;
         }
 
         :root {
-            --bg-base: #0a0a0c;
-            --bg-surface: #141419;
-            --text-gold: #D4AF37;
-            --text-gold-dim: rgba(212, 175, 55, 0.6);
-            --text-main: #E2E2E2;
-            --text-muted: #888888;
+            /* 클래식 오페라 극장 컬러 팔레트 */
+            --bg-curtain-dark: #2a0810; /* 깊은 붉은 벨벳 커튼 그림자 */
+            --bg-curtain-light: #4a0e17; /* 붉은 커튼 중앙 조명 */
+            --bg-card: #1f0b0f; /* 금박 테두리 안쪽 짙은 배경 */
+            
+            --gold-light: #fbe096;
+            --gold-main: #d4af37;
+            --gold-dark: #996515;
+            
+            --text-paper: #f4ecd8; /* 양피지 같은 따뜻한 텍스트 */
+            --text-muted: #c9b48f;
         }
 
         body {
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            /* 본문은 가독성 좋은 프리텐다드(고딕계열), 제목만 명조체 사용 */
-            font-family: 'Pretendard', sans-serif; 
+            /* 무대 커튼 느낌의 방사형/선형 그라데이션 혼합 배경 */
+            background: linear-gradient(to right, var(--bg-curtain-dark), var(--bg-curtain-light) 50%, var(--bg-curtain-dark)),
+                        repeating-linear-gradient(to right, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px);
+            color: var(--text-paper);
+            font-family: 'Noto Serif KR', serif; 
             line-height: 1.6;
             overflow-x: hidden;
+            /* 전체 화면을 금장 액자처럼 감싸는 테두리 */
+            border: 4px solid var(--gold-dark);
+            min-height: 100vh;
         }
 
-        /* 🎬 인트로 (모바일 최적화) */
+        /* 🎬 인트로 (음표 떠오르기 + 영문) */
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--bg-base);
+            background: radial-gradient(circle at center, #4a0e17, #110205);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 9999;
             animation: fadeOutIntro 1.5s ease forwards;
-            animation-delay: 2.5s; 
+            animation-delay: 3.5s; 
+            border: 4px solid var(--gold-main);
         }
 
         .intro-main {
-            font-family: 'Noto Serif KR', serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 10vw, 5rem);
             font-weight: 700;
-            color: var(--text-gold);
-            letter-spacing: 0.2em;
+            color: var(--gold-main);
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 0 40px rgba(212, 175, 55, 0.3);
             opacity: 0;
-            animation: fadeInDrop 2s ease forwards;
+            animation: fadeInScale 2s ease forwards;
         }
 
-        @keyframes fadeInDrop {
-            0% { opacity: 0; transform: translateY(-10px); filter: blur(5px); }
-            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        .intro-sub {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: var(--text-paper);
+            letter-spacing: 0.3em;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeInScale 2s ease forwards;
+            animation-delay: 0.5s;
         }
 
+        /* 떠오르는 음표 애니메이션 */
+        .floating-note {
+            position: absolute;
+            color: var(--gold-light);
+            font-size: 2rem;
+            opacity: 0;
+            text-shadow: 0 0 10px var(--gold-main);
+            animation: floatUp 3s ease-in-out infinite forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(30px) scale(0.8) rotate(0deg); opacity: 0; }
+            30% { opacity: 0.8; }
+            100% { transform: translateY(-120px) scale(1.2) rotate(30deg); opacity: 0; }
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
         @keyframes fadeOutIntro { to { opacity: 0; visibility: hidden; } }
 
         /* 메인 래퍼 */
         .main-wrapper {
-            max-width: 600px; /* 모바일에 최적화된 최대 너비 */
+            max-width: 700px;
             margin: 0 auto;
             min-height: 100vh;
-            background: var(--bg-base);
+            padding: 10px;
             opacity: 0;
             animation: revealMain 1s ease forwards;
-            animation-delay: 3s; 
+            animation-delay: 4s; 
         }
 
         @keyframes revealMain { to { opacity: 1; } }
 
-        /* 헤더 디자인 */
+        /* 헤더 디자인 (금박 액자 장식) */
         header {
             text-align: center;
-            padding: 50px 20px 20px;
-            background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-base) 100%);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 40px 20px 30px;
+            position: relative;
+            background: var(--bg-card);
+            border: 2px solid var(--gold-main);
+            outline: 1px solid var(--gold-light);
+            outline-offset: -6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin: 20px 10px;
+            border-radius: 4px;
+        }
+
+        .header-ornament {
+            font-size: 2rem;
+            color: var(--gold-main);
+            margin-bottom: 10px;
         }
 
         h1 {
-            font-family: 'Noto Serif KR', serif;
-            font-size: clamp(2rem, 7vw, 2.5rem);
-            color: var(--text-gold);
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            line-height: 1.2;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.2rem, 8vw, 3rem);
+            color: var(--gold-main);
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
         h1 span {
             display: block;
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            font-weight: 300;
-            color: var(--text-muted);
-            letter-spacing: 0.4em;
-            margin-top: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            font-weight: 600;
+            color: var(--text-paper);
+            letter-spacing: 0.3em;
+            margin-top: 5px;
         }
 
-        /* 네비게이션 탭 (모바일에서 2줄로 깔끔하게 배치) */
+        /* 네비게이션 탭 (고급스러운 플레이트 디자인) */
         nav {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 20px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 30px;
         }
 
         .tab-btn {
-            background: var(--bg-surface);
+            background: transparent;
             color: var(--text-muted);
-            border: 1px solid #222;
-            padding: 12px 10px;
-            font-size: 0.95rem;
-            border-radius: 8px;
+            border: 1px solid var(--gold-dark);
+            padding: 15px 10px;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Pretendard', sans-serif;
-            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
+
+        .tab-btn .icon { font-size: 1.5rem; color: var(--gold-dark); transition: color 0.3s; }
 
         .tab-btn.active {
             background: rgba(212, 175, 55, 0.1);
-            color: var(--text-gold);
-            border-color: var(--text-gold-dim);
+            color: var(--gold-light);
+            border-color: var(--gold-main);
+            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2), 0 5px 15px rgba(0,0,0,0.4);
         }
+        .tab-btn.active .icon { color: var(--gold-main); }
 
         /* 콘텐츠 영역 */
         .content-section {
             display: none;
-            padding: 30px 20px 80px;
+            padding: 20px 10px 60px;
             animation: fadeInContent 0.5s ease;
         }
         .content-section.active { display: block; }
         
         @keyframes fadeInContent {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* 섹션 타이틀 (금색 띠) */
         .section-title {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 1.5rem;
-            color: var(--text-gold);
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
+            color: var(--gold-main);
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--text-gold-dim);
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid var(--gold-dark);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        p { margin-bottom: 15px; color: #ccc; font-weight: 300; }
+        p.desc { text-align: center; margin-bottom: 30px; color: var(--text-paper); opacity: 0.9; }
 
-        /* 세계관 고유명사 (Glossary) 리스트 디자인 */
+        /* 2x2 고유명사 (Glossary) 그리드 카드 */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
         .glossary-item {
-            background: var(--bg-surface);
-            border-left: 3px solid var(--text-gold);
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            border-radius: 0 8px 8px 0;
+            background: var(--bg-card);
+            border: 1px solid var(--gold-dark);
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            position: relative;
+        }
+        /* 내부 장식 테두리 */
+        .glossary-item::before {
+            content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            pointer-events: none;
         }
 
         .glossary-item h4 {
-            font-family: 'Noto Serif KR', serif;
-            color: var(--text-gold);
-            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            color: var(--gold-light);
+            font-size: 1rem;
             margin-bottom: 8px;
             letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .glossary-item .sub-title {
+            display: block; font-size: 0.75rem; color: var(--text-muted);
+            margin-bottom: 10px; font-family: 'Noto Serif KR', serif;
         }
 
-        .glossary-item p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
+        .glossary-item p { margin: 0; font-size: 0.85rem; color: #b8a688; line-height: 1.4; }
 
-        /* 가문 & 구역 카드 디자인 */
+        /* 일반 카드 (가문 & 구역) */
         .card {
-            background: var(--bg-surface);
-            border: 1px solid #222;
-            border-radius: 12px;
+            background: var(--bg-card);
+            border: 2px double var(--gold-dark);
             padding: 25px 20px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
             text-decoration: none;
             display: block;
-            color: var(--text-main);
+            color: var(--text-paper);
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card::after {
+            content: '❖'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--bg-curtain-dark); padding: 0 10px; color: var(--gold-dark); font-size: 1.2rem;
         }
 
         .card:hover, .card:active {
-            border-color: var(--text-gold-dim);
-            background: rgba(212, 175, 55, 0.05);
+            border-color: var(--gold-main);
+            background: rgba(212, 175, 55, 0.1);
         }
+        .card:hover::after { color: var(--gold-main); }
 
         .card h3 {
-            font-family: 'Noto Serif KR', serif;
-            color: var(--text-gold);
-            font-size: 1.3rem;
-            margin-bottom: 10px;
+            font-family: 'Cinzel', serif; color: var(--gold-light);
+            font-size: 1.4rem; margin-bottom: 10px; letter-spacing: 1px;
         }
 
-        .card p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
-        .new-tab-hint { display: block; margin-top: 15px; font-size: 0.75rem; color: var(--text-gold-dim); }
+        .card p { margin: 0; font-size: 0.95rem; color: #b8a688; }
+        .new-tab-hint { display: block; margin-top: 15px; font-size: 0.8rem; color: var(--gold-dark); font-family: 'Cinzel', serif; }
 
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
-        <div class="intro-main">오버 소울</div>
+        <span class="floating-note" style="left: 20%; animation-delay: 0s;">𝄞</span>
+        <span class="floating-note" style="left: 50%; animation-delay: 0.5s;">🎵</span>
+        <span class="floating-note" style="left: 75%; animation-delay: 1.2s;">🎶</span>
+        <span class="floating-note" style="left: 30%; animation-delay: 2s;">𝄢</span>
+
+        <div class="intro-main">OVERSOUL</div>
+        <div class="intro-sub">THE FINAL STAGE</div>
     </div>
 
     <div class="main-wrapper">
         <header>
-            <h1>오버 소울<br><span>마지막 무대</span></h1>
+            <div class="header-ornament">🎼</div>
+            <h1>OVERSOUL<br><span>THE FINAL STAGE</span></h1>
             <nav>
-                <button class="tab-btn active" onclick="openTab('worldview')">세계관</button>
-                <button class="tab-btn" onclick="openTab('districts')">구역 안내</button>
-                <button class="tab-btn" onclick="openTab('factions')">가문</button>
-                <button class="tab-btn" onclick="openTab('system')">시스템</button>
+                <button class="tab-btn active" onclick="openTab('worldview')">
+                    <span class="icon">🌍</span>WORLDVIEW
+                </button>
+                <button class="tab-btn" onclick="openTab('districts')">
+                    <span class="icon">🏛️</span>DISTRICTS
+                </button>
+                <button class="tab-btn" onclick="openTab('factions')">
+                    <span class="icon">🎭</span>FACTIONS
+                </button>
+                <button class="tab-btn" onclick="openTab('system')">
+                    <span class="icon">⚙️</span>SYSTEM
+                </button>
             </nav>
         </header>
 
         <main>
             <section id="worldview" class="content-section active">
-                <h2 class="section-title">사운드 퓨처리즘</h2>
-                <p style="text-align: center; margin-bottom: 30px;">소리의 주파수가 물리 법칙을 대체한 비정한 음악적 디스토피아입니다.</p>
+                <h2 class="section-title">Worldview : Sound Futurism</h2>
+                <p class="desc">Neo America is a futuristic dystopia where all physics are controlled by sound. Humanity is bound by the Orchestra of Life.</p>
 
-                <div class="glossary-item">
-                    <h4>템포 (Tempo)</h4>
-                    <p>이 세계의 유일한 생존 화폐 (1$ = 1템포). 능력을 조율하거나 아이템을 구매할 때 쓰입니다.</p>
-                </div>
-                <div class="glossary-item">
-                    <h4>레조넌스 (Resonance)</h4>
-                    <p>소리의 진동으로 물리 법칙을 비트는 마력. 이를 다루는 자들을 '연주자'라 부릅니다.</p>
-                </div>
-                <div class="glossary-item">
-                    <h4>공명 흉터 & 노이즈 (Noise)</h4>
-                    <p>힘을 남용할수록 신체가 악기처럼 변하며 인간성을 잃는 현상입니다. 수치가 100%에 도달하면 이성을 잃습니다.</p>
-                </div>
-                <div class="glossary-item">
-                    <h4>조율 (Tuning)</h4>
-                    <p>뒤틀린 주파수와 노이즈 수치를 낮추는 치료 행위. 막대한 템포가 필요합니다.</p>
-                </div>
-                <div class="glossary-item">
-                    <h4>로파이 (Lo-fi)</h4>
-                    <p>환각을 주지만 레조넌스를 영구적으로 뒤틀리게 만드는 불법 마약성 주파수입니다.</p>
-                </div>
-                <div class="glossary-item">
-                    <h4>더 뮤트 (The Mute)</h4>
-                    <p>특정 공간의 주파수와 존재 자체가 데이터처럼 영구 삭제되는 미스터리한 공백 현상입니다.</p>
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <h4>TEMPO</h4>
+                        <span class="sub-title">Spiritual Currency</span>
+                        <p>이 세계의 유일한 화폐. 조율이나 거래에 쓰입니다.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>RESONANCE</h4>
+                        <span class="sub-title">Sonic Ability</span>
+                        <p>물리 법칙을 비트는 소리의 마력과 진동입니다.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>LO-FI</h4>
+                        <span class="sub-title">Forbidden Frequencies</span>
+                        <p>레조넌스를 영구적으로 망가뜨리는 금기된 주파수입니다.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>THE MUTE</h4>
+                        <span class="sub-title">Erasure Phenomenon</span>
+                        <p>주파수와 존재 자체가 영구 삭제되는 미스터리 현상입니다.</p>
+                    </div>
                 </div>
             </section>
 
             <section id="districts" class="content-section">
-                <h2 class="section-title">3대 구역</h2>
+                <h2 class="section-title">District Guide</h2>
                 <div class="card">
-                    <h3>화이트 아리아</h3>
-                    <p>애스터 가문 / 클래식의 정적</p>
+                    <h3>WHITE ARIA</h3>
+                    <p>애스터 가문 / 완벽하게 조율된 정적인 클래식 구역</p>
                 </div>
                 <div class="card">
-                    <h3>블루 앨리</h3>
-                    <p>델라크루아 가문 / 낭만과 엇박자</p>
+                    <h3>BLUE ALLEY</h3>
+                    <p>델라크루아 가문 / 낭만과 엇박자가 섞인 밤의 재즈 구역</p>
                 </div>
                 <div class="card">
-                    <h3>네온 캐슬</h3>
-                    <p>스타더스트 가문 / 영원한 축제</p>
+                    <h3>NEON CASTLE</h3>
+                    <p>스타더스트 가문 / 환각과 감정이 지배하는 영원한 팝 축제 구역</p>
                 </div>
             </section>
 
             <section id="factions" class="content-section">
-                <h2 class="section-title">주요 세력</h2>
+                <h2 class="section-title">Factions</h2>
                 <a href="aster.html" target="_blank" class="card">
-                    <h3>애스터 (Aster)</h3>
-                    <p>질서와 구속의 클래식</p>
-                    <span class="new-tab-hint">터치하여 상세 정보 보기 ↗</span>
+                    <h3>ASTER</h3>
+                    <p>질서와 구속 (Classic)</p>
+                    <span class="new-tab-hint">TAP FOR DETAILS ↗</span>
                 </a>
                 <a href="delacroix.html" target="_blank" class="card">
-                    <h3>델라크루아 (Delacroix)</h3>
-                    <p>정보와 회피의 재즈</p>
-                    <span class="new-tab-hint">터치하여 상세 정보 보기 ↗</span>
+                    <h3>DELACROIX</h3>
+                    <p>정보와 회피 (Jazz)</p>
+                    <span class="new-tab-hint">TAP FOR DETAILS ↗</span>
                 </a>
                 <a href="stardust.html" target="_blank" class="card">
-                    <h3>스타더스트 (Stardust)</h3>
-                    <p>감정과 환각의 팝</p>
-                    <span class="new-tab-hint">터치하여 상세 정보 보기 ↗</span>
+                    <h3>STARDUST</h3>
+                    <p>감정과 환각 (Pop)</p>
+                    <span class="new-tab-hint">TAP FOR DETAILS ↗</span>
                 </a>
                 <a href="independent.html" target="_blank" class="card">
-                    <h3>무소속 (Independent)</h3>
-                    <p>뒷골목의 노이즈와 글리치</p>
-                    <span class="new-tab-hint">터치하여 상세 정보 보기 ↗</span>
+                    <h3>INDEPENDENT</h3>
+                    <p>뒷골목의 글리치와 무소속</p>
+                    <span class="new-tab-hint">TAP FOR DETAILS ↗</span>
                 </a>
             </section>
 
             <section id="system" class="content-section">
-                <h2 class="section-title">전투 시스템</h2>
-                <div class="glossary-item">
-                    <h4>오버 소울 (Over-Soul)</h4>
-                    <p>공명 흉터를 극복한 각성 상태. 모든 출력이 2배 강화됩니다.</p>
+                <h2 class="section-title">System & Rules</h2>
+                <div class="card">
+                    <h3>OVER-SOUL</h3>
+                    <p>공명 흉터를 극복한 각성. 출력이 2배 강화됩니다.</p>
                 </div>
-                <div class="glossary-item">
-                    <h4>커튼콜 (Curtain Call)</h4>
-                    <p>각성자의 절대 무대. 무대가 끝난 후 1분간 능력을 상실하는 리스크가 있습니다.</p>
+                <div class="card">
+                    <h3>CURTAIN CALL</h3>
+                    <p>각성자의 절대 무대 영역. 종료 후 1분간 능력을 잃습니다.</p>
                 </div>
-                <div class="glossary-item">
-                    <h4>백스테이지 (Backstage)</h4>
-                    <p>커튼콜을 강제 중화하는 방어기전. 유지 중 시전자를 포함한 공간 내 전원의 능력이 봉쇄되어 순수 물리전으로 전환됩니다.</p>
+                <div class="card">
+                    <h3>BACKSTAGE</h3>
+                    <p>커튼콜 강제 중화. 유지 중 모두의 능력이 봉쇄되어 물리전이 됩니다.</p>
+                </div>
+                <div class="card">
+                    <h3>NOISE</h3>
+                    <p>힘의 부작용. 노이즈 수치 100% 도달 시 이성을 상실합니다.</p>
                 </div>
             </section>
         </main>
