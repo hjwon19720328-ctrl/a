@@ -5,244 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OVERSOUL: THE FINAL STAGE</title>
     <style>
-        /* 클래식 명조체, 영문은 화려한 세리프체(Cinzel) 적용 */
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Noto+Serif+KR:wght@300;400;700&display=swap');
+        /* 폰트: 우아한 명조체와 극도로 얇은 영문 세리프체 */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Noto+Serif+KR:wght@200;300;400;600&display=swap');
         
-        * {
-            box-sizing: border-box;
-            word-break: keep-all; 
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; word-break: keep-all; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         :root {
-            --bg-curtain-dark: #2a0810; 
-            --bg-curtain-light: #4a0e17; 
-            --bg-card: #1f0b0f; 
+            /* 완벽한 OLED 블랙과 절제된 컬러 */
+            --bg-base: #000000;
+            --bg-surface: #0a0a0a;
             
-            --gold-light: #fbe096;
-            --gold-main: #d4af37;
-            --gold-dark: #996515;
+            --gold-accent: #c4a47c; /* 차분하고 매트한 샴페인 골드 */
+            --gold-dim: rgba(196, 164, 124, 0.2);
             
-            --text-paper: #f4ecd8; 
-            --text-muted: #c9b48f;
-            
-            /* 스타더스트 전용 네온 팝 컬러 (포인트용) */
-            --neon-pop: #ff33cc;
+            --text-title: #ffffff;
+            --text-body: #8a8a8a;
         }
 
         body {
-            background: linear-gradient(to right, var(--bg-curtain-dark), var(--bg-curtain-light) 50%, var(--bg-curtain-dark)),
-                        repeating-linear-gradient(to right, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px);
-            color: var(--text-paper);
+            background-color: var(--bg-base);
+            color: var(--text-body); 
             font-family: 'Noto Serif KR', serif; 
-            line-height: 1.6;
-            overflow-x: hidden;
-            border: 4px solid var(--gold-dark);
+            font-weight: 300;
+            line-height: 1.7; 
+            /* 기본 스크롤 숨김 (인트로 버그 방지) */
+            overflow: hidden; 
             min-height: 100vh;
         }
 
-        /* 공통 영문 보조 표기 스타일 */
+        /* 인트로 스크롤 버그 해결용 클래스 */
+        body.intro-done { overflow-y: auto; overflow-x: hidden; }
+
         .eng-sub {
-            font-family: 'Cinzel', serif; font-size: 0.75em; letter-spacing: 1px;
-            opacity: 0.8; margin-left: 6px; font-weight: 400;
+            font-family: 'Cormorant Garamond', serif; font-size: 0.8em; letter-spacing: 2px;
+            color: var(--gold-accent); opacity: 0.7; margin-left: 8px; font-weight: 400; text-transform: uppercase;
         }
 
-        /* 🎬 인트로 */
+        /* 🎬 미니멀 인트로 (스크롤 버그 완전 차단) */
         #intro-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: radial-gradient(circle at center, #4a0e17, #110205);
+            position: fixed; inset: 0; width: 100vw; height: 100vh;
+            background: var(--bg-base);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; animation: fadeOutIntro 1.5s ease forwards; animation-delay: 3.5s; 
-            border: 4px solid var(--gold-main);
+            z-index: 9999; animation: fadeOutIntro 1.5s ease forwards; animation-delay: 2.5s; 
         }
 
         .intro-main {
-            font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 5rem);
-            font-weight: 700; color: var(--gold-main); letter-spacing: 0.1em;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 0 40px rgba(212, 175, 55, 0.3);
-            opacity: 0; animation: fadeInScale 2s ease forwards;
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 400; color: var(--text-title);
+            letter-spacing: 0.3em; opacity: 0; animation: fadeInMinimal 2s ease forwards;
+            text-transform: uppercase;
         }
-
-        .intro-sub {
-            font-family: 'Cinzel', serif; font-size: clamp(1rem, 4vw, 1.5rem);
-            color: var(--text-paper); letter-spacing: 0.3em; margin-top: 15px;
-            opacity: 0; animation: fadeInScale 2s ease forwards; animation-delay: 0.5s;
+        
+        @keyframes fadeInMinimal {
+            0% { opacity: 0; transform: translateY(5px); filter: blur(3px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
-
-        .floating-note {
-            position: absolute; color: var(--gold-light); font-size: 2rem; opacity: 0;
-            text-shadow: 0 0 10px var(--gold-main); animation: floatUp 3s ease-in-out infinite forwards;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(30px) scale(0.8) rotate(0deg); opacity: 0; }
-            30% { opacity: 0.8; }
-            100% { transform: translateY(-120px) scale(1.2) rotate(30deg); opacity: 0; }
-        }
-        @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes fadeOutIntro { to { opacity: 0; visibility: hidden; } }
 
         /* 메인 래퍼 */
         .main-wrapper {
-            max-width: 700px; margin: 0 auto; min-height: 100vh;
-            padding: 10px; opacity: 0; animation: revealMain 1s ease forwards; animation-delay: 4s; 
+            max-width: 600px; margin: 0 auto; min-height: 100vh;
+            padding: 0 20px; opacity: 0; animation: revealMain 1s ease forwards; animation-delay: 3s; 
         }
         @keyframes revealMain { to { opacity: 1; } }
 
-        /* 헤더 디자인 */
+        /* 미니멀 헤더 (테두리 삭제, 극도의 여백) */
         header {
-            text-align: center; padding: 30px 20px 20px; position: relative;
-            background: var(--bg-card); border: 2px solid var(--gold-main);
-            outline: 1px solid var(--gold-light); outline-offset: -6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 10px; border-radius: 4px;
+            text-align: center; padding: 60px 0 30px; position: relative;
         }
-        .header-ornament { font-size: 1.5rem; color: var(--gold-main); margin-bottom: 5px; }
-
         h1 {
-            font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 7vw, 2.5rem);
-            color: var(--gold-main); font-weight: 900; letter-spacing: 0.15em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 7vw, 2.5rem); color: var(--text-title);
+            font-weight: 300; letter-spacing: 0.2em; line-height: 1.2; text-transform: uppercase;
         }
         h1 span {
-            display: block; font-family: 'Cinzel', serif; font-size: clamp(0.8rem, 3vw, 1rem);
-            font-weight: 600; color: var(--text-paper); letter-spacing: 0.3em; margin-top: 5px;
+            display: block; font-size: 0.8rem; font-weight: 300; color: var(--gold-accent);
+            letter-spacing: 0.5em; margin-top: 10px; opacity: 0.8;
         }
 
-        /* 탭 버튼 */
-        nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        /* 텍스트형 메뉴 토글 (버튼 느낌 삭제) */
+        .menu-toggle-btn {
+            background: transparent; color: var(--text-body); border: none;
+            font-size: 0.75rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 4px;
+            margin: 40px auto 10px; cursor: pointer; transition: color 0.3s ease;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-transform: uppercase; width: max-content;
+        }
+        .menu-toggle-btn::before, .menu-toggle-btn::after {
+            content: ''; display: block; width: 20px; height: 1px; background: var(--gold-dim); transition: width 0.3s ease;
+        }
+        .menu-toggle-btn:hover { color: var(--text-title); }
+        .menu-toggle-btn.open::before, .menu-toggle-btn.open::after { width: 40px; background: var(--gold-accent); }
+
+        /* 아코디언 메뉴 (선 스타일) */
+        nav {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+            max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        nav.show { max-height: 200px; opacity: 1; padding: 10px 0 20px; margin-bottom: 20px; border-bottom: 1px solid var(--gold-dim); }
+
         .tab-btn {
-            background: transparent; color: var(--text-muted); border: 1px solid var(--gold-dark);
-            padding: 10px 5px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease;
-            font-family: 'Cinzel', serif; font-weight: 700; letter-spacing: 1px;
-            display: flex; flex-direction: column; align-items: center; gap: 3px;
-            text-transform: uppercase; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            background: transparent; color: var(--text-body); border: none; border-bottom: 1px solid transparent;
+            padding: 15px 5px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif; letter-spacing: 2px; text-transform: uppercase;
         }
-        .tab-btn .icon { font-size: 1.2rem; color: var(--gold-dark); transition: color 0.3s; }
-        .tab-btn.active {
-            background: rgba(212, 175, 55, 0.1); color: var(--gold-light); border-color: var(--gold-main);
-            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2), 0 5px 15px rgba(0,0,0,0.4);
-        }
-        .tab-btn.active .icon { color: var(--gold-main); }
+        .tab-btn.active { color: var(--gold-accent); }
 
         /* 콘텐츠 영역 */
-        .content-section { display: none; padding: 15px 10px 60px; animation: fadeInContent 0.4s ease; }
+        .content-section { display: none; padding: 20px 0 80px; animation: fadeInContent 0.6s ease; }
         .content-section.active { display: block; }
         @keyframes fadeInContent { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 섹션 타이틀 */
+        /* 타이틀 라인 디자인 (왼쪽 선 포인트) */
         .section-title {
-            font-family: 'Noto Serif KR', serif; font-size: clamp(1.2rem, 5vw, 1.5rem);
-            color: var(--gold-main); text-align: center; margin-bottom: 20px; padding: 12px;
-            border: 1px solid var(--gold-dark); background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-            letter-spacing: 2px;
+            font-family: 'Noto Serif KR', serif; font-size: 1.2rem;
+            color: var(--text-title); text-align: left; margin-bottom: 40px; padding-left: 10px;
+            border-left: 2px solid var(--gold-accent); font-weight: 400; display: flex; align-items: center;
         }
-        p.desc { text-align: center; margin-bottom: 25px; color: var(--text-paper); opacity: 0.9; font-size: 0.9rem; }
 
-        /* 뒤로 가기 버튼 */
-        .back-btn {
-            display: inline-flex; align-items: center; gap: 5px; margin-bottom: 20px;
-            padding: 8px 15px; border: 1px solid var(--gold-dark); color: var(--gold-light);
-            background: var(--bg-card); cursor: pointer; font-family: 'Cinzel', serif;
-            font-size: 0.8rem; letter-spacing: 1px; transition: all 0.3s;
+        /* 필터 탭 (명품 브랜드 카테고리 스타일) */
+        .filter-container {
+            display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; margin-bottom: 40px;
+            scrollbar-width: none;
         }
-        .back-btn:hover { background: rgba(212, 175, 55, 0.2); border-color: var(--gold-main); }
+        .filter-container::-webkit-scrollbar { display: none; }
+        
+        .filter-btn {
+            background: none; border: none; color: #555; font-size: 0.75rem;
+            font-family: 'Cormorant Garamond', serif; cursor: pointer; transition: color 0.3s ease;
+            letter-spacing: 2px; padding-bottom: 5px; position: relative; white-space: nowrap;
+        }
+        .filter-btn.active { color: var(--text-title); }
+        .filter-btn.active::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 1px; background: var(--text-title);
+        }
 
-        /* 고유명사 (Glossary) 그리드 */
-        .glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .glossary-item {
-            background: var(--bg-card); border: 1px solid var(--gold-dark); padding: 15px;
-            text-align: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); position: relative;
-        }
-        .glossary-item::before {
-            content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px;
-            border: 1px solid rgba(212, 175, 55, 0.3); pointer-events: none;
-        }
-        .glossary-item h4 {
-            font-family: 'Noto Serif KR', serif; color: var(--gold-light); font-size: 0.95rem;
-            margin-bottom: 8px; letter-spacing: 1px;
-        }
-        .glossary-item p { margin: 0; font-size: 0.8rem; color: #b8a688; line-height: 1.5; }
-
-        /* 일반 카드 */
+        /* 럭셔리 카드 (그림자 완전 삭제, 선과 여백만 사용) */
         .card {
-            background: var(--bg-card); border: 2px double var(--gold-dark); padding: 20px;
-            margin-bottom: 15px; text-align: center; text-decoration: none; display: block;
-            color: var(--text-paper); transition: all 0.3s ease; position: relative; cursor: pointer;
+            background: transparent; border: 1px solid var(--gold-dim); padding: 30px 20px;
+            margin-bottom: 15px; text-align: left; color: var(--text-body); position: relative;
+            transition: border-color 0.4s ease;
         }
-        .card::after {
-            content: '❖'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-            background: var(--bg-curtain-dark); padding: 0 10px; color: var(--gold-dark); font-size: 1rem;
-        }
-        .card:hover, .card:active { border-color: var(--gold-main); background: rgba(212, 175, 55, 0.1); }
-        .card:hover::after { color: var(--gold-main); }
-        .card h3 {
-            font-family: 'Noto Serif KR', serif; color: var(--gold-light); font-size: 1.2rem;
-            margin-bottom: 8px; letter-spacing: 1px;
-        }
-        .card p { margin: 0; font-size: 0.9rem; color: #b8a688; line-height: 1.5; }
+        .card:hover { border-color: var(--gold-accent); }
         
-        .card-faction-details { text-align: left; padding: 25px; }
-        .card-faction-details p { margin-bottom: 15px; }
-        .card-faction-details strong { color: var(--gold-light); font-family: 'Noto Serif KR', serif; }
+        .card h3 { font-family: 'Noto Serif KR', serif; color: var(--text-title); font-size: 1.1rem; margin-bottom: 10px; font-weight: 400; }
+        .card p { margin: 0; font-size: 0.85rem; line-height: 1.6; }
         
-        /* 팝 장르 전용 폰트/스타일 믹스 (현대적 느낌) */
-        .modern-pop-text { font-family: 'sans-serif'; color: #e6c898; letter-spacing: 0; line-height: 1.5;}
+        /* 팝 장르용 현대적 텍스트 (그대로 유지) */
+        .modern-pop-text { font-family: 'sans-serif'; color: #cccccc; letter-spacing: -0.5px; }
+
+        /* 리스트형 아이템 (사전 느낌) */
+        .info-list { display: flex; flex-direction: column; gap: 30px; }
+        .info-item { display: flex; flex-direction: column; gap: 8px; }
+        .info-item h4 { font-family: 'Noto Serif KR', serif; color: var(--text-title); font-size: 1rem; font-weight: 400; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        .info-item p { font-size: 0.85rem; padding-left: 5px; color: var(--text-body); }
+
+        /* 인물 그리드 */
+        .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .char-card { text-align: center; padding: 25px 15px; border-top: 1px solid var(--gold-dim); border-bottom: 1px solid var(--gold-dim); border-left: none; border-right: none; }
+        .char-card:hover { border-color: var(--gold-accent); }
 
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
-        <span class="floating-note" style="left: 20%; animation-delay: 0s;">𝄞</span>
-        <span class="floating-note" style="left: 50%; animation-delay: 0.5s;">🎵</span>
-        <span class="floating-note" style="left: 75%; animation-delay: 1.2s;">🎶</span>
-        <span class="floating-note" style="left: 30%; animation-delay: 2s;">𝄢</span>
         <div class="intro-main">OVERSOUL</div>
-        <div class="intro-sub">THE FINAL STAGE</div>
     </div>
 
     <div class="main-wrapper">
         <header>
-            <div class="header-ornament">🎼</div>
             <h1>OVERSOUL<br><span>THE FINAL STAGE</span></h1>
-            <nav>
-                <button class="tab-btn active" onclick="openTab('worldview')">
-                    <span class="icon">🌍</span>WORLDVIEW
-                </button>
-                <button class="tab-btn" onclick="openTab('districts')">
-                    <span class="icon">🏛️</span>DISTRICTS
-                </button>
-                <button class="tab-btn" onclick="openTab('factions')">
-                    <span class="icon">🎭</span>FACTIONS
-                </button>
-                <button class="tab-btn" onclick="openTab('system')">
-                    <span class="icon">⚙️</span>SYSTEM
-                </button>
+            
+            <button class="menu-toggle-btn" onclick="toggleMenu()" id="menuBtn">
+                MENU
+            </button>
+
+            <nav id="mainNav">
+                <button class="tab-btn" onclick="openTab('worldview')">Worldview</button>
+                <button class="tab-btn" onclick="openTab('districts')">Districts</button>
+                <button class="tab-btn active" onclick="openTab('factions')">Characters</button>
+                <button class="tab-btn" onclick="openTab('system')">System</button>
             </nav>
         </header>
 
         <main>
-            <section id="worldview" class="content-section active">
+            <section id="worldview" class="content-section">
                 <h2 class="section-title">세계관 <span class="eng-sub">WORLDVIEW</span></h2>
-                <p class="desc">소리의 주파수가 물리 법칙을 대체한 비정한 음악적 디스토피아.</p>
-
-                <div class="glossary-grid">
-                    <div class="glossary-item">
+                <div class="info-list">
+                    <div class="info-item">
                         <h4>템포 <span class="eng-sub">TEMPO</span></h4>
-                        <p>이 세계의 유일한 화폐. 조율이나 거래에 쓰입니다.</p>
+                        <p>이 세계의 유일한 생존 화폐. 조율이나 거래에 쓰입니다.</p>
                     </div>
-                    <div class="glossary-item">
+                    <div class="info-item">
                         <h4>레조넌스 <span class="eng-sub">RESONANCE</span></h4>
                         <p>물리 법칙을 비트는 소리의 마력과 진동입니다.</p>
-                    </div>
-                    <div class="glossary-item">
-                        <h4>로파이 <span class="eng-sub">LO-FI</span></h4>
-                        <p>레조넌스를 영구적으로 망가뜨리는 금기된 주파수입니다.</p>
-                    </div>
-                    <div class="glossary-item">
-                        <h4>더 뮤트 <span class="eng-sub">THE MUTE</span></h4>
-                        <p>주파수와 존재 자체가 영구 삭제되는 미스터리 현상입니다.</p>
                     </div>
                 </div>
             </section>
@@ -254,110 +210,104 @@
                     <p>애스터 가문 / 완벽하게 조율된 정적인 클래식 구역</p>
                 </div>
                 <div class="card">
-                    <h3>블루 앨리 <span class="eng-sub">BLUE ALLEY</span></h3>
-                    <p>델라크루아 가문 / 낭만과 엇박자가 섞인 밤의 재즈 구역</p>
-                </div>
-                <div class="card">
                     <h3>네온 캐슬 <span class="eng-sub">NEON CASTLE</span></h3>
-                    <p>스타더스트 가문 / 오토튠과 홀로그램이 번쩍이는 트렌디한 메가시티</p>
+                    <p class="modern-pop-text">스타더스트 가문 / 오토튠과 홀로그램이 번쩍이는 트렌디한 메가시티</p>
                 </div>
             </section>
 
-            <section id="factions" class="content-section">
-                <h2 class="section-title">가문 <span class="eng-sub">FACTIONS</span></h2>
-                <div class="card" onclick="openTab('faction-aster')">
-                    <h3>애스터 <span class="eng-sub">ASTER</span></h3>
-                    <p>질서와 구속 (Classic)</p>
+            <section id="factions" class="content-section active">
+                <h2 class="section-title">등장인물 <span class="eng-sub">CHARACTERS</span></h2>
+                
+                <div class="filter-container">
+                    <button class="filter-btn active" onclick="filterChars('all', this)">ALL</button>
+                    <button class="filter-btn" onclick="filterChars('aster', this)">ASTER</button>
+                    <button class="filter-btn" onclick="filterChars('delacroix', this)">DELACROIX</button>
+                    <button class="filter-btn" onclick="filterChars('stardust', this)">STARDUST</button>
+                    <button class="filter-btn" onclick="filterChars('independent', this)">INDEPENDENT</button>
                 </div>
-                <div class="card" onclick="openTab('faction-delacroix')">
-                    <h3>델라크루아 <span class="eng-sub">DELACROIX</span></h3>
-                    <p>낭만과 회피 (Jazz)</p>
-                </div>
-                <div class="card" onclick="openTab('faction-stardust')">
-                    <h3>스타더스트 <span class="eng-sub">STARDUST</span></h3>
-                    <p>매스미디어와 도파민 (Pop)</p>
-                </div>
-                <div class="card" onclick="openTab('faction-independent')">
-                    <h3>무소속 <span class="eng-sub">INDEPENDENT</span></h3>
-                    <p>뒷골목의 글리치와 노이즈</p>
-                </div>
-            </section>
 
-            <section id="faction-aster" class="content-section">
-                <button class="back-btn" onclick="openTab('factions')">← BACK</button>
-                <h2 class="section-title">애스터 <span class="eng-sub">ASTER</span></h2>
-                <div class="card card-faction-details">
-                    <p><strong>대표 장르:</strong> 클래식 (Classic)</p>
-                    <p><strong>지배 구역:</strong> 화이트 아리아 (White Aria)</p>
-                    <p>가장 고결하고 압도적인 권력을 지닌 가문. 불협화음을 죄악으로 여기며, 완벽하게 통제된 '조율'을 강요합니다. 한 치의 오차도 없는 오케스트라 선율로 네오 아메리카의 질서를 유지합니다.</p>
-                </div>
-            </section>
-
-            <section id="faction-delacroix" class="content-section">
-                <button class="back-btn" onclick="openTab('factions')">← BACK</button>
-                <h2 class="section-title">델라크루아 <span class="eng-sub">DELACROIX</span></h2>
-                <div class="card card-faction-details">
-                    <p><strong>대표 장르:</strong> 재즈 (Jazz)</p>
-                    <p><strong>지배 구역:</strong> 블루 앨리 (Blue Alley)</p>
-                    <p>자유로운 엇박자와 짙은 안개 속에 숨겨진 낭만의 가문. 즉흥적인 선율을 무기로 삼으며, 네오 아메리카의 지하 정보망과 암시장을 우아하게 장악하고 있습니다.</p>
-                </div>
-            </section>
-
-            <section id="faction-stardust" class="content-section">
-                <button class="back-btn" onclick="openTab('factions')">← BACK</button>
-                <h2 class="section-title">스타더스트 <span class="eng-sub">STARDUST</span></h2>
-                <div class="card card-faction-details">
-                    <p><strong>대표 장르:</strong> 팝 (Pop)</p>
-                    <p><strong>지배 구역:</strong> 네온 캐슬 (Neon Castle)</p>
-                    <p class="modern-pop-text">네오 아메리카에서 유일하게 트렌드와 자본주의가 폭발하는 거대 엔터테인먼트 기업. 오토튠과 일렉트로닉 비트로 대중의 도파민을 실시간 통제하며, 가장 상업적이고 자극적인 주파수를 송출하는 현대 엔터테인먼트의 정점입니다.</p>
-                </div>
-            </section>
-
-            <section id="faction-independent" class="content-section">
-                <button class="back-btn" onclick="openTab('factions')">← BACK</button>
-                <h2 class="section-title">무소속 <span class="eng-sub">INDEPENDENT</span></h2>
-                <div class="card card-faction-details">
-                    <p><strong>대표 장르:</strong> 글리치 / 노이즈</p>
-                    <p><strong>주요 인물:</strong> 노이 (Noi)</p>
-                    <p>가문의 지배를 거부하거나 시스템에서 소외된 자들. 고결한 무대를 부수기 위해 백스테이지를 전개하며, 거친 육탄전과 불법적인 해킹으로 하루하루를 연명합니다.</p>
+                <div class="character-grid">
+                    <div class="card char-card aster">
+                        <h3>엘라라</h3>
+                        <p>애스터 가주</p>
+                    </div>
+                    <div class="card char-card aster">
+                        <h3>루나</h3>
+                        <p>애스터 후계자</p>
+                    </div>
+                    <div class="card char-card stardust">
+                        <h3 class="modern-pop-text">세라피나</h3>
+                        <p class="modern-pop-text">스타더스트 가주</p>
+                    </div>
+                    <div class="card char-card independent">
+                        <h3>노이</h3>
+                        <p>무소속 용병</p>
+                    </div>
                 </div>
             </section>
 
             <section id="system" class="content-section">
                 <h2 class="section-title">시스템 <span class="eng-sub">SYSTEM</span></h2>
-                <div class="card">
-                    <h3>오버 소울 <span class="eng-sub">OVER-SOUL</span></h3>
-                    <p>공명 흉터를 극복한 각성. 출력이 2배 강화됩니다.</p>
-                </div>
-                <div class="card">
-                    <h3>커튼콜 <span class="eng-sub">CURTAIN CALL</span></h3>
-                    <p>각성자의 절대 무대 영역. 종료 후 1분간 능력을 잃습니다.</p>
-                </div>
-                <div class="card">
-                    <h3>백스테이지 <span class="eng-sub">BACKSTAGE</span></h3>
-                    <p>커튼콜 강제 중화. 유지 중 모두의 능력이 봉쇄되어 물리전이 됩니다.</p>
-                </div>
-                <div class="card">
-                    <h3>노이즈 <span class="eng-sub">NOISE</span></h3>
-                    <p>힘의 부작용. 노이즈 수치 100% 도달 시 이성을 상실합니다.</p>
+                <div class="info-list">
+                    <div class="info-item">
+                        <h4>커튼콜 <span class="eng-sub">CURTAIN CALL</span></h4>
+                        <p>각성자의 절대 무대 영역. 종료 후 1분간 능력을 잃습니다.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>백스테이지 <span class="eng-sub">BACKSTAGE</span></h4>
+                        <p>커튼콜 강제 중화. 유지 중 모두의 능력이 봉쇄되어 물리전이 됩니다.</p>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
     <script>
+        // 인트로 애니메이션(2.5초 지연 + 1.5초 페이드아웃 = 약 4초)이 끝난 후 스크롤 잠금 해제
+        setTimeout(() => {
+            document.body.classList.add('intro-done');
+        }, 4000);
+
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            const btn = document.getElementById('menuBtn');
+            
+            if (nav.classList.contains('show')) {
+                nav.classList.remove('show');
+                btn.classList.remove('open');
+            } else {
+                nav.classList.add('show');
+                btn.classList.add('open');
+            }
+        }
+
         function openTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
             
-            if(event && event.currentTarget && event.currentTarget.classList.contains('tab-btn')) {
+            if(event && event.currentTarget) {
                 event.currentTarget.classList.add('active');
-            } else if (tabId.includes('faction-') || tabId === 'factions') {
-                document.querySelectorAll('.tab-btn')[2].classList.add('active'); 
             }
 
             document.getElementById(tabId).classList.add('active');
+            
+            document.getElementById('mainNav').classList.remove('show');
+            document.getElementById('menuBtn').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        }
+
+        function filterChars(faction, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const cards = document.querySelectorAll('.char-card');
+            cards.forEach(card => {
+                if (faction === 'all' || card.classList.contains(faction)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
     </script>
 </body>
