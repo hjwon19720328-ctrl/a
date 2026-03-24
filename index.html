@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v3.0</title>
+    <title>OVER SOUL - OS Terminal Complete</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* --- [ 기본 설정 및 배경 (이전과 동일) ] --- */
+        /* --- [ 공통 변수 및 배경 ] --- */
         :root {
             --bg-base: #020202; --gold-main: #d4af37; --gold-bright: #ffe680;
             --gold-dim: #5c4b1a; --danger: #ff2a2a; --matrix-green: #44ff44;
@@ -29,222 +29,320 @@
         }
 
         h1, h2, h3 { font-family: var(--font-title); margin: 0; }
-        .cyber-border { border: 1px solid var(--gold-dim); background: rgba(10, 10, 10, 0.7); position: relative; }
+        .cyber-border { border: 1px solid var(--gold-dim); background: rgba(10, 10, 10, 0.7); position: relative; transition: all 0.3s ease; }
+        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:8px; height:8px; border-top:2px solid var(--gold-bright); border-left:2px solid var(--gold-bright); }
+        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:8px; height:8px; border-bottom:2px solid var(--gold-bright); border-right:2px solid var(--gold-bright); }
 
-        /* 헤더 및 네비게이션 간소화 탑재 */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--gold-dim); background: rgba(2, 2, 2, 0.95); position: sticky; top: 0; z-index: 100; }
-        header h1 { font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 2px; }
-        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 5px;}
+        /* --- [ 인트로 & 상시 UI ] --- */
+        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 1.5s; }
+        .glitch-text { font-size: 3rem; font-weight: 900; color: var(--gold-bright); text-shadow: var(--cyber-glow); animation: textPulse 1s infinite alternate; }
+        .sys-frame-info { position: fixed; font-size: 0.65rem; color: var(--gold-dim); z-index: 80; pointer-events: none; }
+        .top-left-info { top: 5px; left: 10px; }
+        .bottom-right-info { bottom: 5px; right: 10px; text-align: right; }
+        .blink-dot { display: inline-block; width: 5px; height: 5px; background: var(--matrix-green); border-radius: 50%; margin-left: 5px; animation: blink 1s infinite; }
+
+        /* --- [ 헤더 & 사이드바 ] --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--gold-dim); background: rgba(2, 2, 2, 0.95); position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
+        header h1 { font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 2px; cursor: pointer; transition: text-shadow 0.3s;}
+        header h1:active { text-shadow: 0 0 15px var(--gold-bright); }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 5px; transition: transform 0.3s;}
+        .hamburger:active { transform: scale(0.9); }
         .hamburger div { width: 22px; height: 2px; background-color: var(--gold-main); }
         
-        #sidebar { position: fixed; top: 0; right: -100%; width: 230px; height: 100vh; background: rgba(5, 5, 5, 0.98); border-left: 1px solid var(--gold-main); transition: 0.3s; display: flex; flex-direction: column; padding: 60px 15px 30px; z-index: 90; }
-        #sidebar.open { right: 0; }
-        .menu-item { font-family: var(--font-title); font-size: 1rem; margin-bottom: 20px; color: var(--gold-dim); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        #sidebar { position: fixed; top: 0; right: -100%; width: 230px; height: 100vh; background: rgba(5, 5, 5, 0.98); border-left: 1px solid var(--gold-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 60px 15px 30px; z-index: 90; }
+        #sidebar.open { right: 0; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+        .menu-item { font-family: var(--font-title); font-size: 1rem; margin-bottom: 20px; color: var(--gold-dim); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: color 0.3s, text-shadow 0.3s; }
         .menu-item.active-menu { color: var(--gold-bright); text-shadow: var(--cyber-glow); font-weight: bold; }
+        .menu-item:hover { color: var(--gold-main); }
 
-        #main-content > div { display: none; padding: 15px; padding-bottom: 50px; min-height: calc(100vh - 70px); box-sizing: border-box;}
+        /* --- [ 메인 뷰 (전환 애니메이션 추가) ] --- */
+        #main-content > div { display: none; padding: 15px; padding-bottom: 50px; min-height: calc(100vh - 70px); box-sizing: border-box; }
+        /* 뷰가 나타날 때 적용되는 애니메이션 클래스 */
+        .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
+        
         .view-title { font-size: 1.1rem; color: var(--gold-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; }
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--gold-dim); margin-left: 10px; position: relative;}
 
-        /* --- [ 인물 데이터 뷰 ] --- */
-        .filter-container { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 15px; }
-        .filter-btn { flex: 1 1 calc(33% - 4px); background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-dim); padding: 7px 0; font-family: var(--font-title); font-size: 0.7rem; cursor: pointer; }
-        .filter-btn.active { background: rgba(212, 175, 55, 0.15); border-color: var(--gold-bright); color: var(--gold-bright); text-shadow: var(--cyber-glow); }
+        /* --- [ 1. 로비 뷰 ] --- */
+        #lobby-view { flex-direction: column; gap: 15px; }
+        .lobby-btn { padding: 18px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; }
+        .lobby-btn:active { transform: scale(0.97); background: rgba(212, 175, 55, 0.15); border-color: var(--gold-bright); }
+        .log-container { flex-grow: 1; padding: 10px; font-size: 0.75rem; color: var(--gold-dim); transition: box-shadow 0.3s; }
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(212, 175, 55, 0.05); padding-bottom: 2px;}
 
+        /* --- [ 2. 인물 데이터 뷰 ] --- */
+        .filter-container { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 15px; }
+        .filter-btn { flex: 1 1 calc(33% - 4px); background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-dim); padding: 7px 0; font-family: var(--font-title); font-size: 0.7rem; cursor: pointer; transition: all 0.3s ease; }
+        .filter-btn.active { background: rgba(212, 175, 55, 0.15); border-color: var(--gold-bright); color: var(--gold-bright); text-shadow: var(--cyber-glow); }
+        
         .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .char-card { padding: 10px; font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.2); transition: 0.3s; cursor: pointer;}
-        .char-card:active { transform: scale(0.95); border-color: var(--gold-bright); }
+        .char-card { padding: 10px; font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.2); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; transform-origin: center;}
+        .char-card:active { transform: scale(0.92); border-color: var(--gold-bright); background: rgba(212, 175, 55, 0.1); }
+        /* 캐릭터 카드가 필터링될 때 부드럽게 나타나게 */
+        .char-fade-in { animation: smoothFadeIn 0.3s forwards; }
+
         .card-header { display: flex; justify-content: space-between; color: var(--gold-dim); font-size: 0.6rem; margin-bottom: 4px; }
-        .char-name { font-size: 1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; }
+        .char-name { font-size: 1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; transition: color 0.3s;}
         .char-faction { color: var(--gold-main); text-transform: uppercase; margin-bottom: 5px; border-bottom: 1px solid rgba(212, 175, 55, 0.1);}
 
-        /* --- [ 인물 상세 모달 (Popup) - 핵심 추가 기능 ] --- */
-        #char-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(0, 0, 0, 0.85); z-index: 500; backdrop-filter: blur(5px);
-            justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
+        /* --- [ 3. 지도 뷰 ] --- */
+        .map-wrapper { width: 100%; height: 60vh; border: 1px solid var(--gold-dim); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(10,10,10,0.8) 0%, rgba(0,0,0,1) 100%); }
+        .map-overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+        .map-grid { background-image: linear-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.08) 1px, transparent 1px); background-size: 15px 15px; }
+        .map-scanlines { height: 10px; background: rgba(212, 175, 55, 0.1); animation: mapScan 6s linear infinite; }
+        .tower-mark { position: absolute; top: 48%; left: 55%; width: 10px; height: 10px; background: #fff; box-shadow: 0 0 15px #fff; transform: translate(-50%, -50%) rotate(45deg); z-index: 20; }
+        .map-zone { position: absolute; border: 1px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.6rem; font-weight: bold; color: #fff; text-shadow: 0 0 5px #000; transition: all 0.3s ease; }
+        .map-zone:active { transform: scale(1.05); background: rgba(255,255,255,0.15); }
+        .zone-pol-aster { width: 130px; height: 110px; top: 20%; left: 5%; background: rgba(255, 204, 0, 0.1); border-color: #ffcc00; clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
+        .zone-pol-dela { width: 90px; height: 80px; bottom: 15%; left: 65%; background: rgba(192, 192, 192, 0.1); border-color: #c0c0c0; clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
+        .zone-pol-star { width: 65px; height: 60px; top: 15%; left: 75%; background: rgba(255, 248, 220, 0.1); border-color: #fff8dc; clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
+        .map-data-panel { font-size: 0.7rem; color: var(--gold-dim); margin-top: 10px; border-top: 1px solid rgba(212, 175, 55, 0.1); padding-top: 8px;}
+
+        /* --- [ 4. 시스템 DB 뷰 ] --- */
+        .db-container { display: flex; flex-direction: column; gap: 10px; }
+        .db-folder { background: rgba(20, 20, 20, 0.8); border: 1px solid var(--gold-main); padding: 12px 15px; font-family: var(--font-title); font-size: 1rem; color: var(--gold-bright); cursor: pointer; transition: background 0.3s; }
+        .db-folder:active { background: rgba(212, 175, 55, 0.2); }
+        .db-folder::before { content: '[+] '; color: var(--gold-dim); margin-right: 5px; transition: color 0.3s;}
+        .db-folder.open::before { content: '[-] '; color: var(--gold-bright); }
+        
+        .db-folder-content { display: none; flex-direction: column; gap: 5px; padding-left: 15px; margin-top: -5px; margin-bottom: 10px; border-left: 1px dashed var(--gold-dim); }
+        .db-folder-content.show { animation: smoothFadeIn 0.3s ease forwards; }
+
+        .db-file { padding: 10px; background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(212, 175, 55, 0.3); font-size: 0.9rem; color: #fff; cursor: pointer; transition: all 0.2s ease; }
+        .db-file::before { content: '> '; color: var(--gold-dim); margin-right: 8px; }
+        .db-file.active { border-color: var(--gold-main); background: rgba(212, 175, 55, 0.1); padding-left: 15px;} /* 활성화 시 살짝 밀리는 효과 */
+        
+        .db-data-box { display: none; padding: 15px; background: #050505; border: 1px solid var(--matrix-green); color: var(--matrix-green); font-size: 0.8rem; line-height: 1.6; margin-top: -5px; margin-bottom: 10px; }
+        .db-data-box.show { animation: slideDownFade 0.3s ease forwards; }
+        
+        .highlight { color: #fff; background: rgba(212, 175, 55, 0.3); padding: 0 3px; font-family: var(--font-title); }
+        .warning { color: var(--danger); font-weight: bold; }
+
+        /* --- [ 인물 상세 모달 (부드러운 열기/닫기) ] --- */
+        #char-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            background: rgba(0, 0, 0, 0.85); z-index: 500; backdrop-filter: blur(5px); 
+            justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; 
+            opacity: 0; transition: opacity 0.3s ease; /* 페이드 효과 */
         }
-        .modal-content {
-            width: 100%; max-width: 400px; max-height: 85vh; background: #080808;
-            border: 2px solid var(--gold-main); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-            overflow-y: auto; position: relative; padding: 20px;
+        #char-modal.show { opacity: 1; }
+        
+        .modal-content { 
+            width: 100%; max-width: 400px; max-height: 85vh; background: #080808; 
+            border: 2px solid var(--gold-main); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); 
+            overflow-y: auto; position: relative; padding: 20px; 
+            transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        /* 스크롤바 디자인 */
+        #char-modal.show .modal-content { transform: translateY(0) scale(1); } /* 스윽 올라오는 효과 */
+
         .modal-content::-webkit-scrollbar { width: 5px; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--gold-dim); }
-
-        .modal-close {
-            position: absolute; top: 10px; right: 15px; color: var(--gold-bright);
-            font-size: 1.5rem; cursor: pointer; font-family: var(--font-title);
-        }
+        .modal-close { position: absolute; top: 10px; right: 15px; color: var(--gold-bright); font-size: 1.5rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s;}
+        .modal-close:active { transform: scale(0.8); }
         .m-header { border-bottom: 1px dashed var(--gold-dim); padding-bottom: 10px; margin-bottom: 15px; }
         .m-name { font-size: 1.5rem; color: #fff; font-weight: bold; font-family: var(--font-title); }
-        .m-faction { font-size: 0.9rem; color: var(--gold-main); }
-        
         .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .m-stat-box { border: 1px solid rgba(212, 175, 55, 0.3); padding: 8px; background: rgba(20, 20, 20, 0.5); }
         .m-label { font-size: 0.65rem; color: var(--gold-dim); display: block; margin-bottom: 2px; }
         .m-val { font-size: 0.85rem; color: var(--gold-bright); font-weight: bold; }
-        
-        .m-section { margin-bottom: 15px; }
         .m-section-title { font-size: 0.8rem; color: var(--gold-main); border-left: 3px solid var(--gold-bright); padding-left: 5px; margin-bottom: 5px; }
         .m-desc { font-size: 0.8rem; color: #ddd; line-height: 1.5; background: rgba(0,0,0,0.5); padding: 10px; border: 1px dotted var(--gold-dim); }
-        
         .tag { display: inline-block; padding: 2px 6px; background: var(--gold-dim); color: #000; font-size: 0.65rem; border-radius: 3px; margin-right: 4px; margin-bottom: 4px; font-weight: bold;}
+        .tag-warning { background: var(--danger); color: #fff; }
 
+        /* --- 애니메이션 키프레임 --- */
+        @keyframes introEnd { to { opacity: 0; visibility: hidden; } }
+        @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes mapScan { 0% { top: -10px; } 100% { top: 100%; } }
+        
+        /* 공통 등장 애니메이션 */
+        @keyframes smoothFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
+    <div id="intro"><div class="glitch-text">OVER SOUL</div></div>
+    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv3.2 <span class="blink-dot"></span></div>
+    <div class="sys-frame-info bottom-right-info">UTC: <span id="frame-time"></span></div>
+
     <header>
-        <h1 onclick="navTo('character')">O.S Terminal</h1>
+        <h1 onclick="navTo('lobby')">O.S Terminal</h1>
         <div class="hamburger" onclick="toggleMenu()">
             <div></div><div></div><div></div>
         </div>
     </header>
 
     <div id="sidebar">
-        <div class="menu-item active-menu" id="nav-character" onclick="navTo('character')">> DB_CHARACTERS</div>
-        <div class="menu-item" style="color:#555">TACTICAL_MAP (LOCKED)</div>
-        <div class="menu-item" style="color:#555">SYSTEM_CONFIG (LOCKED)</div>
+        <div class="menu-item active-menu" id="nav-lobby" onclick="navTo('lobby')">> MAIN_LOBBY</div>
+        <div class="menu-item" id="nav-character" onclick="navTo('character')">> DB_CHARACTERS</div>
+        <div class="menu-item" id="nav-map" onclick="navTo('map')">> TACTICAL_MAP</div>
+        <div class="menu-item" id="nav-system" onclick="navTo('system')">> SYSTEM_CONFIG</div>
     </div>
 
     <div id="main-content">
-        <div id="character-view" style="display: block;">
-            <div class="view-title">
-                DB_ENTITIES <div class="view-title-decor"></div>
+        
+        <div id="lobby-view" class="view-fade-in" style="display: flex;">
+            <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
+                CHARACTER_DATA <span style="font-size:0.6rem; color:var(--gold-bright)">ACCESS ></span>
+            </div>
+            <div class="cyber-border decor-corners lobby-btn" onclick="navTo('map')">
+                TACTICAL_MAP <span style="font-size:0.6rem">VIEW ></span>
+            </div>
+            <div class="cyber-border decor-corners lobby-btn" onclick="navTo('system')">
+                SYSTEM_CONFIG <span style="font-size:0.6rem">VIEW ></span>
             </div>
             
+            <div class="cyber-border decor-corners log-container">
+                <div style="color:var(--gold-main); font-weight:bold; margin-bottom:5px; border-bottom:1px solid var(--gold-dim)">SYSTEM_LOG</div>
+                <div class="log-entry"><span style="color:var(--gold-main)">[SYSTEM]</span> All Modules Online.</div>
+                <div class="log-entry"><span style="color:var(--gold-main)">[DB]</span> Char_Data v3.2 Synced.</div>
+            </div>
+        </div>
+
+        <div id="character-view">
+            <div class="view-title">DB_ENTITIES <div class="view-title-decor"></div></div>
             <div class="filter-container">
                 <button class="filter-btn active" onclick="filterData('ALL', this)">ALL</button>
                 <button class="filter-btn" onclick="filterData('애스터', this)">ASTER</button>
                 <button class="filter-btn" onclick="filterData('델라쿠르아', this)">DELACRUA</button>
+                <button class="filter-btn" onclick="filterData('스타 더스트', this)">STARDUST</button>
+                <button class="filter-btn" onclick="filterData('무소속', this)">NONE</button>
             </div>
-
-            <div class="char-grid" id="char-container">
-                </div>
+            <div class="char-grid" id="char-container"></div>
         </div>
+
+        <div id="map-view">
+            <div class="view-title">TACTICAL_MAP // US <div class="view-title-decor"></div></div>
+            <div class="map-wrapper cyber-border">
+                <div class="map-overlay map-grid"></div>
+                <div class="map-overlay map-scanlines"></div>
+                <div class="tower-mark"></div>
+                <div class="map-zone zone-pol-aster">ASTER</div>
+                <div class="map-zone zone-pol-dela">DELACRUA</div>
+                <div class="map-zone zone-pol-star">STARDUST</div>
+            </div>
+            <div class="map-data-panel">
+                <div style="font-weight:bold; color:var(--gold-bright); margin-bottom:4px;">REGION DATA</div>
+                <div><span style="color:#ffcc00">[ASTER]</span> 서부 점령 / 최대 세력</div>
+                <div><span style="color:#c0c0c0">[DELACRUA]</span> 동남부 주둔 / 중간 세력</div>
+                <div><span style="color:#fff8dc">[STARDUST]</span> 동북부 고립 / 연구 구역</div>
+            </div>
+        </div>
+
+        <div id="system-view">
+            <div class="view-title">OS_DATABASE // 설정 열람 <div class="view-title-decor"></div></div>
+            <div class="db-container" id="db-container"></div>
+        </div>
+
     </div>
 
     <div id="char-modal">
         <div class="modal-content">
             <div class="modal-close" onclick="closeModal()">×</div>
-            
             <div class="m-header">
-                <div class="m-faction" id="md-faction">[FACTION]</div>
-                <div class="m-name" id="md-name">CHARACTER NAME</div>
-                <div style="margin-top:8px;" id="md-tags">
-                    </div>
+                <div class="m-faction" id="md-faction"></div>
+                <div class="m-name" id="md-name"></div>
+                <div style="margin-top:8px;" id="md-tags"></div>
             </div>
-
             <div class="m-grid">
-                <div class="m-stat-box">
-                    <span class="m-label">THREAT_LEVEL</span>
-                    <span class="m-val" id="md-rank" style="color:#ff2a2a">SS</span>
-                </div>
-                <div class="m-stat-box">
-                    <span class="m-label">AGE</span>
-                    <span class="m-val" id="md-age">00</span>
-                </div>
-                <div class="m-stat-box">
-                    <span class="m-label">MBTI</span>
-                    <span class="m-val" id="md-mbti">XXXX</span>
-                </div>
-                <div class="m-stat-box">
-                    <span class="m-label">ENNEAGRAM</span>
-                    <span class="m-val" id="md-ennea">XwX</span>
-                </div>
+                <div class="m-stat-box"><span class="m-label">THREAT</span><span class="m-val" id="md-rank" style="color:#ff2a2a"></span></div>
+                <div class="m-stat-box"><span class="m-label">AGE</span><span class="m-val" id="md-age"></span></div>
+                <div class="m-stat-box"><span class="m-label">MBTI</span><span class="m-val" id="md-mbti"></span></div>
+                <div class="m-stat-box"><span class="m-label">ENNEAGRAM</span><span class="m-val" id="md-ennea"></span></div>
             </div>
-
-            <div class="m-section">
+            <div class="m-section" style="margin-bottom: 15px;">
                 <div class="m-section-title">COMBAT_DATA</div>
                 <div class="m-desc">
-                    <span style="color:var(--gold-main)">[레조넌스]</span> <span id="md-reso">데이터 없음</span><br>
-                    <span style="color:var(--gold-main)">[능력]</span> <span id="md-ability">데이터 없음</span><br>
-                    <span style="color:var(--gold-main)">[커튼콜]</span> <span id="md-curtain">미개방</span><br>
-                    <span style="color:var(--gold-main)">[상태]</span> 조율: <span id="md-tune">X</span> / 백스테이지: <span id="md-back">X</span> / 오버소울: <span id="md-over">X</span>
+                    <span style="color:var(--gold-main)">[레조넌스]</span> <span id="md-reso"></span><br>
+                    <span style="color:var(--gold-main)">[능력]</span> <span id="md-ability"></span><br>
+                    <span style="color:var(--gold-main)">[커튼콜]</span> <span id="md-curtain"></span><br>
+                    <span style="color:var(--gold-main)">[상태]</span> 조율: <span id="md-tune"></span> / 백스테이지: <span id="md-back"></span> / 오버소울: <span id="md-over"></span>
                 </div>
             </div>
-
             <div class="m-section">
                 <div class="m-section-title">PERSONAL_RECORD</div>
-                <div class="m-desc" id="md-detail" style="color:#aaa;">
-                    상세 기록 데이터 출력 공간.
-                </div>
+                <div class="m-desc" id="md-detail" style="color:#aaa;"></div>
             </div>
         </div>
     </div>
 
     <script>
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
-        function navTo(viewId) { /* 간소화 네비게이션 */ }
+        // --- 시간 업데이트 ---
+        setInterval(() => {
+            document.getElementById('frame-time').innerText = new Date().toISOString().substring(11, 19);
+        }, 1000);
 
-        // --- 상세 업데이트된 캐릭터 데이터베이스 ---
-        const charDB = [
-            { 
-                name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7",
-                tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력",
-                curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함",
-                detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다."
-            },
-            { 
-                name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1",
-                tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "어머니와 같으나 위력/범위가 크게 떨어짐",
-                curtain: "미개방", tune: "불가", back: "불가", over: "미경험",
-                detail: "엘라라의 친딸이자 애스터의 후계자 후보. 어머니와 정반대로 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 어머니에게 열등감을 느끼고 있으며, 전투적 재능은 어머니에 한참 미치지 못한다."
-            },
-            { 
-                name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4",
-                tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.",
-                curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가 (오버플로우 방어용 강제 발동)", back: "가능", over: "미경험",
-                detail: "애스터 산하 애리나 가문의 후계자 후보. 활발하고 언제나 앞장서며 약간의 나르시시즘을 가졌다. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 이로 인해 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다."
-            },
-            { 
-                name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9",
-                tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작 (첼로의 저음으로 공간 압박)",
-                curtain: "능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함",
-                detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 조용하고 말이 적지만 뒤에서 은근히 아랫사람들을 챙겨주는 따뜻함이 있다. 보수파 수장이지만 진보 세력의 변화를 억지로 막지는 않는 합리주의자."
-            },
-            { 
-                name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5",
-                tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력",
-                curtain: "대상 필중", tune: "불가", back: "불가", over: "미경험",
-                detail: "시몬의 친딸이자 후계자. 어머니 시몬을 빼닮아 차분하고 과묵한 성격이다. 어머니처럼 공간을 짓누르는 거대한 힘은 없지만, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다."
-            },
-            { 
-                name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1",
-                tags: ["메이드", "브라콘", "일반인"], reso: "없음 (일반인)", ability: "없음",
-                curtain: "-", tune: "불가", back: "불가", over: "미경험",
-                detail: "송의 이란성 쌍둥이 누나. 말수가 적고 내향적이며 델라쿠르아의 메이드로 일하고 있다. 연주자로서의 재능이 아예 없는 대신, 동생을 끔찍이 아껴 동생이 재능을 온전히 키울 수 있도록 궂은일을 몰아서 대신 해주고 있다."
-            },
-            { 
-                name: "송", faction: "델라쿠르아", rank: "A", age: 18, mbti: "ENFP", ennea: "7w6",
-                tags: ["메이드", "오토코노코", "광역서포터"], reso: "클라리넷", ability: "광역 버프 및 디버프 부여",
-                curtain: "능력치 3배 강화", tune: "가능", back: "불가", over: "미경험",
-                detail: "시안의 쌍둥이 동생. 활발하고 말이 많다. 남성임에도 엄청나게 예쁜 외모를 가졌으며, 누나가 예쁘다며 입혀준 메이드복을 계속 입고 다니다 현재 성정체성에 깊은 혼란을 겪고 있다. 누나가 뒤에서 희생하며 자신의 일을 대신 해주고 있다는 사실을 전혀 모른다."
+        // --- 부드러운 네비게이션 로직 ---
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
+        function navTo(viewId) {
+            // 모든 뷰 숨김 및 애니메이션 클래스 제거
+            document.querySelectorAll('#main-content > div').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('view-fade-in');
+            });
+            
+            // 대상 뷰 보이기 및 애니메이션 재실행
+            const target = document.getElementById(viewId + '-view');
+            if(target) {
+                target.style.display = (viewId === 'lobby') ? 'flex' : 'block';
+                // 강제 리플로우(Reflow)를 발생시켜야 애니메이션이 매번 재실행됨
+                void target.offsetWidth; 
+                target.classList.add('view-fade-in');
             }
+            
+            // 사이드바 닫기 및 메뉴 색상 변경
+            document.getElementById('sidebar').classList.remove('open');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
+            const activeNav = document.getElementById('nav-' + viewId);
+            if(activeNav) activeNav.classList.add('active-menu');
+            window.scrollTo(0, 0);
+        }
+
+        // --- 캐릭터 데이터 ---
+        const charDB = [
+            { name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
+            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "어머니와 같으나 위력/범위가 크게 떨어짐", curtain: "미개방", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 어머니와 정반대로 조용하고 내향적이며 진보파에 속해 있다." },
+            { name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
+            { name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
+            { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 어머니 시몬을 빼닮아 차분하고 과묵한 성격이다." },
+            { name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
+            { name: "송", faction: "델라쿠르아", rank: "A", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 입혀준 메이드복을 입고 다니며, 누나가 앞이 보이지 않는 몸으로 희생한다는 사실을 모른다." }
         ];
 
-        // 카드 렌더링
         function renderCharacters(filter) {
             const container = document.getElementById('char-container');
             container.innerHTML = ''; 
-            charDB.forEach((char, index) => {
+            // 딜레이 애니메이션을 위해 인덱스 활용
+            let delayTime = 0;
+            charDB.forEach((char, i) => {
                 if (filter === 'ALL' || char.faction === filter) {
-                    const html = `
-                        <div class="char-card cyber-border" onclick="openModal(${index})">
+                    const cardHtml = `
+                        <div class="char-card cyber-border char-fade-in" style="animation-delay: ${delayTime}s" onclick="openModal(${i})">
                             <div class="card-header"><span>ID: ${char.rank}</span> <span>[DETAILS >]</span></div>
                             <div class="char-name">${char.name}</div>
                             <div class="char-faction">${char.faction}</div>
                             <div style="color:var(--gold-dim); font-size:0.65rem;">Resonance: ${char.reso}</div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', html);
+                        </div>`;
+                    container.insertAdjacentHTML('beforeend', cardHtml);
+                    delayTime += 0.05; // 카드마다 0.05초씩 늦게 나타나는 효과
                 }
             });
         }
 
-        // 모달 열기 함수 (데이터 바인딩)
+        function filterData(f, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active'); renderCharacters(f);
+        }
+
+        // --- 모달 부드러운 열기/닫기 로직 ---
         function openModal(index) {
             const char = charDB[index];
             document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
@@ -253,7 +351,6 @@
             document.getElementById('md-age').innerText = char.age;
             document.getElementById('md-mbti').innerText = char.mbti;
             document.getElementById('md-ennea').innerText = char.ennea;
-            
             document.getElementById('md-reso').innerText = char.reso;
             document.getElementById('md-ability').innerText = char.ability;
             document.getElementById('md-curtain').innerText = char.curtain;
@@ -262,25 +359,89 @@
             document.getElementById('md-over').innerText = char.over;
             document.getElementById('md-detail').innerText = char.detail;
 
-            // 태그 생성
             const tagsDiv = document.getElementById('md-tags');
             tagsDiv.innerHTML = '';
             char.tags.forEach(t => {
-                tagsDiv.innerHTML += `<span class="tag">#${t}</span>`;
+                const cls = (t === "시각장애" || t === "청각장애") ? "tag tag-warning" : "tag";
+                tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
+            });
+            
+            const modal = document.getElementById('char-modal');
+            modal.style.display = 'flex'; // 먼저 렌더링
+            void modal.offsetWidth; // 리플로우 강제 발생 (애니메이션 적용을 위함)
+            modal.classList.add('show'); // 투명도 애니메이션 클래스 추가
+        }
+        
+        function closeModal() { 
+            const modal = document.getElementById('char-modal');
+            modal.classList.remove('show'); // 투명도 사라지는 애니메이션
+            // 애니메이션이 끝날 때까지 기다렸다가 완전히 숨김 (css transition 시간과 맞춤)
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        // --- 시스템 데이터베이스 아코디언 애니메이션 로직 ---
+        const systemDB = [
+            { category: "등급제도 (THREAT_LEVEL)", items: [{ name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>애스터 가주 등" }, { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span>" }, { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span>" }, { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span>" }, { name: "C, D, E Rank", desc: "일반인 및 그 이하" }] },
+            { category: "연주자 (PERFORMERS)", items: [{ name: "레조넌스 (Resonance)", desc: "물리법칙을 비트는 소리의 진동. 마력이자 생명력." }, { name: "오버소울 & 커튼콜", desc: "노이즈 극복 각성 상태. 무대(영역) 전개 가능." }, { name: "백스테이지", desc: "3m³의 절대 중화 지대." }, { name: "조율 / 노이즈 / 글리치", desc: "치료 / 부작용 / 비인간화 괴물 개체" }] },
+            { category: "특수현상 (ANOMALIES)", items: [{ name: "더 뮤트 / lo-fi", desc: "공백 현상 / 마약성 주파수" }] }
+        ];
+
+        const dbContainer = document.getElementById('db-container');
+        systemDB.forEach(folderData => {
+            const folder = document.createElement('div');
+            folder.className = 'db-folder';
+            folder.innerHTML = folderData.category;
+            
+            const folderContent = document.createElement('div');
+            folderContent.className = 'db-folder-content';
+
+            folderData.items.forEach(itemData => {
+                const file = document.createElement('div');
+                file.className = 'db-file'; file.innerHTML = itemData.name;
+                const dataBox = document.createElement('div');
+                dataBox.className = 'db-data-box'; dataBox.innerHTML = itemData.desc;
+
+                file.onclick = function() {
+                    const isVis = dataBox.style.display === 'block';
+                    // 다른 파일 닫기
+                    folderContent.querySelectorAll('.db-data-box').forEach(b => {
+                        b.classList.remove('show');
+                        setTimeout(() => b.style.display = 'none', 300); // 닫히는 시간
+                    });
+                    folderContent.querySelectorAll('.db-file').forEach(f => f.classList.remove('active'));
+                    
+                    // 현재 파일 열기 (부드럽게)
+                    if(!isVis) { 
+                        dataBox.style.display = 'block'; 
+                        void dataBox.offsetWidth; // 리플로우
+                        dataBox.classList.add('show');
+                        file.classList.add('active'); 
+                    }
+                };
+                folderContent.appendChild(file); folderContent.appendChild(dataBox);
             });
 
-            document.getElementById('char-modal').style.display = 'flex';
-        }
+            folder.onclick = function() {
+                const isOp = folder.classList.contains('open');
+                // 다른 폴더 닫기
+                document.querySelectorAll('.db-folder').forEach(f => f.classList.remove('open'));
+                document.querySelectorAll('.db-folder-content').forEach(fc => {
+                    fc.classList.remove('show');
+                    setTimeout(() => fc.style.display = 'none', 300);
+                });
+                
+                // 현재 폴더 열기 (부드럽게)
+                if(!isOp) { 
+                    folder.classList.add('open'); 
+                    folderContent.style.display = 'flex'; 
+                    void folderContent.offsetWidth; // 리플로우
+                    folderContent.classList.add('show');
+                }
+            };
+            dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
+        });
 
-        function closeModal() {
-            document.getElementById('char-modal').style.display = 'none';
-        }
-
-        function filterData(f, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); renderCharacters(f);
-        }
-
+        // 초기 실행
         renderCharacters('ALL');
     </script>
 </body>
