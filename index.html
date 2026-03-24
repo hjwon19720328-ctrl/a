@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal Complete</title>
+    <title>OVER SOUL - OS Terminal Final</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -55,11 +55,9 @@
         .menu-item.active-menu { color: var(--gold-bright); text-shadow: var(--cyber-glow); font-weight: bold; }
         .menu-item:hover { color: var(--gold-main); }
 
-        /* --- [ 메인 뷰 (전환 애니메이션 추가) ] --- */
+        /* --- [ 메인 뷰 공통 ] --- */
         #main-content > div { display: none; padding: 15px; padding-bottom: 50px; min-height: calc(100vh - 70px); box-sizing: border-box; }
-        /* 뷰가 나타날 때 적용되는 애니메이션 클래스 */
         .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
-        
         .view-title { font-size: 1.1rem; color: var(--gold-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; }
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--gold-dim); margin-left: 10px; position: relative;}
 
@@ -78,8 +76,7 @@
         .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .char-card { padding: 10px; font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.2); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; transform-origin: center;}
         .char-card:active { transform: scale(0.92); border-color: var(--gold-bright); background: rgba(212, 175, 55, 0.1); }
-        /* 캐릭터 카드가 필터링될 때 부드럽게 나타나게 */
-        .char-fade-in { animation: smoothFadeIn 0.3s forwards; }
+        .char-fade-in { animation: smoothFadeIn 0.3s forwards; opacity: 0; }
 
         .card-header { display: flex; justify-content: space-between; color: var(--gold-dim); font-size: 0.6rem; margin-bottom: 4px; }
         .char-name { font-size: 1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; transition: color 0.3s;}
@@ -106,26 +103,26 @@
         .db-folder.open::before { content: '[-] '; color: var(--gold-bright); }
         
         .db-folder-content { display: none; flex-direction: column; gap: 5px; padding-left: 15px; margin-top: -5px; margin-bottom: 10px; border-left: 1px dashed var(--gold-dim); }
-        .db-folder-content.show { animation: smoothFadeIn 0.3s ease forwards; }
+        .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
 
         .db-file { padding: 10px; background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(212, 175, 55, 0.3); font-size: 0.9rem; color: #fff; cursor: pointer; transition: all 0.2s ease; }
         .db-file::before { content: '> '; color: var(--gold-dim); margin-right: 8px; }
-        .db-file.active { border-color: var(--gold-main); background: rgba(212, 175, 55, 0.1); padding-left: 15px;} /* 활성화 시 살짝 밀리는 효과 */
+        .db-file.active { border-color: var(--gold-main); background: rgba(212, 175, 55, 0.1); padding-left: 15px;}
         
         .db-data-box { display: none; padding: 15px; background: #050505; border: 1px solid var(--matrix-green); color: var(--matrix-green); font-size: 0.8rem; line-height: 1.6; margin-top: -5px; margin-bottom: 10px; }
-        .db-data-box.show { animation: slideDownFade 0.3s ease forwards; }
+        .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
         
         .highlight { color: #fff; background: rgba(212, 175, 55, 0.3); padding: 0 3px; font-family: var(--font-title); }
         .warning { color: var(--danger); font-weight: bold; }
 
-        /* --- [ 인물 상세 모달 (부드러운 열기/닫기) ] --- */
+        /* --- [ 인물 상세 모달 ] --- */
         #char-modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
             background: rgba(0, 0, 0, 0.85); z-index: 500; backdrop-filter: blur(5px); 
             justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; 
-            opacity: 0; transition: opacity 0.3s ease; /* 페이드 효과 */
+            opacity: 0; transition: opacity 0.3s ease; 
         }
-        #char-modal.show { opacity: 1; }
+        #char-modal.show { display: flex; opacity: 1; }
         
         .modal-content { 
             width: 100%; max-width: 400px; max-height: 85vh; background: #080808; 
@@ -133,7 +130,7 @@
             overflow-y: auto; position: relative; padding: 20px; 
             transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        #char-modal.show .modal-content { transform: translateY(0) scale(1); } /* 스윽 올라오는 효과 */
+        #char-modal.show .modal-content { transform: translateY(0) scale(1); }
 
         .modal-content::-webkit-scrollbar { width: 5px; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--gold-dim); }
@@ -155,22 +152,14 @@
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes mapScan { 0% { top: -10px; } 100% { top: 100%; } }
-        
-        /* 공통 등장 애니메이션 */
-        @keyframes smoothFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideDownFade {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div id="intro"><div class="glitch-text">OVER SOUL</div></div>
-    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv3.2 <span class="blink-dot"></span></div>
+    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv4.0 <span class="blink-dot"></span></div>
     <div class="sys-frame-info bottom-right-info">UTC: <span id="frame-time"></span></div>
 
     <header>
@@ -203,7 +192,7 @@
             <div class="cyber-border decor-corners log-container">
                 <div style="color:var(--gold-main); font-weight:bold; margin-bottom:5px; border-bottom:1px solid var(--gold-dim)">SYSTEM_LOG</div>
                 <div class="log-entry"><span style="color:var(--gold-main)">[SYSTEM]</span> All Modules Online.</div>
-                <div class="log-entry"><span style="color:var(--gold-main)">[DB]</span> Char_Data v3.2 Synced.</div>
+                <div class="log-entry"><span style="color:var(--gold-main)">[DB]</span> Char_Data & Sys_Config Synced.</div>
             </div>
         </div>
 
@@ -283,22 +272,18 @@
         // --- 부드러운 네비게이션 로직 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
-            // 모든 뷰 숨김 및 애니메이션 클래스 제거
             document.querySelectorAll('#main-content > div').forEach(el => {
                 el.style.display = 'none';
                 el.classList.remove('view-fade-in');
             });
             
-            // 대상 뷰 보이기 및 애니메이션 재실행
             const target = document.getElementById(viewId + '-view');
             if(target) {
                 target.style.display = (viewId === 'lobby') ? 'flex' : 'block';
-                // 강제 리플로우(Reflow)를 발생시켜야 애니메이션이 매번 재실행됨
                 void target.offsetWidth; 
                 target.classList.add('view-fade-in');
             }
             
-            // 사이드바 닫기 및 메뉴 색상 변경
             document.getElementById('sidebar').classList.remove('open');
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
             const activeNav = document.getElementById('nav-' + viewId);
@@ -306,33 +291,34 @@
             window.scrollTo(0, 0);
         }
 
-        // --- 캐릭터 데이터 ---
+        // --- 캐릭터 데이터 (고드 추가 및 설정 독립화) ---
         const charDB = [
             { name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
-            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "어머니와 같으나 위력/범위가 크게 떨어짐", curtain: "미개방", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 어머니와 정반대로 조용하고 내향적이며 진보파에 속해 있다." },
+            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력을 구사하지만 위력과 범위가 제한적임", curtain: "미개방", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
             { name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
             { name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
-            { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 어머니 시몬을 빼닮아 차분하고 과묵한 성격이다." },
+            { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
             { name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
-            { name: "송", faction: "델라쿠르아", rank: "A", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 입혀준 메이드복을 입고 다니며, 누나가 앞이 보이지 않는 몸으로 희생한다는 사실을 모른다." }
+            { name: "송", faction: "델라쿠르아", rank: "A", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 입혀준 메이드복을 입고 다니며, 누나가 앞이 보이지 않는 몸으로 희생한다는 사실을 모른다." },
+            { name: "고드", faction: "무소속", rank: "UNKNOWN", age: "불명", mbti: "ENTP", ennea: "7w8", tags: ["사후세계", "농땡이", "에테르나", "규격외"], reso: "휘파람", ability: "영혼 및 인과율 간섭 (저승의 권능 일부 사용)", curtain: "미운영 (귀찮아서 안 씀)", tune: "자유자재", back: "자유자재", over: "상시 적용", detail: "사후 세계에서 영혼을 관리하는 기관인 '에테르나(Aeterna)' 소속의 존재. 그러나 끝없이 밀려드는 저승의 업무와 야근에 진저리가 나버려, 모든 직무를 내팽개치고 인간계로 도주해 띵가띵가 농땡이를 피우고 있다. 오버 소울 세계관의 멸망 위기나 피 터지는 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓는 중이다. 본래 규격 외의 존재이기에 인간계의 레조넌스 제약을 거의 받지 않는다." }
         ];
 
         function renderCharacters(filter) {
             const container = document.getElementById('char-container');
             container.innerHTML = ''; 
-            // 딜레이 애니메이션을 위해 인덱스 활용
             let delayTime = 0;
             charDB.forEach((char, i) => {
                 if (filter === 'ALL' || char.faction === filter) {
+                    let rColor = char.rank === 'UNKNOWN' ? '#a020f0' : char.rank === 'SS' ? '#ff2a2a' : 'var(--gold-dim)';
                     const cardHtml = `
                         <div class="char-card cyber-border char-fade-in" style="animation-delay: ${delayTime}s" onclick="openModal(${i})">
-                            <div class="card-header"><span>ID: ${char.rank}</span> <span>[DETAILS >]</span></div>
+                            <div class="card-header"><span>ID: <span style="color:${rColor}">${char.rank}</span></span> <span>[DETAILS >]</span></div>
                             <div class="char-name">${char.name}</div>
                             <div class="char-faction">${char.faction}</div>
                             <div style="color:var(--gold-dim); font-size:0.65rem;">Resonance: ${char.reso}</div>
                         </div>`;
                     container.insertAdjacentHTML('beforeend', cardHtml);
-                    delayTime += 0.05; // 카드마다 0.05초씩 늦게 나타나는 효과
+                    delayTime += 0.05; 
                 }
             });
         }
@@ -342,12 +328,16 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // --- 모달 부드러운 열기/닫기 로직 ---
+        // --- 모달 로직 ---
         function openModal(index) {
             const char = charDB[index];
             document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
             document.getElementById('md-name').innerText = char.name;
+            
+            let rColor = char.rank === 'UNKNOWN' ? '#a020f0' : char.rank === 'SS' ? '#ff2a2a' : 'var(--gold-bright)';
             document.getElementById('md-rank').innerText = char.rank;
+            document.getElementById('md-rank').style.color = rColor;
+
             document.getElementById('md-age').innerText = char.age;
             document.getElementById('md-mbti').innerText = char.mbti;
             document.getElementById('md-ennea').innerText = char.ennea;
@@ -367,25 +357,62 @@
             });
             
             const modal = document.getElementById('char-modal');
-            modal.style.display = 'flex'; // 먼저 렌더링
-            void modal.offsetWidth; // 리플로우 강제 발생 (애니메이션 적용을 위함)
-            modal.classList.add('show'); // 투명도 애니메이션 클래스 추가
+            modal.style.display = 'flex'; 
+            void modal.offsetWidth; 
+            modal.classList.add('show'); 
         }
         
         function closeModal() { 
             const modal = document.getElementById('char-modal');
-            modal.classList.remove('show'); // 투명도 사라지는 애니메이션
-            // 애니메이션이 끝날 때까지 기다렸다가 완전히 숨김 (css transition 시간과 맞춤)
+            modal.classList.remove('show'); 
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
-        // --- 시스템 데이터베이스 아코디언 애니메이션 로직 ---
+        // --- 시스템 데이터베이스 전체 내용 복구 ---
         const systemDB = [
-            { category: "등급제도 (THREAT_LEVEL)", items: [{ name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>애스터 가주 등" }, { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span>" }, { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span>" }, { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span>" }, { name: "C, D, E Rank", desc: "일반인 및 그 이하" }] },
-            { category: "연주자 (PERFORMERS)", items: [{ name: "레조넌스 (Resonance)", desc: "물리법칙을 비트는 소리의 진동. 마력이자 생명력." }, { name: "오버소울 & 커튼콜", desc: "노이즈 극복 각성 상태. 무대(영역) 전개 가능." }, { name: "백스테이지", desc: "3m³의 절대 중화 지대." }, { name: "조율 / 노이즈 / 글리치", desc: "치료 / 부작용 / 비인간화 괴물 개체" }] },
-            { category: "특수현상 (ANOMALIES)", items: [{ name: "더 뮤트 / lo-fi", desc: "공백 현상 / 마약성 주파수" }] }
+            {
+                category: "등급제도 (THREAT_LEVEL)",
+                items: [
+                    { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급.<br>> 데이터 예시: 애스터 가주" },
+                    { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span><br>대도시 하나를 완전히 지도에서 지워버릴 수 있는 파괴력을 지님." },
+                    { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span><br>국지적 범위의 도시 기능을 마비시키고 파괴할 수 있는 등급." },
+                    { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span><br>정규 군대와 맞먹는 전투력을 보유한 수준." },
+                    { name: "C Rank", desc: "[일반인 단체 급]<br>다수의 일반인이 무장한 단체를 혼자서 제압 가능한 수준." },
+                    { name: "D Rank", desc: "[일반인 급]<br>표준적인 성인 인간의 신체 능력 및 레조넌스 수치." },
+                    { name: "E Rank", desc: "[일반인 미만 급]<br>기준치 이하. 전투나 레조넌스 활용 불가." }
+                ]
+            },
+            {
+                category: "연주자 (PERFORMERS)",
+                items: [
+                    { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해진다." },
+                    { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>.<br>> 연주자들은 이 에너지를 다량 보유하고 있으며, 신체강화 및 고유 능력 발동의 에너지원으로 사용한다." },
+                    { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span><br>기존 대비 능력이 2배 강화되며, 특수 영역인 <span class='highlight'>'커튼콜(Curtain Call)'</span>의 사용이 해방된다." },
+                    { name: "커튼콜 (Curtain Call)", desc: "오버소울 도달자가 펼치는 '무대(영역)'. 시전자의 허락 없이는 탈출이 불가능.<br>등급이 낮을수록 유지 시간과 공간 장악력이 비례하여 감소한다.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 시간, 위력, 범위 대폭 상승. 능력의 과부하 에너지를 신체로 역류시켜 폭발적인 신체 강화 가능.<br>- 페널티: 종료 후 1분간 과부하로 인한 모든 능력 봉쇄.<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 생명력을 직접 연소시켜 강제 발동.<br>- 효과: 오버소울 버전에 비해 전체적인 성능 저하.<br>- 페널티: 종료 후 1분간 모든 능력 봉쇄 및 <span class='warning'>레조넌스 사용 불가</span>. (사실상 일반인 상태로 전락하는 극한의 위험성 보유)" },
+                    { name: "백스테이지 (Backstage)", desc: "커튼콜의 '필중 주파수'와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>.<br>- 외부에서 내부로 진입하는 능력은 즉시 소멸. (영역 이탈 시 해제)<br>- 시전자와 대상의 등급 차이가 2단계 이상일 경우 무효화가 아닌 미세 교란으로 격하됨.<br>- <span class='warning'>제약:</span> 유지 중 시전자는 고유 능력 사용이 봉쇄되며, 오직 레조넌스를 이용한 물리전(신체강화)만 가능." },
+                    { name: "조율 (Tuning)", desc: "레조넌스로 몸을 치료하고 노이즈 수치를 대폭 낮추는 고난도 기술.<br>> 연주자 중 극히 일부만 사용 가능하며, 부유층 사이에서 미용 목적으로 고가에 암거래되고 있음." },
+                    { name: "노이즈 (Noise)", desc: "<span class='warning'>[경고: 레조넌스 과용 부작용]</span><br>신체 일부가 점차 악기화되며 인간성이 마모되는 현상. 극복 실패 시 '글리치'로 변이함." },
+                    { name: "글리치 (Glitch)", desc: "<span class='warning'>[경고: 비인간화 괴물 개체]</span><br>노이즈에 잠식되어 인간성을 잃은 상태.<br>- 수치가 높을수록 기계음 글리치가 발생.<br>- 80% 이상 잠식 시: 모든 대사를 특수문자와 깨진 문자로 출력.<br>> <span class='highlight'>완화 조치:</span> 성적 교감(육체적 접촉)이나 충분한 휴식을 통해 수치를 소폭 완화할 수 있음." }
+                ]
+            },
+            {
+                category: "특수현상 (ANOMALIES)",
+                items: [
+                    { name: "더 뮤트 (The Mute)", desc: "<span class='warning'>[미스터리 공백 현상]</span><br>지정된 공간 내의 모든 레조넌스와 존재가 영구적으로 소거되는 현상." },
+                    { name: "lo-fi (로파이)", desc: "<span class='warning'>[마약성 주파수]</span><br>대상에게 몽롱한 쾌락을 제공하지만, 주파수를 뒤틀어 체내 '노이즈 수치' 크기를 폭등시키는 위험 물질." }
+                ]
+            },
+            {
+                category: "명령어 (TERMINAL_CMDS)",
+                items: [
+                    { name: "/scan_resonance", desc: "반경 10km 내의 레조넌스 파동 밀도를 스캔합니다. (현재 권한 대기 중)" },
+                    { name: "/auth_override", desc: "<span class='warning'>[접근 거부]</span> 오버소울 관리자 권한이 필요합니다." },
+                    { name: "/purge_noise", desc: "단말기 내 임시 노이즈 캐시를 삭제합니다." }
+                ]
+            }
         ];
 
+        // --- 아코디언 애니메이션 (버그 수정) ---
         const dbContainer = document.getElementById('db-container');
         systemDB.forEach(folderData => {
             const folder = document.createElement('div');
@@ -402,20 +429,21 @@
                 dataBox.className = 'db-data-box'; dataBox.innerHTML = itemData.desc;
 
                 file.onclick = function() {
-                    const isVis = dataBox.style.display === 'block';
-                    // 다른 파일 닫기
-                    folderContent.querySelectorAll('.db-data-box').forEach(b => {
-                        b.classList.remove('show');
-                        setTimeout(() => b.style.display = 'none', 300); // 닫히는 시간
-                    });
-                    folderContent.querySelectorAll('.db-file').forEach(f => f.classList.remove('active'));
+                    const isVis = dataBox.classList.contains('show');
                     
-                    // 현재 파일 열기 (부드럽게)
+                    folderContent.querySelectorAll('.db-data-box').forEach(b => {
+                        if (b !== dataBox) b.classList.remove('show');
+                    });
+                    folderContent.querySelectorAll('.db-file').forEach(f => {
+                        if (f !== file) f.classList.remove('active');
+                    });
+                    
                     if(!isVis) { 
-                        dataBox.style.display = 'block'; 
-                        void dataBox.offsetWidth; // 리플로우
                         dataBox.classList.add('show');
                         file.classList.add('active'); 
+                    } else {
+                        dataBox.classList.remove('show');
+                        file.classList.remove('active');
                     }
                 };
                 folderContent.appendChild(file); folderContent.appendChild(dataBox);
@@ -423,19 +451,20 @@
 
             folder.onclick = function() {
                 const isOp = folder.classList.contains('open');
-                // 다른 폴더 닫기
-                document.querySelectorAll('.db-folder').forEach(f => f.classList.remove('open'));
+                
+                document.querySelectorAll('.db-folder').forEach(f => {
+                    if (f !== folder) f.classList.remove('open');
+                });
                 document.querySelectorAll('.db-folder-content').forEach(fc => {
-                    fc.classList.remove('show');
-                    setTimeout(() => fc.style.display = 'none', 300);
+                    if (fc !== folderContent) fc.classList.remove('show');
                 });
                 
-                // 현재 폴더 열기 (부드럽게)
                 if(!isOp) { 
                     folder.classList.add('open'); 
-                    folderContent.style.display = 'flex'; 
-                    void folderContent.offsetWidth; // 리플로우
                     folderContent.classList.add('show');
+                } else {
+                    folder.classList.remove('open');
+                    folderContent.classList.remove('show');
                 }
             };
             dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
