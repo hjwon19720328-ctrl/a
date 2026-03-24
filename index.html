@@ -3,28 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v6.0</title>
+    <title>OVER SOUL - OS Terminal v7.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* --- [ 공통 변수 및 배경 ] --- */
         :root {
-            --bg-base: #0a0e17; 
-            --cyan-main: #00ffff; 
-            --cyan-bright: #ccffff; 
-            --cyan-dim: #004d4d; 
-            --neon-red: #ff3333; 
-            --aqua-matrix: #afffff; 
-            
-            /* 세력별 지정 컬러 추가 */
-            --color-aster: #ffd700; /* 노랑 */
-            --color-dela: #ff8c00; /* 주황 */
-            --color-star: #ff66cc; /* 핑크 */
-            --color-gord: #ffffff; /* 흰색 (고드 전용) */
-
-            --font-title: 'Orbitron', sans-serif; 
-            --font-data: 'Share Tech Mono', monospace;
+            --bg-base: #0a0e17; --cyan-main: #00ffff; --cyan-bright: #ccffff; --cyan-dim: #004d4d; 
+            --neon-red: #ff3333; --aqua-matrix: #afffff; 
+            --color-aster: #ffd700; --color-dela: #ff8c00; --color-star: #ff66cc; --color-gord: #ffffff;
+            --font-title: 'Orbitron', sans-serif; --font-data: 'Share Tech Mono', monospace;
             --cyan-glow: 0 0 12px rgba(0, 255, 255, 0.7);
         }
 
@@ -33,6 +22,9 @@
             font-family: var(--font-data); overflow-x: hidden; user-select: none;
             -webkit-tap-highlight-color: transparent; text-shadow: 0 0 2px var(--cyan-main);
         }
+
+        /* 💡 배경 스크롤 방지용 클래스 */
+        body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
 
         body::before {
             content:''; position: fixed; top:0; left:0; width: 100%; height: 100%;
@@ -70,13 +62,10 @@
 
         /* --- [ 1. 로비 뷰 ] --- */
         #lobby-view { flex-direction: column; gap: 18px; align-items: center; justify-content: center; }
-        
         .lobby-main-title { font-size: 3.5rem; color: var(--cyan-bright); text-shadow: var(--cyan-glow); font-family: var(--font-title); letter-spacing: 5px; margin-bottom: 20px; animation: textPulse 2s infinite alternate;}
-        
         .lobby-btn { width: 100%; max-width: 320px; padding: 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
         .lobby-btn:active { transform: scale(0.96); background: rgba(0, 255, 255, 0.15); border-color: var(--cyan-bright); box-shadow: var(--cyan-glow); }
 
-        /* 뉴스 속보 티커 (하단 고정) */
         .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.9); border-top: 1px solid var(--cyan-dim); padding: 8px 0; overflow: hidden; z-index: 50; }
         .news-content { display: inline-block; white-space: nowrap; font-size: 0.85rem; color: var(--cyan-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 20s linear infinite; }
         .news-content span { margin-right: 50px; }
@@ -86,7 +75,6 @@
         .filter-container { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
         .filter-btn { flex: 1 1 calc(33% - 5px); background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan-main); padding: 8px 0; font-family: var(--font-title); font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; }
         .filter-btn.active { background: rgba(0, 255, 255, 0.2); border-color: var(--cyan-bright); color: var(--cyan-bright); text-shadow: var(--cyan-glow); box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2); }
-        
         .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .char-card { padding: 12px; font-size: 0.75rem; border-color: rgba(0, 255, 255, 0.3); cursor: pointer; transform-origin: center;}
         .char-card:active { transform: scale(0.92); border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
@@ -102,9 +90,6 @@
         .map-scanlines { height: 12px; background: rgba(0, 255, 255, 0.15); animation: mapScan 6s linear infinite; }
         .tower-mark { position: absolute; top: 48%; left: 55%; width: 12px; height: 12px; background: #fff; box-shadow: 0 0 18px #fff, var(--cyan-glow); transform: translate(-50%, -50%) rotate(45deg); z-index: 20; }
         .map-zone { position: absolute; border: 2px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.65rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px #000; transition: all 0.3s ease; backdrop-filter: blur(1px); }
-        .map-zone:active { transform: scale(1.08); background: rgba(255,255,255,0.2); }
-        
-        /* 지도 세력 컬러 적용 */
         .zone-pol-aster { width: 135px; height: 115px; top: 20%; left: 5%; background: rgba(255, 215, 0, 0.15); border-color: var(--color-aster); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
         .zone-pol-dela { width: 95px; height: 85px; bottom: 15%; left: 65%; background: rgba(255, 140, 0, 0.15); border-color: var(--color-dela); box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
         .zone-pol-star { width: 70px; height: 65px; top: 15%; left: 75%; background: rgba(255, 102, 204, 0.15); border-color: var(--color-star); box-shadow: 0 0 15px rgba(255, 102, 204, 0.4); clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
@@ -114,6 +99,8 @@
         .db-container { display: flex; flex-direction: column; gap: 12px; }
         .db-folder { background: rgba(20, 28, 45, 0.8); border: 1px solid var(--cyan-main); padding: 14px 18px; font-family: var(--font-title); font-size: 1.1rem; color: var(--cyan-bright); cursor: pointer; transition: background 0.3s, box-shadow 0.3s; text-shadow: var(--cyan-glow); }
         .db-folder.open { background: rgba(16, 22, 35, 0.9); }
+        .db-folder::before { content: '[+] '; color: var(--cyan-main); margin-right: 6px; transition: color 0.3s;}
+        .db-folder.open::before { content: '[-] '; color: var(--cyan-bright); }
         .db-folder-content { display: none; flex-direction: column; gap: 6px; padding-left: 18px; margin-top: -6px; margin-bottom: 12px; border-left: 1px dashed var(--cyan-dim); }
         .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
         .db-file { padding: 12px; background: rgba(16, 22, 35, 0.6); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 1rem; color: #fff; cursor: pointer; text-shadow: 0 0 2px #fff; }
@@ -130,9 +117,15 @@
         #char-modal.show .modal-content { transform: translateY(0) scale(1); }
         .modal-content::-webkit-scrollbar { width: 6px; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
-        .modal-close { position: absolute; top: 12px; right: 18px; color: var(--cyan-bright); font-size: 1.8rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; text-shadow: var(--cyan-glow); }
+        .modal-close { position: absolute; top: 12px; right: 18px; color: var(--cyan-bright); font-size: 1.8rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; text-shadow: var(--cyan-glow); z-index: 10;}
         .m-header { border-bottom: 1px dashed var(--cyan-dim); padding-bottom: 12px; margin-bottom: 18px; }
         .m-name { font-size: 1.6rem; color: #fff; font-weight: bold; font-family: var(--font-title); text-shadow: 0 0 5px #fff; }
+        
+        /* 💡 프로필 이미지 영역 css */
+        .m-profile-img-wrap { width: 100%; height: 220px; border: 1px solid var(--cyan-dim); margin-bottom: 15px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center;}
+        .m-profile-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; opacity: 0.9; }
+        .m-profile-img-wrap:hover img { transform: scale(1.05); opacity: 1; }
+        
         .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
         .m-stat-box { border: 1px solid rgba(0, 255, 255, 0.3); padding: 10px; background: rgba(20, 28, 45, 0.6); }
         .m-label { font-size: 0.7rem; color: var(--cyan-main); opacity: 0.8; display: block; margin-bottom: 3px; }
@@ -141,8 +134,15 @@
         .m-desc { font-size: 0.85rem; color: #eee; line-height: 1.6; background: rgba(8, 11, 19, 0.6); padding: 12px; border: 1px dotted var(--cyan-dim); }
         .tag { display: inline-block; padding: 3px 8px; background: rgba(0, 255, 255, 0.15); border: 1px solid rgba(0, 255, 255, 0.3); color: var(--cyan-bright); font-size: 0.7rem; border-radius: 4px; margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-shadow: var(--cyan-glow);}
         .tag-warning { background: rgba(255, 51, 51, 0.15); border-color: rgba(255, 51, 51, 0.3); color: #fff; text-shadow: 0 0 5px var(--neon-red); }
+        .tag-glitch { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); color: #fff; text-shadow: 1px 0 red, -1px 0 blue; }
 
-        /* --- [ 특수 글리치 애니메이션 (고드/흰색) ] --- */
+        /* --- [ 전체 화면 이미지 뷰어 ] --- */
+        #img-viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.95); z-index: 3000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; cursor: zoom-out; }
+        #img-viewer.show { display: flex; opacity: 1; }
+        #img-viewer img { max-width: 90%; max-height: 90%; border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); object-fit: contain; }
+        .viewer-close { position: absolute; top: 20px; right: 25px; color: var(--cyan-bright); font-size: 3rem; cursor: pointer; text-shadow: var(--cyan-glow); font-family: var(--font-title); z-index: 3010; }
+
+        /* --- [ 특수 글리치 애니메이션 ] --- */
         .text-glitch { position: relative; color: var(--color-gord); font-weight: 900; animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 cyan; }
         @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
 
@@ -174,10 +174,8 @@
     </div>
 
     <div id="main-content">
-        
         <div id="lobby-view" class="view-fade-in" style="display: flex;">
             <h2 class="lobby-main-title">OVER SOUL</h2>
-            
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
                 CHARACTER_DATA <span style="font-size:0.6rem; color:var(--cyan-bright)">ACCESS ></span>
             </div>
@@ -223,17 +221,20 @@
             <div class="view-title">OS_DATABASE // 설정 열람 <div class="view-title-decor"></div></div>
             <div class="db-container" id="db-container"></div>
         </div>
-
     </div>
 
     <div class="news-ticker-wrap">
-        <div class="news-content" id="news-ticker">
-            </div>
+        <div class="news-content" id="news-ticker"></div>
     </div>
 
     <div id="char-modal">
         <div class="modal-content cyber-border decor-corners">
             <div class="modal-close" onclick="closeModal()">×</div>
+            
+            <div class="m-profile-img-wrap" onclick="openImageViewer()">
+                <img id="md-img" src="" alt="Profile Image">
+            </div>
+
             <div class="m-header">
                 <div class="m-faction" id="md-faction"></div>
                 <div class="m-name" id="md-name"></div>
@@ -261,8 +262,12 @@
         </div>
     </div>
 
+    <div id="img-viewer" onclick="closeImageViewer()">
+        <div class="viewer-close">×</div>
+        <img id="viewer-img" src="" alt="Full Screen">
+    </div>
+
     <script>
-        // --- 부드러운 네비게이션 로직 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
             document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
@@ -275,7 +280,6 @@
             window.scrollTo(0, 0);
         }
 
-        // --- 랜덤 뉴스 티커 로직 ---
         const newsItems = [
             "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
             "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
@@ -284,44 +288,39 @@
             "<span class='news-tag'>[속보]</span> 서부 빈민가에서 신원 미상의 인물이 대량의 'lo-fi' 유통 중인 것으로 밝혀져",
             "<span class='news-tag'>[기상]</span> 내일 오전 동북부 지역 미세한 '더 뮤트' 현상 발생 가능성... 외출 자제 요망",
             "<span class='news-tag'>[종교]</span> 신흥 종교 신도 수 급증... 교황 크리스 '고드의 이름으로 모두를 사랑하라'",
-            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각적인 경계 태세 돌입",
-            "<span class='news-tag'>[가십]</span> 애리나 가문 후계자 루시, 어제 열린 연주회에서 또다시 무대 파괴... '예술의 일환' 일축",
-            "<span class='news-tag'>[속보]</span> 남동부 델라쿠르아 관할 구역, 이상 중력 현상으로 건물 2채 붕괴"
+            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각적인 경계 태세 돌입"
         ];
-        
         function updateNews() {
-            // 랜덤으로 4개의 뉴스를 뽑아 이어붙임
             let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 4);
             let newsHTML = "";
             shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
             document.getElementById('news-ticker').innerHTML = newsHTML;
         }
-        updateNews();
-        setInterval(updateNews, 20000); // 20초마다 뉴스 교체
+        updateNews(); setInterval(updateNews, 20000); 
 
-        // --- 캐릭터 데이터 ---
+        // --- 이미지 URL이 추가된 캐릭터 DB ---
         const charDB = [
-            { name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
-            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
-            { name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
-            { name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
-            { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
-            { name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음 (일반인)", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
-            { name: "송", faction: "델라쿠르아", rank: "B", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 자신의 일을 대신 해주고 있다는 사실만을 모른 채, 누나가 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
-            { name: "세라피나(가주)", faction: "스타 더스트", rank: "S", age: 32, mbti: "ENFJ", ennea: "3w2", tags: ["진보파", "활발", "내강내유"], reso: "K-Pop", ability: "BPM 동기화 (적의 심박수와 움직임을 극악의 템포로 강제 동기화시켜 붕괴시킴)", curtain: "[Dome Tour] 영역 내 아군 극대화 버프 및 적 리듬 강제 종속", tune: "가능", back: "가능", over: "경험함", detail: "스타 더스트 가문의 가주. 겉보기에 매우 활발하고 부드러워 보이지만 속은 단단한 외유내강형 인물이다. 최신 K-Pop의 강렬한 비트를 레조넌스로 승화시켜 전장을 지배한다." },
-            { name: "클로에", faction: "스타 더스트", rank: "A", age: 21, mbti: "INTP", ennea: "5w4", tags: ["진보파", "해커기질"], reso: "Pop", ability: "Auto-Tune (오토튠) - 범위 내 날아오는 투사체나 소리의 궤도/속도를 임의로 왜곡 조작", curtain: "[Billboard Top 100] 영역 내 모든 공격이 가장 위협적인 타겟을 자동 추적하여 필중", tune: "불가", back: "가능", over: "미경험", detail: "트렌디한 Pop 음악을 다루는 스타 더스트 소속 연주자. 오토튠을 물리법칙에 적용시켜 전장의 흐름 자체를 왜곡시키는 독특한 재능을 지녔다." },
-            { name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "천국의 업무를 때려치우고 저승에서 놀다가 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." },
-            { name: "노아", faction: "무소속", rank: "S", age: 23, mbti: "ESTP", ennea: "8w7", tags: ["사이코패스", "마약상", "완전동기화"], reso: "백색소음 (White Noise)", ability: "의도적으로 백색소음을 발생시켜 상대의 고막과 정신을 파괴", curtain: "백색소음 범위 극대화 및 침식 속도 가속", tune: "불가", back: "불가", over: "미경험", detail: "날 때부터 레조넌스가 뒤틀려 있어 몸과 정신이 글리치화와 완전 동기화된 사이코패스 연주자. 뒷골목에서 마약(lo-fi 등)을 판매하며 사람들을 쾌락과 광기로 몰아넣는 것을 즐긴다." },
-            { name: "아리아", faction: "무소속", rank: "A", age: 27, mbti: "ISFJ", ennea: "2w1", tags: ["수녀", "자기희생", "수명연소"], reso: "하프", ability: "주변 치유 (대가로 자신의 노이즈 수치가 증가함)", curtain: "[생명력 커튼콜] 강제 발동하여 회복 범위를 극대화", tune: "가능", back: "불가", over: "미경험", detail: "부드럽고 헌신적인 수녀. 타인을 치유하는 능력을 가졌으나, 그 부작용으로 노이즈를 전부 자신이 흡수해 영구적으로 레조넌스가 뒤틀려버렸다. 그럼에도 인간성을 잃지 않으며, 긴급 상황 시 생명력을 실시간으로 깎아먹는 '생명력 커튼콜'을 써서 대의를 위해 목숨을 던진다." },
-            { name: "세라", faction: "무소속", rank: "일반인", age: 35, mbti: "ESTJ", ennea: "3w2", tags: ["일반인", "몰락", "알콜중독"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "과거엔 가장 잘 나가는 세일즈맨이었으나, 모종의 사건으로 쫄딱 망한 뒤 현재는 뒷골목에 처박혀 매일 술만 퍼먹으며 사는 평범한 일반인." },
-            { name: "크리스", faction: "무소속", rank: "A+", age: 29, mbti: "ENFJ", ennea: "1w2", tags: ["교황", "고드신앙", "박애주의", "후원자"], reso: "파이프 오르간", ability: "주변인들의 신앙/감정을 흡수하여 절대적인 방어막으로 변환", curtain: "[Sanctuary (성역)] 구역 내 일체의 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'고드'를 신으로 믿고 모두를 사랑하라는 교리를 전파하는 신흥 종교의 교황. 부드러운 언변으로 일반인들에게 엄청난 인기를 누리고 있다. 교단의 모든 수입과 관리를 사비로 충당하며, 남몰래 수녀 아리아의 고아원 및 빈민 구호 활동을 막대한 자금으로 지원하고 있다." }
+            { img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
+            { img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
+            { img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
+            { img: "https://igx.kr/u/tR/h/1", name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
+            { img: "https://igx.kr/u/tR/r/1", name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
+            { img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음 (일반인)", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
+            { img: "https://igx.kr/u/tR/k/1", name: "송", faction: "델라쿠르아", rank: "B", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 자신의 일을 대신 해주고 있다는 사실만을 모른 채, 누나가 예쁘다며 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
+            { img: "https://igx.kr/u/tR/l/1", name: "세라피나(가주)", faction: "스타 더스트", rank: "S", age: 32, mbti: "ENFJ", ennea: "3w2", tags: ["진보파", "활발", "내강내유"], reso: "K-Pop", ability: "BPM 동기화 (적의 심박수와 움직임을 극악의 템포로 강제 동기화시켜 붕괴시킴)", curtain: "[Dome Tour] 영역 내 아군 극대화 버프 및 적 리듬 강제 종속", tune: "가능", back: "가능", over: "경험함", detail: "스타 더스트 가문의 가주. 겉보기에 매우 활발하고 부드러워 보이지만 속은 단단한 외유내강형 인물이다. 최신 K-Pop의 강렬한 비트를 레조넌스로 승화시켜 전장을 지배한다." },
+            { img: "https://igx.kr/u/tR/r/1", name: "클로에", faction: "스타 더스트", rank: "A", age: 21, mbti: "INTP", ennea: "5w4", tags: ["진보파", "해커기질"], reso: "Pop", ability: "Auto-Tune (오토튠) - 범위 내 날아오는 투사체나 소리의 궤도/속도를 임의로 왜곡 조작", curtain: "[Billboard Top 100] 영역 내 모든 공격이 가장 위협적인 타겟을 자동 추적하여 필중", tune: "불가", back: "가능", over: "미경험", detail: "트렌디한 Pop 음악을 다루는 스타 더스트 소속 연주자. 오토튠을 물리법칙에 적용시켜 전장의 흐름 자체를 왜곡시키는 독특한 재능을 지녔다." },
+            { img: "https://igx.kr/u/tR/m/1", name: "노아", faction: "무소속", rank: "S", age: 23, mbti: "ESTP", ennea: "8w7", tags: ["사이코패스", "마약상", "완전동기화"], reso: "백색소음 (White Noise)", ability: "의도적으로 백색소음을 발생시켜 상대의 고막과 정신을 파괴", curtain: "백색소음 범위 극대화 및 침식 속도 가속", tune: "불가", back: "불가", over: "미경험", detail: "날 때부터 레조넌스가 뒤틀려 있어 몸과 정신이 글리치화와 완전 동기화된 사이코패스 연주자. 뒷골목에서 마약(lo-fi 등)을 판매하며 사람들을 쾌락과 광기로 몰아넣는 것을 즐긴다." },
+            { img: "https://igx.kr/u/tR/n/1", name: "아리아", faction: "무소속", rank: "A", age: 27, mbti: "ISFJ", ennea: "2w1", tags: ["수녀", "자기희생", "수명연소"], reso: "하프", ability: "주변 치유 (대가로 자신의 노이즈 수치가 증가함)", curtain: "[생명력 커튼콜] 강제 발동하여 회복 범위를 극대화", tune: "가능", back: "불가", over: "미경험", detail: "부드럽고 헌신적인 수녀. 타인을 치유하는 능력을 가졌으나, 그 부작용으로 노이즈를 전부 자신이 흡수해 영구적으로 레조넌스가 뒤틀려버렸다. 그럼에도 인간성을 잃지 않으며, 긴급 상황 시 생명력을 실시간으로 깎아먹는 '생명력 커튼콜'을 써서 대의를 위해 목숨을 던진다." },
+            { img: "https://igx.kr/u/tR/q/1", name: "세라", faction: "무소속", rank: "일반인", age: 35, mbti: "ESTJ", ennea: "3w2", tags: ["일반인", "몰락", "알콜중독"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "과거엔 가장 잘 나가는 세일즈맨이었으나, 모종의 사건으로 쫄딱 망한 뒤 현재는 뒷골목에 처박혀 매일 술만 퍼먹으며 사는 평범한 일반인." },
+            { img: "https://igx.kr/u/tR/v/1", name: "크리스", faction: "무소속", rank: "A+", age: 29, mbti: "ENFJ", ennea: "1w2", tags: ["교황", "고드신앙", "박애주의", "후원자"], reso: "파이프 오르간", ability: "주변인들의 신앙/감정을 흡수하여 절대적인 방어막으로 변환", curtain: "[Sanctuary (성역)] 구역 내 일체의 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'고드'를 신으로 믿고 모두를 사랑하라는 교리를 전파하는 신흥 종교의 교황. 부드러운 언변으로 일반인들에게 엄청난 인기를 누리고 있다. 교단의 모든 수입과 관리를 사비로 충당하며, 남몰래 수녀 아리아의 고아원 및 빈민 구호 활동을 막대한 자금으로 지원하고 있다." },
+            { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "천국의 업무를 때려치우고 저승에서 놀다가 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
         ];
 
         function getFactionColor(faction) {
             if(faction === "애스터") return "var(--color-aster)";
             if(faction === "델라쿠르아") return "var(--color-dela)";
             if(faction === "스타 더스트") return "var(--color-star)";
-            return "var(--cyan-main)"; // 무소속 및 기본
+            return "var(--cyan-main)"; 
         }
 
         function renderCharacters(filter) {
@@ -352,27 +351,24 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // --- 모달 부드러운 열기/닫기 로직 ---
+        // --- 모달 로직 ---
         function openModal(index) {
             const char = charDB[index];
             const facColor = getFactionColor(char.faction);
             
+            // 이미지 및 텍스트 데이터 바인딩
+            document.getElementById('md-img').src = char.img;
             document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
             document.getElementById('md-faction').style.color = facColor;
             
             const mdName = document.getElementById('md-name');
             const mdRank = document.getElementById('md-rank');
             if(char.name === "고드") {
-                mdName.innerText = char.name;
-                mdName.className = "m-name text-glitch";
-                mdRank.innerText = char.rank;
-                mdRank.className = "m-val text-glitch";
-                mdRank.style.color = 'var(--color-gord)';
+                mdName.innerText = char.name; mdName.className = "m-name text-glitch";
+                mdRank.innerText = char.rank; mdRank.className = "m-val text-glitch"; mdRank.style.color = 'var(--color-gord)';
             } else {
-                mdName.innerText = char.name;
-                mdName.className = "m-name";
-                mdRank.innerText = char.rank;
-                mdRank.className = "m-val";
+                mdName.innerText = char.name; mdName.className = "m-name";
+                mdRank.innerText = char.rank; mdRank.className = "m-val";
                 mdRank.style.color = char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--cyan-bright)';
             }
 
@@ -392,73 +388,50 @@
             char.tags.forEach(t => {
                 let cls = "tag";
                 if(t === "시각장애" || t === "청각장애" || t === "수명연소" || t === "사이코패스") cls = "tag tag-warning";
+                if(t === "글리치" || t === "규격외") cls = "tag tag-glitch"; 
                 tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
             });
             
+            // 모달 띄우고 배경 스크롤 락
             const modal = document.getElementById('char-modal');
-            modal.style.display = 'flex'; 
-            void modal.offsetWidth; 
-            modal.classList.add('show'); 
+            document.body.classList.add('no-scroll');
+            modal.style.display = 'flex'; void modal.offsetWidth; modal.classList.add('show'); 
         }
         
         function closeModal() { 
             const modal = document.getElementById('char-modal');
             modal.classList.remove('show'); 
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
+            setTimeout(() => { 
+                modal.style.display = 'none'; 
+                document.body.classList.remove('no-scroll'); // 스크롤 락 해제
+            }, 300);
         }
 
-        // --- 시스템 데이터베이스 전체 내용 복구 ---
+        // --- 전체화면 뷰어 로직 ---
+        function openImageViewer() {
+            const imgSrc = document.getElementById('md-img').src;
+            document.getElementById('viewer-img').src = imgSrc;
+            const viewer = document.getElementById('img-viewer');
+            viewer.style.display = 'flex'; void viewer.offsetWidth; viewer.classList.add('show');
+        }
+
+        function closeImageViewer() {
+            const viewer = document.getElementById('img-viewer');
+            viewer.classList.remove('show');
+            setTimeout(() => { viewer.style.display = 'none'; }, 300);
+        }
+
+        // --- 시스템 DB ---
         const systemDB = [
-            {
-                category: "등급제도 (THREAT_LEVEL)",
-                items: [
-                    { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급.<br>> 데이터 예시: 애스터 가주" },
-                    { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span><br>대도시 하나를 완전히 지도에서 지워버릴 수 있는 파괴력을 지님." },
-                    { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span><br>국지적 범위의 도시 기능을 마비시키고 파괴할 수 있는 등급." },
-                    { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span><br>정규 군대와 맞먹는 전투력을 보유한 수준." },
-                    { name: "C Rank", desc: "[일반인 단체 급]<br>다수의 일반인이 무장한 단체를 혼자서 제압 가능한 수준." },
-                    { name: "D Rank", desc: "[일반인 급]<br>표준적인 성인 인간의 신체 능력 및 레조넌스 수치." },
-                    { name: "E Rank", desc: "[일반인 미만 급]<br>기준치 이하. 전투나 레조넌스 활용 불가." },
-                    { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span><br>현존하는 레조넌스 측정망을 벗어난 초월적 개체. 데이터 수집 및 분석 불가." }
-                ]
-            },
-            {
-                category: "연주자 (PERFORMERS)",
-                items: [
-                    { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해진다." },
-                    { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>.<br>> 연주자들은 이 에너지를 다량 보유하고 있으며, 신체강화 및 고유 능력 발동의 에너지원으로 사용한다." },
-                    { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span><br>기존 대비 능력이 2배 강화되며, 특수 영역인 <span class='highlight'>'커튼콜(Curtain Call)'</span>의 사용이 해방된다." },
-                    { name: "커튼콜 (Curtain Call)", desc: "오버소울 도달자가 펼치는 '무대(영역)'. 시전자의 허락 없이는 탈출이 불가능.<br>등급이 낮을수록 유지 시간과 공간 장악력이 비례하여 감소한다.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 시간, 위력, 범위 대폭 상승. 능력의 과부하 에너지를 신체로 역류시켜 폭발적인 신체 강화 가능.<br>- 페널티: 종료 후 1분간 과부하로 인한 모든 능력 봉쇄.<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 생명력을 직접 연소시켜 강제 발동.<br>- 효과: 오버소울 버전에 비해 전체적인 성능 저하.<br>- 페널티: 종료 후 1분간 모든 능력 봉쇄 및 <span class='warning'>레조넌스 사용 불가</span>." },
-                    { name: "백스테이지 (Backstage)", desc: "커튼콜의 '필중 주파수'와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>.<br>- 외부에서 내부로 진입하는 능력은 즉시 소멸. (영역 이탈 시 해제)<br>- 시전자와 대상의 등급 차이가 2단계 이상일 경우 무효화가 아닌 미세 교란으로 격하됨.<br>- <span class='warning'>제약:</span> 유지 중 시전자는 고유 능력 사용이 봉쇄되며, 오직 레조넌스를 이용한 물리전(신체강화)만 가능." },
-                    { name: "조율 (Tuning)", desc: "레조넌스로 몸을 치료하고 노이즈 수치를 대폭 낮추는 고난도 기술.<br>> 연주자 중 극히 일부만 사용 가능하며, 부유층 사이에서 미용 목적으로 고가에 암거래되고 있음." },
-                    { name: "노이즈 (Noise)", desc: "<span class='warning'>[경고: 레조넌스 과용 부작용]</span><br>신체 일부가 점차 악기화되며 인간성이 마모되는 현상. 극복 실패 시 '글리치'로 변이함.<br>> <span class='highlight'>완화 조치:</span> 성적 교감(육체적 접촉)이나 충분한 휴식을 통해 수치를 소폭 완화할 수 있음." },
-                    { name: "글리치 (Glitch)", desc: "<span class='warning'>[경고: 비인간화 괴물 개체]</span><br>노이즈에 잠식되어 인간성을 잃은 상태.<br>- 수치가 높을수록 기계음 글리치가 발생.<br>- 80% 이상 잠식 시: 모든 대사를 특수문자와 깨진 문자로 출력." }
-                ]
-            },
-            {
-                category: "특수현상 (ANOMALIES)",
-                items: [
-                    { name: "더 뮤트 (The Mute)", desc: "<span class='warning'>[미스터리 공백 현상]</span><br>지정된 공간 내의 모든 레조넌스와 존재가 영구적으로 소거되는 현상." },
-                    { name: "lo-fi (로파이)", desc: "<span class='warning'>[마약성 주파수]</span><br>대상에게 몽롱한 쾌락을 제공하지만, 주파수를 뒤틀어 체내 '노이즈 수치' 크기를 폭등시키는 위험 물질." }
-                ]
-            },
-            {
-                category: "명령어 (TERMINAL_CMDS)",
-                items: [
-                    { name: "/scan_resonance", desc: "반경 10km 내의 레조넌스 파동 밀도를 스캔합니다. (현재 권한 대기 중)" },
-                    { name: "/auth_override", desc: "<span class='warning'>[접근 거부]</span> 오버소울 관리자 권한이 필요합니다." },
-                    { name: "/purge_noise", desc: "단말기 내 임시 노이즈 캐시를 삭제합니다." }
-                ]
-            }
+            { category: "등급제도 (THREAT_LEVEL)", items: [{ name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급." }, { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span><br>대도시 하나를 완전히 지도에서 지워버릴 수 있는 파괴력을 지님." }, { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span>" }, { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span>" }, { name: "C, D, E Rank", desc: "일반인 및 그 이하" }, { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span><br>데이터 수집 및 분석 불가." }] },
+            { category: "연주자 (PERFORMERS)", items: [{ name: "레조넌스 (Resonance)", desc: "물리법칙을 비트는 소리의 진동. 마력이자 생명력." }, { name: "오버소울 & 커튼콜", desc: "노이즈 극복 각성 상태. 무대(영역) 전개 가능." }, { name: "백스테이지", desc: "3m³의 절대 중화 지대." }, { name: "조율 / 노이즈 / 글리치", desc: "치료 / 부작용 / 비인간화 괴물 개체<br>> <span class='highlight'>노이즈 완화 조건:</span> 성적 교감이나 충분한 휴식." }] },
+            { category: "특수현상 (ANOMALIES)", items: [{ name: "더 뮤트 / lo-fi", desc: "공백 현상 / 마약성 주파수" }] }
         ];
 
-        // --- 아코디언 로직 ---
         const dbContainer = document.getElementById('db-container');
         systemDB.forEach(folderData => {
             const folder = document.createElement('div');
-            folder.className = 'db-folder cyber-border';
-            folder.innerHTML = folderData.category;
-            
+            folder.className = 'db-folder cyber-border'; folder.innerHTML = folderData.category;
             const folderContent = document.createElement('div');
             folderContent.className = 'db-folder-content';
 
@@ -472,11 +445,7 @@
                     const isVis = dataBox.classList.contains('show');
                     folderContent.querySelectorAll('.db-data-box').forEach(b => b.classList.remove('show'));
                     folderContent.querySelectorAll('.db-file').forEach(f => f.classList.remove('active'));
-                    
-                    if(!isVis) { 
-                        dataBox.classList.add('show');
-                        file.classList.add('active'); 
-                    }
+                    if(!isVis) { dataBox.classList.add('show'); file.classList.add('active'); }
                 };
                 folderContent.appendChild(file); folderContent.appendChild(dataBox);
             });
@@ -485,16 +454,11 @@
                 const isOp = folder.classList.contains('open');
                 document.querySelectorAll('.db-folder').forEach(f => f.classList.remove('open'));
                 document.querySelectorAll('.db-folder-content').forEach(fc => fc.classList.remove('show'));
-                
-                if(!isOp) { 
-                    folder.classList.add('open'); 
-                    folderContent.classList.add('show');
-                }
+                if(!isOp) { folder.classList.add('open'); folderContent.classList.add('show'); }
             };
             dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
         });
 
-        // 초기 실행
         renderCharacters('ALL');
     </script>
 </body>
