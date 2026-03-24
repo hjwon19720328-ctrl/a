@@ -3,43 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - Hologram Terminal</title>
+    <title>OVER SOUL - OS Terminal v6.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* --- [ 공통 변수 및 배경 ] --- */
         :root {
-            /* 밝은 홀로그램 테마 색상으로 전면 교체 */
-            --bg-base: #0a0e17; /* 깊고 어두운 네이비 블루 배경 */
-            --cyan-main: #00ffff; /* 선명한 네온 블루 */
-            --cyan-bright: #ccffff; /* 매우 밝은 아쿠아 블루 */
-            --cyan-dim: #004d4d; /* 어두운 Cyan (배경 데코용) */
-            --neon-red: #ff3333; /* 밝은 네온 레드 (위험 등급용) */
-            --aqua-matrix: #afffff; /* 시스템 DB용 밝은 아쿠아 */
-            --magenta-glitch: #ff00ff; /* 고드 전용 마젠타 글리치 */
+            --bg-base: #0a0e17; 
+            --cyan-main: #00ffff; 
+            --cyan-bright: #ccffff; 
+            --cyan-dim: #004d4d; 
+            --neon-red: #ff3333; 
+            --aqua-matrix: #afffff; 
             
+            /* 세력별 지정 컬러 추가 */
+            --color-aster: #ffd700; /* 노랑 */
+            --color-dela: #ff8c00; /* 주황 */
+            --color-star: #ff66cc; /* 핑크 */
+            --color-gord: #ffffff; /* 흰색 (고드 전용) */
+
             --font-title: 'Orbitron', sans-serif; 
             --font-data: 'Share Tech Mono', monospace;
-            /* 빛 번짐 효과 강화 */
             --cyan-glow: 0 0 12px rgba(0, 255, 255, 0.7);
         }
 
         body {
             margin: 0; background-color: var(--bg-base); color: var(--cyan-main);
             font-family: var(--font-data); overflow-x: hidden; user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            /* 텍스트에도 은은한 빛 번짐 추가 */
-            text-shadow: 0 0 2px var(--cyan-main);
+            -webkit-tap-highlight-color: transparent; text-shadow: 0 0 2px var(--cyan-main);
         }
 
-        /* 스캔라인 효과 제거 */
-
-        /* 배경 회로 패턴 Cyan으로 변경 */
         body::before {
             content:''; position: fixed; top:0; left:0; width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(var(--bg-base) 0%, transparent 80%),
+            background-image: radial-gradient(var(--bg-base) 0%, transparent 80%),
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%2300ffff" stroke-width="1" fill="none"/></svg>');
             background-size: cover, 150px 150px; opacity: 0.3; pointer-events: none;
         }
@@ -47,60 +44,56 @@
         h1, h2, h3 { font-family: var(--font-title); margin: 0; }
         .cyber-border { border: 1px solid var(--cyan-dim); background: rgba(16, 22, 35, 0.7); position: relative; transition: all 0.3s ease; }
         .cyber-border:hover { border-color: var(--cyan-main); box-shadow: var(--cyan-glow); }
-        
         .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:10px; height:10px; border-top:2px solid var(--cyan-bright); border-left:2px solid var(--cyan-bright); }
         .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:10px; height:10px; border-bottom:2px solid var(--cyan-bright); border-right:2px solid var(--cyan-bright); }
 
-        /* --- [ 인트로 & 상시 UI ] --- */
+        /* --- [ 인트로 & 헤더 & 사이드바 ] --- */
         #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 1.5s; }
         .glitch-text { font-size: 3.5rem; font-weight: 900; color: var(--cyan-bright); text-shadow: var(--cyan-glow); animation: textPulse 1s infinite alternate; }
-        .sys-frame-info { position: fixed; font-size: 0.7rem; color: var(--cyan-dim); z-index: 80; pointer-events: none; }
-        .top-left-info { top: 8px; left: 12px; }
-        .bottom-right-info { bottom: 8px; right: 12px; text-align: right; }
-        .blink-dot { display: inline-block; width: 6px; height: 6px; background: var(--cyan-main); border-radius: 50%; margin-left: 6px; animation: blink 1s infinite; }
-
-        /* --- [ 헤더 & 사이드바 ] --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--cyan-dim); background: rgba(10, 14, 23, 0.95); position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
-        header h1 { font-size: 1.5rem; color: var(--cyan-bright); letter-spacing: 3px; cursor: pointer; transition: text-shadow 0.3s; text-shadow: var(--cyan-glow); }
-        header h1:active { text-shadow: 0 0 18px var(--cyan-bright); }
-        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; transition: transform 0.3s;}
-        .hamburger:active { transform: scale(0.85); }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--cyan-dim); background: rgba(10, 14, 23, 0.95); position: sticky; top: 0; z-index: 100; }
+        header h1 { font-size: 1.5rem; color: var(--cyan-bright); letter-spacing: 3px; cursor: pointer; text-shadow: var(--cyan-glow); }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
         .hamburger div { width: 24px; height: 2px; background-color: var(--cyan-main); box-shadow: var(--cyan-glow); }
         
         #sidebar { position: fixed; top: 0; right: -100%; width: 240px; height: 100vh; background: rgba(8, 11, 19, 0.98); border-left: 1px solid var(--cyan-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 70px 18px 35px; z-index: 90; }
         #sidebar.open { right: 0; box-shadow: -12px 0 35px rgba(0,0,0,0.8); }
         .menu-item { font-family: var(--font-title); font-size: 1.1rem; margin-bottom: 22px; color: var(--cyan-dim); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: color 0.3s, text-shadow 0.3s; }
         .menu-item.active-menu { color: var(--cyan-bright); text-shadow: var(--cyan-glow); font-weight: bold; }
-        .menu-item:not(.active-menu):hover { color: var(--cyan-main); text-shadow: 0 0 5px var(--cyan-main); }
+        .menu-item:hover { color: var(--cyan-main); }
 
         /* --- [ 메인 뷰 공통 ] --- */
-        #main-content > div { display: none; padding: 18px; padding-bottom: 55px; min-height: calc(100vh - 80px); box-sizing: border-box; }
+        #main-content > div { display: none; padding: 18px; padding-bottom: 80px; min-height: calc(100vh - 80px); box-sizing: border-box; }
         .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
         .view-title { font-size: 1.3rem; color: var(--cyan-bright); margin-bottom: 18px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--cyan-glow); }
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--cyan-dim); margin-left: 12px; position: relative;}
-        .view-title-decor::after { content:''; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; background: var(--cyan-bright); box-shadow: var(--cyan-glow); }
 
         /* --- [ 1. 로비 뷰 ] --- */
-        #lobby-view { flex-direction: column; gap: 18px; }
-        .lobby-btn { padding: 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
+        #lobby-view { flex-direction: column; gap: 18px; align-items: center; justify-content: center; }
+        
+        .lobby-main-title { font-size: 3.5rem; color: var(--cyan-bright); text-shadow: var(--cyan-glow); font-family: var(--font-title); letter-spacing: 5px; margin-bottom: 20px; animation: textPulse 2s infinite alternate;}
+        
+        .lobby-btn { width: 100%; max-width: 320px; padding: 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
         .lobby-btn:active { transform: scale(0.96); background: rgba(0, 255, 255, 0.15); border-color: var(--cyan-bright); box-shadow: var(--cyan-glow); }
-        .log-container { flex-grow: 1; padding: 12px; font-size: 0.8rem; color: var(--cyan-main); opacity: 0.8; }
-        .log-entry { margin-bottom: 5px; border-bottom: 1px solid rgba(0, 255, 255, 0.1); padding-bottom: 3px;}
+
+        /* 뉴스 속보 티커 (하단 고정) */
+        .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.9); border-top: 1px solid var(--cyan-dim); padding: 8px 0; overflow: hidden; z-index: 50; }
+        .news-content { display: inline-block; white-space: nowrap; font-size: 0.85rem; color: var(--cyan-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 20s linear infinite; }
+        .news-content span { margin-right: 50px; }
+        .news-tag { background: var(--cyan-dim); color: #fff; padding: 2px 6px; border-radius: 2px; font-weight: bold; margin-right: 8px; font-family: var(--font-title);}
 
         /* --- [ 2. 인물 데이터 뷰 ] --- */
         .filter-container { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
         .filter-btn { flex: 1 1 calc(33% - 5px); background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan-main); padding: 8px 0; font-family: var(--font-title); font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; }
         .filter-btn.active { background: rgba(0, 255, 255, 0.2); border-color: var(--cyan-bright); color: var(--cyan-bright); text-shadow: var(--cyan-glow); box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2); }
-        .filter-btn:not(.active):hover { border-color: var(--cyan-main); background: rgba(0, 255, 255, 0.1); }
         
         .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .char-card { padding: 12px; font-size: 0.75rem; border-color: rgba(0, 255, 255, 0.3); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; transform-origin: center;}
+        .char-card { padding: 12px; font-size: 0.75rem; border-color: rgba(0, 255, 255, 0.3); cursor: pointer; transform-origin: center;}
         .char-card:active { transform: scale(0.92); border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
         .char-fade-in { animation: smoothFadeIn 0.3s forwards; opacity: 0; }
-
-        .card-header { display: flex; justify-content: space-between; color: var(--cyan-main); opacity: 0.7; font-size: 0.65rem; margin-bottom: 5px; }
+        .card-header { display: flex; justify-content: space-between; color: var(--cyan-main); opacity: 0.8; font-size: 0.65rem; margin-bottom: 5px; }
         .char-name { font-size: 1.1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 3px; text-shadow: 0 0 3px #fff;}
-        .char-faction { color: var(--cyan-bright); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 2px;}
+        .char-faction { text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 2px; font-weight: bold;}
 
         /* --- [ 3. 지도 뷰 ] --- */
         .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(16,22,35,0.8) 0%, rgba(10,14,23,1) 100%); }
@@ -110,54 +103,34 @@
         .tower-mark { position: absolute; top: 48%; left: 55%; width: 12px; height: 12px; background: #fff; box-shadow: 0 0 18px #fff, var(--cyan-glow); transform: translate(-50%, -50%) rotate(45deg); z-index: 20; }
         .map-zone { position: absolute; border: 2px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.65rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px #000; transition: all 0.3s ease; backdrop-filter: blur(1px); }
         .map-zone:active { transform: scale(1.08); background: rgba(255,255,255,0.2); }
-        .zone-pol-aster { width: 135px; height: 115px; top: 20%; left: 5%; background: rgba(255, 204, 0, 0.15); border-color: #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
-        .zone-pol-dela { width: 95px; height: 85px; bottom: 15%; left: 65%; background: rgba(192, 192, 192, 0.15); border-color: #c0c0c0; box-shadow: 0 0 15px rgba(192, 192, 192, 0.4); clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
-        .zone-pol-star { width: 70px; height: 65px; top: 15%; left: 75%; background: rgba(255, 248, 220, 0.15); border-color: #fff8dc; box-shadow: 0 0 15px rgba(255, 248, 220, 0.4); clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
+        
+        /* 지도 세력 컬러 적용 */
+        .zone-pol-aster { width: 135px; height: 115px; top: 20%; left: 5%; background: rgba(255, 215, 0, 0.15); border-color: var(--color-aster); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
+        .zone-pol-dela { width: 95px; height: 85px; bottom: 15%; left: 65%; background: rgba(255, 140, 0, 0.15); border-color: var(--color-dela); box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
+        .zone-pol-star { width: 70px; height: 65px; top: 15%; left: 75%; background: rgba(255, 102, 204, 0.15); border-color: var(--color-star); box-shadow: 0 0 15px rgba(255, 102, 204, 0.4); clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
         .map-data-panel { font-size: 0.75rem; color: var(--cyan-main); margin-top: 12px; border-top: 1px solid rgba(0, 255, 255, 0.2); padding-top: 10px;}
 
         /* --- [ 4. 시스템 DB 뷰 ] --- */
         .db-container { display: flex; flex-direction: column; gap: 12px; }
         .db-folder { background: rgba(20, 28, 45, 0.8); border: 1px solid var(--cyan-main); padding: 14px 18px; font-family: var(--font-title); font-size: 1.1rem; color: var(--cyan-bright); cursor: pointer; transition: background 0.3s, box-shadow 0.3s; text-shadow: var(--cyan-glow); }
-        .db-folder:active { background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
-        .db-folder::before { content: '[+] '; color: var(--cyan-main); margin-right: 6px; transition: color 0.3s;}
-        .db-folder.open::before { content: '[-] '; color: var(--cyan-bright); }
         .db-folder.open { background: rgba(16, 22, 35, 0.9); }
-        
         .db-folder-content { display: none; flex-direction: column; gap: 6px; padding-left: 18px; margin-top: -6px; margin-bottom: 12px; border-left: 1px dashed var(--cyan-dim); }
         .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
-
-        .db-file { padding: 12px; background: rgba(16, 22, 35, 0.6); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 1rem; color: #fff; cursor: pointer; transition: all 0.2s ease; text-shadow: 0 0 2px #fff; }
-        .db-file::before { content: '> '; color: var(--cyan-main); margin-right: 10px; }
+        .db-file { padding: 12px; background: rgba(16, 22, 35, 0.6); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 1rem; color: #fff; cursor: pointer; text-shadow: 0 0 2px #fff; }
         .db-file.active { border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.1); padding-left: 20px; box-shadow: var(--cyan-glow); }
-        
-        /* 시스템 DB 내용 아쿠아 블루로 변경 */
         .db-data-box { display: none; padding: 16px; background: rgba(8, 11, 19, 0.9); border: 1px solid var(--aqua-matrix); color: var(--aqua-matrix); font-size: 0.9rem; line-height: 1.7; margin-top: -6px; margin-bottom: 12px; box-shadow: 0 0 15px rgba(175, 255, 255, 0.2); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
-        
         .highlight { color: #fff; background: rgba(0, 255, 255, 0.3); padding: 0 4px; font-family: var(--font-title); text-shadow: var(--cyan-glow); }
         .warning { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 5px var(--neon-red); }
 
-        /* --- [ 인물 상세 모달 (배경 약간 밝게) ] --- */
-        #char-modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            background: rgba(10, 14, 23, 0.9); z-index: 500; backdrop-filter: blur(4px); 
-            justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; 
-            opacity: 0; transition: opacity 0.3s ease; 
-        }
+        /* --- [ 인물 상세 모달 ] --- */
+        #char-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(10, 14, 23, 0.9); z-index: 500; backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
         #char-modal.show { display: flex; opacity: 1; }
-        
-        .modal-content { 
-            width: 100%; max-width: 420px; max-height: 85vh; background: rgba(16, 22, 35, 0.98); 
-            border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); 
-            overflow-y: auto; position: relative; padding: 22px; 
-            transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
+        .modal-content { width: 100%; max-width: 420px; max-height: 85vh; background: rgba(16, 22, 35, 0.98); border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); overflow-y: auto; position: relative; padding: 22px; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
         #char-modal.show .modal-content { transform: translateY(0) scale(1); }
-
         .modal-content::-webkit-scrollbar { width: 6px; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
         .modal-close { position: absolute; top: 12px; right: 18px; color: var(--cyan-bright); font-size: 1.8rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; text-shadow: var(--cyan-glow); }
-        .modal-close:active { transform: scale(0.8); }
         .m-header { border-bottom: 1px dashed var(--cyan-dim); padding-bottom: 12px; margin-bottom: 18px; }
         .m-name { font-size: 1.6rem; color: #fff; font-weight: bold; font-family: var(--font-title); text-shadow: 0 0 5px #fff; }
         .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
@@ -168,36 +141,23 @@
         .m-desc { font-size: 0.85rem; color: #eee; line-height: 1.6; background: rgba(8, 11, 19, 0.6); padding: 12px; border: 1px dotted var(--cyan-dim); }
         .tag { display: inline-block; padding: 3px 8px; background: rgba(0, 255, 255, 0.15); border: 1px solid rgba(0, 255, 255, 0.3); color: var(--cyan-bright); font-size: 0.7rem; border-radius: 4px; margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-shadow: var(--cyan-glow);}
         .tag-warning { background: rgba(255, 51, 51, 0.15); border-color: rgba(255, 51, 51, 0.3); color: #fff; text-shadow: 0 0 5px var(--neon-red); }
-        .tag-glitch { background: rgba(255, 0, 255, 0.15); border-color: rgba(255, 0, 255, 0.3); color: #fff; text-shadow: 1px 0 red, -1px 0 blue; }
 
-        /* --- [ 특수 글리치 애니메이션 (고드 전용, 마젠타로 변경) ] --- */
-        .text-glitch {
-            position: relative; color: var(--magenta-glitch); font-weight: 900;
-            animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 cyan;
-        }
-        @keyframes textGlitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 1px); }
-            40% { transform: translate(-1px, -1px); }
-            60% { transform: translate(2px, 1px); }
-            80% { transform: translate(1px, -1px); }
-            100% { transform: translate(0); }
-        }
+        /* --- [ 특수 글리치 애니메이션 (고드/흰색) ] --- */
+        .text-glitch { position: relative; color: var(--color-gord); font-weight: 900; animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 cyan; }
+        @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
 
         /* --- 애니메이션 키프레임 --- */
         @keyframes introEnd { to { opacity: 0; visibility: hidden; } }
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes mapScan { 0% { top: -12px; } 100% { top: 100%; } }
         @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDownFade { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
 
     <div id="intro"><div class="glitch-text">OVER SOUL</div></div>
-    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv5.1 <span class="blink-dot"></span></div>
-    <div class="sys-frame-info bottom-right-info">UTC: <span id="frame-time"></span></div>
 
     <header>
         <h1 onclick="navTo('lobby')">O.S Terminal</h1>
@@ -216,6 +176,8 @@
     <div id="main-content">
         
         <div id="lobby-view" class="view-fade-in" style="display: flex;">
+            <h2 class="lobby-main-title">OVER SOUL</h2>
+            
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
                 CHARACTER_DATA <span style="font-size:0.6rem; color:var(--cyan-bright)">ACCESS ></span>
             </div>
@@ -224,13 +186,6 @@
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('system')">
                 SYSTEM_CONFIG <span style="font-size:0.6rem">VIEW ></span>
-            </div>
-            
-            <div class="cyber-border decor-corners log-container">
-                <div style="color:var(--cyan-main); font-weight:bold; margin-bottom:5px; border-bottom:1px solid var(--cyan-dim)">SYSTEM_LOG</div>
-                <div class="log-entry"><span style="color:var(--cyan-main)">[SYSTEM]</span> All Modules Online.</div>
-                <div class="log-entry"><span style="color:var(--neon-red)">[WARN]</span> Unidentified Entity (Gord) detected.</div>
-                <div class="log-entry"><span style="color:var(--cyan-main)">[DB]</span> Char_Data v5.1 Synced.</div>
             </div>
         </div>
 
@@ -258,9 +213,9 @@
             </div>
             <div class="map-data-panel">
                 <div style="font-weight:bold; color:var(--cyan-bright); margin-bottom:4px;">REGION DATA</div>
-                <div><span style="color:#ffcc00">[ASTER]</span> 서부 점령 / 최대 세력</div>
-                <div><span style="color:#c0c0c0">[DELACRUA]</span> 동남부 주둔 / 중간 세력</div>
-                <div><span style="color:#fff8dc">[STARDUST]</span> 동북부 고립 / 연구 구역</div>
+                <div><span style="color:var(--color-aster)">[ASTER]</span> 서부 점령 / 최대 세력</div>
+                <div><span style="color:var(--color-dela)">[DELACRUA]</span> 동남부 주둔 / 중간 세력</div>
+                <div><span style="color:var(--color-star)">[STARDUST]</span> 동북부 고립 / 연구 구역</div>
             </div>
         </div>
 
@@ -269,6 +224,11 @@
             <div class="db-container" id="db-container"></div>
         </div>
 
+    </div>
+
+    <div class="news-ticker-wrap">
+        <div class="news-content" id="news-ticker">
+            </div>
     </div>
 
     <div id="char-modal">
@@ -302,26 +262,12 @@
     </div>
 
     <script>
-        // --- 시간 업데이트 ---
-        setInterval(() => {
-            document.getElementById('frame-time').innerText = new Date().toISOString().substring(11, 19);
-        }, 1000);
-
         // --- 부드러운 네비게이션 로직 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
-            document.querySelectorAll('#main-content > div').forEach(el => {
-                el.style.display = 'none';
-                el.classList.remove('view-fade-in');
-            });
-            
+            document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
             const target = document.getElementById(viewId + '-view');
-            if(target) {
-                target.style.display = (viewId === 'lobby') ? 'flex' : 'block';
-                void target.offsetWidth; 
-                target.classList.add('view-fade-in');
-            }
-            
+            if(target) { target.style.display = (viewId === 'lobby') ? 'flex' : 'block'; void target.offsetWidth; target.classList.add('view-fade-in'); }
             document.getElementById('sidebar').classList.remove('open');
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
             const activeNav = document.getElementById('nav-' + viewId);
@@ -329,15 +275,39 @@
             window.scrollTo(0, 0);
         }
 
-        // --- 캐릭터 데이터 수정 (비교 문구 삭제 및 개별 설정 강화) ---
+        // --- 랜덤 뉴스 티커 로직 ---
+        const newsItems = [
+            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
+            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
+            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 K-Pop 앨범 발표, '이번 비트는 당신의 심장을 찢어놓을 것'",
+            "<span class='news-tag'>[사회]</span> 최근 불법 '조율' 시술 받던 민간인 3명 글리치화... 당국 수사 착수",
+            "<span class='news-tag'>[속보]</span> 서부 빈민가에서 신원 미상의 인물이 대량의 'lo-fi' 유통 중인 것으로 밝혀져",
+            "<span class='news-tag'>[기상]</span> 내일 오전 동북부 지역 미세한 '더 뮤트' 현상 발생 가능성... 외출 자제 요망",
+            "<span class='news-tag'>[종교]</span> 신흥 종교 신도 수 급증... 교황 크리스 '고드의 이름으로 모두를 사랑하라'",
+            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각적인 경계 태세 돌입",
+            "<span class='news-tag'>[가십]</span> 애리나 가문 후계자 루시, 어제 열린 연주회에서 또다시 무대 파괴... '예술의 일환' 일축",
+            "<span class='news-tag'>[속보]</span> 남동부 델라쿠르아 관할 구역, 이상 중력 현상으로 건물 2채 붕괴"
+        ];
+        
+        function updateNews() {
+            // 랜덤으로 4개의 뉴스를 뽑아 이어붙임
+            let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 4);
+            let newsHTML = "";
+            shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
+            document.getElementById('news-ticker').innerHTML = newsHTML;
+        }
+        updateNews();
+        setInterval(updateNews, 20000); // 20초마다 뉴스 교체
+
+        // --- 캐릭터 데이터 ---
         const charDB = [
             { name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
-            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력을 구사하지만 위력과 범위가 제한적임", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
+            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
             { name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
             { name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
             { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
-            { name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
-            { name: "송", faction: "델라쿠르아", rank: "B", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 앞이 보이지 않는 몸으로 희생하며 자신의 일을 대신 해주고 있다는 유일한 진실만을 모른채, 누나가 예쁘다며 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
+            { name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음 (일반인)", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
+            { name: "송", faction: "델라쿠르아", rank: "B", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 자신의 일을 대신 해주고 있다는 사실만을 모른 채, 누나가 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
             { name: "세라피나(가주)", faction: "스타 더스트", rank: "S", age: 32, mbti: "ENFJ", ennea: "3w2", tags: ["진보파", "활발", "내강내유"], reso: "K-Pop", ability: "BPM 동기화 (적의 심박수와 움직임을 극악의 템포로 강제 동기화시켜 붕괴시킴)", curtain: "[Dome Tour] 영역 내 아군 극대화 버프 및 적 리듬 강제 종속", tune: "가능", back: "가능", over: "경험함", detail: "스타 더스트 가문의 가주. 겉보기에 매우 활발하고 부드러워 보이지만 속은 단단한 외유내강형 인물이다. 최신 K-Pop의 강렬한 비트를 레조넌스로 승화시켜 전장을 지배한다." },
             { name: "클로에", faction: "스타 더스트", rank: "A", age: 21, mbti: "INTP", ennea: "5w4", tags: ["진보파", "해커기질"], reso: "Pop", ability: "Auto-Tune (오토튠) - 범위 내 날아오는 투사체나 소리의 궤도/속도를 임의로 왜곡 조작", curtain: "[Billboard Top 100] 영역 내 모든 공격이 가장 위협적인 타겟을 자동 추적하여 필중", tune: "불가", back: "가능", over: "미경험", detail: "트렌디한 Pop 음악을 다루는 스타 더스트 소속 연주자. 오토튠을 물리법칙에 적용시켜 전장의 흐름 자체를 왜곡시키는 독특한 재능을 지녔다." },
             { name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "천국의 업무를 때려치우고 저승에서 놀다가 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." },
@@ -347,21 +317,29 @@
             { name: "크리스", faction: "무소속", rank: "A+", age: 29, mbti: "ENFJ", ennea: "1w2", tags: ["교황", "고드신앙", "박애주의", "후원자"], reso: "파이프 오르간", ability: "주변인들의 신앙/감정을 흡수하여 절대적인 방어막으로 변환", curtain: "[Sanctuary (성역)] 구역 내 일체의 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'고드'를 신으로 믿고 모두를 사랑하라는 교리를 전파하는 신흥 종교의 교황. 부드러운 언변으로 일반인들에게 엄청난 인기를 누리고 있다. 교단의 모든 수입과 관리를 사비로 충당하며, 남몰래 수녀 아리아의 고아원 및 빈민 구호 활동을 막대한 자금으로 지원하고 있다." }
         ];
 
+        function getFactionColor(faction) {
+            if(faction === "애스터") return "var(--color-aster)";
+            if(faction === "델라쿠르아") return "var(--color-dela)";
+            if(faction === "스타 더스트") return "var(--color-star)";
+            return "var(--cyan-main)"; // 무소속 및 기본
+        }
+
         function renderCharacters(filter) {
             const container = document.getElementById('char-container');
             container.innerHTML = ''; 
             let delayTime = 0;
             charDB.forEach((char, i) => {
                 if (filter === 'ALL' || char.faction === filter) {
-                    let rColor = char.rank === 'UNKNOWN' ? 'var(--god-color)' : char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--cyan-main)';
+                    let rColor = char.rank === 'UNKNOWN' ? 'var(--color-gord)' : char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--cyan-bright)';
                     let cNameClass = char.name === "고드" ? "char-name text-glitch" : "char-name";
+                    let facColor = getFactionColor(char.faction);
 
                     const cardHtml = `
                         <div class="char-card cyber-border char-fade-in decor-corners" style="animation-delay: ${delayTime}s" onclick="openModal(${i})">
                             <div class="card-header"><span>ID: <span style="color:${rColor}">${char.rank}</span></span> <span>[DETAILS >]</span></div>
                             <div class="${cNameClass}">${char.name}</div>
-                            <div class="char-faction">${char.faction}</div>
-                            <div style="color:var(--cyan-main); font-size:0.65rem;">Resonance: ${char.reso}</div>
+                            <div class="char-faction" style="color:${facColor}; border-color: ${facColor}; opacity: 0.8;">${char.faction}</div>
+                            <div style="color:var(--cyan-main); font-size:0.65rem; margin-top:5px;">Resonance: ${char.reso}</div>
                         </div>`;
                     container.insertAdjacentHTML('beforeend', cardHtml);
                     delayTime += 0.05; 
@@ -377,7 +355,10 @@
         // --- 모달 부드러운 열기/닫기 로직 ---
         function openModal(index) {
             const char = charDB[index];
+            const facColor = getFactionColor(char.faction);
+            
             document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
+            document.getElementById('md-faction').style.color = facColor;
             
             const mdName = document.getElementById('md-name');
             const mdRank = document.getElementById('md-rank');
@@ -386,7 +367,7 @@
                 mdName.className = "m-name text-glitch";
                 mdRank.innerText = char.rank;
                 mdRank.className = "m-val text-glitch";
-                mdRank.style.color = 'var(--god-color)';
+                mdRank.style.color = 'var(--color-gord)';
             } else {
                 mdName.innerText = char.name;
                 mdName.className = "m-name";
@@ -411,7 +392,6 @@
             char.tags.forEach(t => {
                 let cls = "tag";
                 if(t === "시각장애" || t === "청각장애" || t === "수명연소" || t === "사이코패스") cls = "tag tag-warning";
-                if(t === "글리치" || t === "규격외") cls = "tag tag-glitch"; 
                 tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
             });
             
@@ -427,7 +407,7 @@
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
-        // --- 시스템 데이터베이스 아코디언 애니메이션 로직 ---
+        // --- 시스템 데이터베이스 전체 내용 복구 ---
         const systemDB = [
             {
                 category: "등급제도 (THREAT_LEVEL)",
@@ -448,11 +428,11 @@
                     { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해진다." },
                     { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>.<br>> 연주자들은 이 에너지를 다량 보유하고 있으며, 신체강화 및 고유 능력 발동의 에너지원으로 사용한다." },
                     { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span><br>기존 대비 능력이 2배 강화되며, 특수 영역인 <span class='highlight'>'커튼콜(Curtain Call)'</span>의 사용이 해방된다." },
-                    { name: "커튼콜 (Curtain Call)", desc: "오버소울 도달자가 펼치는 '무대(영역)'. 시전자의 허락 없이는 탈출이 불가능.<br>등급이 낮을수록 유지 시간과 공간 장악력이 비례하여 감소한다.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 시간, 위력, 범위 대폭 상승. 능력의 과부하 에너지를 신체로 역류시켜 폭발적인 신체 강화 가능.<br>- 페널티: 종료 후 1분간 과부하로 인한 모든 능력 봉쇄.<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 생명력을 직접 연소시켜 강제 발동.<br>- 효과: 오버소울 버전에 비해 전체적인 성능 저하.<br>- 페널티: 종료 후 1분간 모든 능력 봉쇄 및 <span class='warning'>레조넌스 사용 불가</span>. (사실상 일반인 상태로 전락하는 극한의 위험성 보유)" },
+                    { name: "커튼콜 (Curtain Call)", desc: "오버소울 도달자가 펼치는 '무대(영역)'. 시전자의 허락 없이는 탈출이 불가능.<br>등급이 낮을수록 유지 시간과 공간 장악력이 비례하여 감소한다.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 시간, 위력, 범위 대폭 상승. 능력의 과부하 에너지를 신체로 역류시켜 폭발적인 신체 강화 가능.<br>- 페널티: 종료 후 1분간 과부하로 인한 모든 능력 봉쇄.<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 생명력을 직접 연소시켜 강제 발동.<br>- 효과: 오버소울 버전에 비해 전체적인 성능 저하.<br>- 페널티: 종료 후 1분간 모든 능력 봉쇄 및 <span class='warning'>레조넌스 사용 불가</span>." },
                     { name: "백스테이지 (Backstage)", desc: "커튼콜의 '필중 주파수'와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>.<br>- 외부에서 내부로 진입하는 능력은 즉시 소멸. (영역 이탈 시 해제)<br>- 시전자와 대상의 등급 차이가 2단계 이상일 경우 무효화가 아닌 미세 교란으로 격하됨.<br>- <span class='warning'>제약:</span> 유지 중 시전자는 고유 능력 사용이 봉쇄되며, 오직 레조넌스를 이용한 물리전(신체강화)만 가능." },
                     { name: "조율 (Tuning)", desc: "레조넌스로 몸을 치료하고 노이즈 수치를 대폭 낮추는 고난도 기술.<br>> 연주자 중 극히 일부만 사용 가능하며, 부유층 사이에서 미용 목적으로 고가에 암거래되고 있음." },
-                    { name: "노이즈 (Noise)", desc: "<span class='warning'>[경고: 레조넌스 과용 부작용]</span><br>신체 일부가 점차 악기화되며 인간성이 마모되는 현상. 극복 실패 시 '글리치'로 변이함." },
-                    { name: "글리치 (Glitch)", desc: "<span class='warning'>[경고: 비인간화 괴물 개체]</span><br>노이즈에 잠식되어 인간성을 잃은 상태.<br>- 수치가 높을수록 기계음 글리치가 발생.<br>- 80% 이상 잠식 시: 모든 대사를 특수문자와 깨진 문자로 출력.<br>> <span class='highlight'>완화 조치:</span> 성적 교감(육체적 접촉)이나 충분한 휴식을 통해 수치를 소폭 완화할 수 있음." }
+                    { name: "노이즈 (Noise)", desc: "<span class='warning'>[경고: 레조넌스 과용 부작용]</span><br>신체 일부가 점차 악기화되며 인간성이 마모되는 현상. 극복 실패 시 '글리치'로 변이함.<br>> <span class='highlight'>완화 조치:</span> 성적 교감(육체적 접촉)이나 충분한 휴식을 통해 수치를 소폭 완화할 수 있음." },
+                    { name: "글리치 (Glitch)", desc: "<span class='warning'>[경고: 비인간화 괴물 개체]</span><br>노이즈에 잠식되어 인간성을 잃은 상태.<br>- 수치가 높을수록 기계음 글리치가 발생.<br>- 80% 이상 잠식 시: 모든 대사를 특수문자와 깨진 문자로 출력." }
                 ]
             },
             {
@@ -472,6 +452,7 @@
             }
         ];
 
+        // --- 아코디언 로직 ---
         const dbContainer = document.getElementById('db-container');
         systemDB.forEach(folderData => {
             const folder = document.createElement('div');
@@ -485,7 +466,7 @@
                 const file = document.createElement('div');
                 file.className = 'db-file cyber-border'; file.innerHTML = itemData.name;
                 const dataBox = document.createElement('div');
-                dataBox.className = 'db-data-box cyber-border show'; dataBox.innerHTML = itemData.desc;
+                dataBox.className = 'db-data-box cyber-border'; dataBox.innerHTML = itemData.desc;
 
                 file.onclick = function() {
                     const isVis = dataBox.classList.contains('show');
@@ -498,8 +479,6 @@
                     }
                 };
                 folderContent.appendChild(file); folderContent.appendChild(dataBox);
-                // 초기 로딩 시 첫 번째 항목 열어두기 버그 수정: 모두 닫아둠
-                dataBox.classList.remove('show');
             });
 
             folder.onclick = function() {
