@@ -2,391 +2,111 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVERSOUL: THE FINAL STAGE</title>
+    <title>OVER SOUL</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+KR:wght@300;400;500;700&display=swap');
-        
-        * { box-sizing: border-box; word-break: keep-all; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-        :root {
-            --bg-base: #050404;
-            --bg-card: rgba(20, 16, 15, 0.85);
-            
-            --gold-bright: #F5D78D;
-            --gold-main: #CBA052;
-            --gold-dim: rgba(203, 160, 82, 0.3);
-            
-            --text-title: #Fdfbf7;
-            --text-body: #dcd0c0;
-        }
-
+        /* 전체 기본 설정 (검은색 배경, 금색 텍스트) */
         body {
-            background-color: var(--bg-base);
-            background-image: radial-gradient(circle at 50% 10%, rgba(203, 160, 82, 0.08) 0%, transparent 60%);
-            color: var(--text-body); 
-            font-family: 'Noto Serif KR', serif; 
-            font-size: 16px; 
-            line-height: 1.7; 
-            overflow: hidden; 
-            min-height: 100vh;
+            margin: 0;
+            background-color: #0a0a0a; /* 깊고 어두운 검은색 */
+            color: #d4af37; /* 고급스러운 금색 */
+            font-family: 'Malgun Gothic', sans-serif;
+            overflow: hidden;
         }
 
-        body.intro-done { overflow-y: auto; overflow-x: hidden; }
-        body.no-scroll { overflow: hidden !important; }
-
-        .eng-sub {
-            font-family: 'Cormorant Garamond', serif; font-size: 0.8em; letter-spacing: 2px;
-            color: var(--gold-main); opacity: 0.9; margin-left: 8px; font-weight: 500; text-transform: uppercase;
+        /* 시작 인트로 화면 */
+        #intro {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeOut 2.5s forwards;
+            animation-delay: 2s; /* 2초 동안 타이틀을 보여준 후 사라짐 */
         }
 
-        /* 🎬 인트로 */
-        #intro-screen {
-            position: fixed; inset: 0; width: 100vw; height: 100vh;
-            background: #020101;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 99999; animation: fadeOutIntro 1.5s ease forwards; animation-delay: 2.5s; 
-        }
-        .intro-main {
-            font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 500; 
-            color: var(--gold-bright); letter-spacing: 0.25em; opacity: 0; 
-            animation: fadeInClassic 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            text-shadow: 0 0 30px rgba(203, 160, 82, 0.4);
-        }
-        
-        @keyframes fadeInClassic { 0% { opacity: 0; transform: scale(0.95); filter: blur(5px); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
-        @keyframes fadeOutIntro { to { opacity: 0; visibility: hidden; } }
-
-        /* 파티클 효과 */
-        .particle {
-            position: fixed; background: var(--gold-bright); border-radius: 50%;
-            pointer-events: none; opacity: 0; z-index: -1; box-shadow: 0 0 10px var(--gold-bright);
-            animation: floatParticle 8s infinite linear;
-        }
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            20% { opacity: 0.35; } 80% { opacity: 0.35; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        #intro h1 {
+            font-size: 5rem;
+            letter-spacing: 15px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.7); /* 금빛 네온 효과 */
         }
 
-        /* 메인 래퍼 */
-        .main-wrapper {
-            max-width: 650px; margin: 0 auto; min-height: 100vh;
-            padding: 0 15px; opacity: 0; animation: revealMain 1s ease forwards; animation-delay: 3.5s; 
-        }
-        @keyframes revealMain { to { opacity: 1; } }
-
-        /* 헤더 */
-        header { text-align: center; padding: 50px 0 30px; position: relative; }
-        .header-ornament { font-size: 1.8rem; color: var(--gold-main); margin-bottom: 15px; opacity: 0.9; text-shadow: 0 0 15px var(--gold-dim); }
-        h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 8vw, 3rem); color: var(--gold-bright); font-weight: 600; letter-spacing: 0.15em; line-height: 1.2; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
-        h1 span { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; color: var(--text-body); letter-spacing: 0.4em; margin-top: 10px; }
-
-        /* 메뉴 토글 */
-        .menu-toggle-btn {
-            background: linear-gradient(180deg, rgba(203, 160, 82, 0.1), transparent); 
-            color: var(--gold-bright); border: 1px solid var(--gold-dim);
-            font-size: 0.9rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 3px;
-            margin: 30px auto 10px; padding: 12px 30px; cursor: pointer; transition: all 0.3s ease;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .menu-toggle-btn:hover { background: rgba(203, 160, 82, 0.2); border-color: var(--gold-main); }
-        .menu-toggle-btn.open { background: transparent; border-color: transparent; box-shadow: none; }
-
-        nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        nav.show { max-height: 250px; opacity: 1; padding: 10px 0 30px; }
-        .tab-btn { background: var(--bg-card); color: var(--text-body); border: 1px solid var(--gold-dim); padding: 15px 10px; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; font-family: 'Cormorant Garamond', serif; letter-spacing: 2px; text-transform: uppercase; }
-        .tab-btn.active { color: var(--gold-bright); border-color: var(--gold-main); box-shadow: inset 0 0 15px rgba(203,160,82,0.15); }
-
-        /* 콘텐츠 */
-        .content-section { display: none; padding: 20px 0 80px; animation: fadeInContent 0.6s ease; }
-        .content-section.active { display: block; }
-        @keyframes fadeInContent { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .section-title { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; color: var(--gold-bright); text-align: center; margin-bottom: 30px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .section-title::before, .section-title::after { content: ''; height: 1px; flex-grow: 1; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
-
-        p.worldview-desc { text-align: center; margin: -10px auto 40px; color: var(--text-paper); font-weight: 400; font-size: 1.1rem; max-width: 90%; }
-
-        /* 카드 (일반 정보용) */
-        .card { background: var(--bg-card); border: 1px solid var(--gold-dim); padding: 30px 25px; margin-bottom: 20px; text-align: center; color: var(--text-body); position: relative; transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        .card::before, .card::after { content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid var(--gold-main); opacity: 0.5; transition: all 0.4s; }
-        .card::before { top: 5px; left: 5px; border-right: none; border-bottom: none; }
-        .card::after { bottom: 5px; right: 5px; border-left: none; border-top: none; }
-        .card h3 { font-family: 'Noto Serif KR', serif; color: var(--gold-bright); font-size: 1.3rem; margin-bottom: 12px; font-weight: 500; letter-spacing: 1px; }
-        .card p { margin: 0; font-size: 1rem; line-height: 1.7; color: var(--text-body); }
-        .modern-pop-text { font-family: 'sans-serif'; color: #Fdfbf7; letter-spacing: -0.3px; font-weight: 400; }
-
-        /* 🔮 고유명사 리스트 (버튼 역할) */
-        .glossary-list { display: flex; flex-direction: column; gap: 15px; }
-        .glossary-btn { 
-            background: var(--bg-card); border: 1px solid var(--gold-dim); 
-            padding: 20px 25px; display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            border-left: 3px solid var(--gold-main);
-        }
-        .glossary-btn:hover { background: rgba(203, 160, 82, 0.05); border-color: rgba(203,160,82,0.4); }
-        .glossary-btn h4 { font-family: 'Noto Serif KR', serif; color: var(--gold-bright); font-size: 1.2rem; font-weight: 500; pointer-events: none; }
-        .glossary-icon { font-size: 0.9rem; color: var(--gold-main); opacity: 0.7; pointer-events: none; }
-        
-        /* 모달에 들어갈 숨겨진 데이터 */
-        .glossary-data { display: none; }
-
-        /* 👑 완벽하게 분리된 팝업 모달 & 배경 흐림 */
-        #blur-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            z-index: 9990; opacity: 0; visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        #blur-overlay.show { opacity: 1; visibility: visible; }
-
-        #glossary-modal {
-            position: fixed; top: 50%; left: 50%; 
-            transform: translate(-50%, -40%) scale(0.95); /* 살짝 아래에서 대기 */
-            width: 90vw; max-width: 500px; max-height: 80vh;
-            background: #0c0908; /* 완전히 불투명하고 딥한 모달 배경 */
-            border: 1px solid var(--gold-main); border-radius: 4px;
-            z-index: 9991; opacity: 0; visibility: hidden;
-            display: flex; flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(203,160,82,0.1);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        #glossary-modal.show {
-            transform: translate(-50%, -50%) scale(1); /* 부드럽게 정중앙으로 안착 */
-            opacity: 1; visibility: visible;
+        /* 메인 로비 화면 */
+        #lobby {
+            opacity: 0; /* 처음엔 숨김 */
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 2s forwards;
+            animation-delay: 3.5s; /* 인트로가 끝날 때쯤 서서히 나타남 */
         }
 
-        /* 모달 내부 디자인 */
-        .modal-header {
-            padding: 25px 30px 20px; border-bottom: 1px solid rgba(203,160,82,0.2);
-            position: relative; text-align: center;
-        }
-        /* 회전하며 닫기 버튼 역할을 하는 좌상단 세모 */
-        .modal-close-btn {
-            position: absolute; top: 25px; left: 25px;
-            font-size: 1.2rem; color: var(--gold-bright);
-            cursor: pointer; transform: rotate(180deg);
-            transition: transform 0.3s, color 0.3s;
-        }
-        .modal-close-btn:hover { color: #fff; transform: rotate(180deg) scale(1.1); }
-        .modal-header h4 { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; color: var(--gold-bright); }
-
-        .modal-body {
-            padding: 30px; overflow-y: auto; color: var(--text-body);
-            font-size: 1.1rem; line-height: 1.8;
+        /* 카테고리 메뉴 */
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
         }
 
-        /* 필터 및 그리드 */
-        .filter-container { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 15px; margin-bottom: 40px; padding-bottom: 10px; scrollbar-width: none; justify-content: center; }
-        .filter-container::-webkit-scrollbar { display: none; }
-        .filter-btn { background: none; border: 1px solid transparent; color: var(--text-body); font-size: 0.95rem; font-family: 'Noto Serif KR', serif; cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; padding: 8px 18px; border-radius: 20px; white-space: nowrap; }
-        .filter-btn.active { color: var(--gold-bright); border-color: var(--gold-main); background: rgba(203,160,82,0.15); }
-        .character-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .nav-menu div {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* 메뉴에 마우스를 올렸을 때 반전 효과 */
+        .nav-menu div:hover {
+            background-color: #d4af37;
+            color: #0a0a0a;
+            box-shadow: 0 0 15px #d4af37;
+        }
+
+        /* 임시 지도 영역 표시 */
+        .map-preview {
+            margin-top: 60px;
+            padding: 30px;
+            border: 1px dashed #d4af37;
+            text-align: center;
+        }
+
+        /* 애니메이션 키프레임 */
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; z-index: 10; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="blur-overlay" onclick="closeModal()"></div>
-    <div id="glossary-modal">
-        <div class="modal-header">
-            <span class="modal-close-btn" onclick="closeModal()">▲</span>
-            <h4 id="modal-title">TITLE</h4>
+    <div id="intro">
+        <h1>OVER SOUL</h1>
+    </div>
+
+    <div id="lobby">
+        <h2 style="font-size: 2rem; letter-spacing: 5px;">MAIN LOBBY</h2>
+        
+        <div class="nav-menu">
+            <div>세계관</div>
+            <div>인물</div>
+            <div>지도</div>
+            <div>시스템</div>
         </div>
-        <div class="modal-body" id="modal-content">
-            CONTENT
+
+        <div class="map-preview">
+            <h3>🗺️ U.S. AREA MAP</h3>
+            <p>중앙탑 (Central Tower)</p>
+            <p>나머지 4개 구역 상세 설정 대기 중...</p>
         </div>
     </div>
 
-    <div class="particle" style="width: 3px; height: 3px; left: 15%; animation-duration: 6s; animation-delay: 1s;"></div>
-    <div class="particle" style="width: 4px; height: 4px; left: 35%; animation-duration: 9s; animation-delay: 2s;"></div>
-    <div class="particle" style="width: 2px; height: 2px; left: 50%; animation-duration: 7s; animation-delay: 3s;"></div>
-    <div class="particle" style="width: 5px; height: 5px; left: 65%; animation-duration: 10s; animation-delay: 0.5s;"></div>
-    <div class="particle" style="width: 3px; height: 3px; left: 85%; animation-duration: 8s; animation-delay: 1.5s;"></div>
-    <div class="particle" style="width: 2px; height: 2px; left: 95%; animation-duration: 6.5s; animation-delay: 2.5s;"></div>
-
-    <div id="intro-screen">
-        <div class="intro-main">OVERSOUL</div>
-    </div>
-
-    <div class="main-wrapper">
-        <header>
-            <div class="header-ornament">✦ ✧ ✦</div>
-            <h1>OVERSOUL<br><span>THE FINAL STAGE</span></h1>
-            
-            <button class="menu-toggle-btn" onclick="toggleMenu()" id="menuBtn">MENU</button>
-
-            <nav id="mainNav">
-                <button class="tab-btn active" onclick="openTab('worldview')">Worldview</button>
-                <button class="tab-btn" onclick="openTab('districts')">Districts</button>
-                <button class="tab-btn" onclick="openTab('factions')">Characters</button>
-                <button class="tab-btn" onclick="openTab('system')">System</button>
-            </nav>
-        </header>
-
-        <main>
-            <section id="worldview" class="content-section active">
-                <h2 class="section-title">세계관 <span class="eng-sub">WORLDVIEW</span></h2>
-                <p class="worldview-desc">소리의 주파수가 물리 법칙을 대체한 비정한 음악적 디스토피아, 네오 아메리카. 이곳에서 소리는 곧 권력이자 마력이며, 가문들이 연주하는 완벽한 화음만이 지배하는 질서입니다.</p>
-
-                <div class="glossary-list">
-                    <div class="glossary-btn" onclick="openModal(this)">
-                        <h4>템포 <span class="eng-sub">TEMPO</span></h4>
-                        <span class="glossary-icon">▼</span>
-                        <div class="glossary-data">
-                            이 세계의 유일한 생존 화폐입니다. (1$ = 1템포)<br><br>가난한 자들은 능력을 조율하거나 일용할 양식을 구하기 위해 매일 템포를 벌어야 합니다. 체내의 템포가 바닥나 조율을 받지 못하면 결국 시스템에 의해 소멸하게 됩니다.
-                        </div>
-                    </div>
-                    
-                    <div class="glossary-btn" onclick="openModal(this)">
-                        <h4>레조넌스 <span class="eng-sub">RESONANCE</span></h4>
-                        <span class="glossary-icon">▼</span>
-                        <div class="glossary-data">
-                            소리의 진동으로 물리 법칙을 비트는 이 세계 고유의 마력이자 생명력입니다.<br><br>일반인보다 방대한 레조넌스를 지니고 태어나 소리를 다루는 자들을 '연주자'라 부릅니다. 이들은 각자의 악기와 선율로 화염을 일으키거나 공간을 지배할 수 있습니다.
-                        </div>
-                    </div>
-                    
-                    <div class="glossary-btn" onclick="openModal(this)">
-                        <h4>로파이 <span class="eng-sub">LO-FI</span></h4>
-                        <span class="glossary-icon">▼</span>
-                        <div class="glossary-data">
-                            뒷골목에서 암암리에 유통되는 금기된 마약성 주파수입니다.<br><br>청취자에게 극강의 쾌락과 환각, 가짜 행복을 주지만, 그 대가로 체내 레조넌스를 영구적으로 뒤틀리게 만들어 종국에는 이성을 잃고 노이즈 덩어리가 되게 만듭니다.
-                        </div>
-                    </div>
-                    
-                    <div class="glossary-btn" onclick="openModal(this)">
-                        <h4>더 뮤트 <span class="eng-sub">THE MUTE</span></h4>
-                        <span class="glossary-icon">▼</span>
-                        <div class="glossary-data">
-                            어느 날 갑자기 일어나는 미스터리한 공간 삭제 현상입니다.<br><br>어떤 소리나 전조증상도 없이, 특정 구역의 모든 주파수와 그 안의 건물, 존재하던 사람들의 기억까지 세상에서 완벽하게 소거시켜 버리는 가장 두려운 재앙입니다.
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="districts" class="content-section">
-                <h2 class="section-title">구역 안내 <span class="eng-sub">DISTRICTS</span></h2>
-                <div class="card">
-                    <h3>화이트 아리아 <span class="eng-sub">WHITE ARIA</span></h3>
-                    <p>애스터 가문 지배. 한 치의 오차도 없이 조율된 정적인 클래식 구역.</p>
-                </div>
-                <div class="card">
-                    <h3>블루 앨리 <span class="eng-sub">BLUE ALLEY</span></h3>
-                    <p>델라크루아 가문 지배. 안개와 엇박자가 섞인 밤의 낭만적인 재즈 구역.</p>
-                </div>
-                <div class="card">
-                    <h3 class="modern-pop-text">네온 캐슬 <span class="eng-sub" style="font-family: sans-serif;">NEON CASTLE</span></h3>
-                    <p class="modern-pop-text">스타더스트 가문 지배. 오토튠과 홀로그램이 번쩍이는 트렌디한 메가시티.</p>
-                </div>
-            </section>
-
-            <section id="factions" class="content-section">
-                <h2 class="section-title">등장인물 <span class="eng-sub">CHARACTERS</span></h2>
-                
-                <div class="filter-container">
-                    <button class="filter-btn active" onclick="filterChars('all', this)">전체</button>
-                    <button class="filter-btn" onclick="filterChars('aster', this)">애스터</button>
-                    <button class="filter-btn" onclick="filterChars('delacroix', this)">델라크루아</button>
-                    <button class="filter-btn" onclick="filterChars('stardust', this)">스타더스트</button>
-                    <button class="filter-btn" onclick="filterChars('independent', this)">무소속</button>
-                </div>
-
-                <div class="character-grid">
-                    <div class="card char-card aster">
-                        <h3>엘라라</h3>
-                        <p>애스터 가주</p>
-                    </div>
-                    <div class="card char-card aster">
-                        <h3>루나</h3>
-                        <p>애스터 후계자</p>
-                    </div>
-                    <div class="card char-card delacroix">
-                        <h3>시몬</h3>
-                        <p>델라크루아 가주</p>
-                    </div>
-                    <div class="card char-card stardust">
-                        <h3 class="modern-pop-text">세라피나</h3>
-                        <p class="modern-pop-text">스타더스트 가주</p>
-                    </div>
-                    <div class="card char-card independent">
-                        <h3>노이</h3>
-                        <p>뒷골목 용병</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="system" class="content-section">
-                <h2 class="section-title">시스템 <span class="eng-sub">SYSTEM</span></h2>
-                <div class="card card-system"><h3>오버 소울 <span class="eng-sub">OVER-SOUL</span></h3><p>공명 흉터를 극복한 각성 상태. 모든 출력이 2배 강화됩니다.</p></div>
-                <div class="card card-system"><h3>커튼콜 <span class="eng-sub">CURTAIN CALL</span></h3><p>각성자의 절대 무대 영역. 종료 후 1분간 능력을 잃는 페널티가 있습니다.</p></div>
-                <div class="card card-system"><h3>백스테이지 <span class="eng-sub">BACKSTAGE</span></h3><p>커튼콜 강제 중화 영역. 공간 내 모두의 능력이 봉쇄되어 물리전으로 전환됩니다.</p></div>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        // 인트로 후 스크롤 활성화
-        setTimeout(() => { document.body.classList.add('intro-done'); }, 4000);
-
-        function toggleMenu() {
-            const nav = document.getElementById('mainNav');
-            const btn = document.getElementById('menuBtn');
-            if (nav.classList.contains('show')) {
-                nav.classList.remove('show');
-                btn.innerHTML = 'MENU';
-            } else {
-                nav.classList.add('show');
-                btn.innerHTML = 'CLOSE';
-            }
-        }
-
-        function openTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            if(event && event.currentTarget) { event.currentTarget.classList.add('active'); }
-            
-            document.getElementById(tabId).classList.add('active');
-            
-            document.getElementById('mainNav').classList.remove('show');
-            document.getElementById('menuBtn').innerHTML = 'MENU';
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        }
-
-        function filterChars(faction, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            const cards = document.querySelectorAll('.char-card');
-            cards.forEach(card => {
-                card.style.display = (faction === 'all' || card.classList.contains(faction)) ? 'block' : 'none';
-            });
-        }
-
-        // 👑 완벽한 모달 열기 함수 (부드러운 CSS 연계)
-        function openModal(element) {
-            // 클릭한 버튼의 제목과 숨겨진 내용을 가져옴
-            const titleHTML = element.querySelector('h4').innerHTML;
-            const contentHTML = element.querySelector('.glossary-data').innerHTML;
-
-            // 모달 창에 데이터 꽂아넣기
-            document.getElementById('modal-title').innerHTML = titleHTML;
-            document.getElementById('modal-content').innerHTML = contentHTML;
-
-            // 배경 흐림 & 스크롤 잠금 & 모달 스무스하게 띄우기
-            document.getElementById('blur-overlay').classList.add('show');
-            document.getElementById('glossary-modal').classList.add('show');
-            document.body.classList.add('no-scroll');
-        }
-
-        // 👑 완벽한 모달 닫기 함수 (도중 터치해도 즉시 역재생)
-        function closeModal() {
-            document.getElementById('blur-overlay').classList.remove('show');
-            document.getElementById('glossary-modal').classList.remove('show');
-            document.body.classList.remove('no-scroll');
-        }
-    </script>
 </body>
 </html>
