@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v7.0</title>
+    <title>OVER SOUL - OS Terminal v8.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -22,8 +22,6 @@
             font-family: var(--font-data); overflow-x: hidden; user-select: none;
             -webkit-tap-highlight-color: transparent; text-shadow: 0 0 2px var(--cyan-main);
         }
-
-        /* 💡 배경 스크롤 방지용 클래스 */
         body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
 
         body::before {
@@ -36,13 +34,23 @@
         h1, h2, h3 { font-family: var(--font-title); margin: 0; }
         .cyber-border { border: 1px solid var(--cyan-dim); background: rgba(16, 22, 35, 0.7); position: relative; transition: all 0.3s ease; }
         .cyber-border:hover { border-color: var(--cyan-main); box-shadow: var(--cyan-glow); }
-        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:10px; height:10px; border-top:2px solid var(--cyan-bright); border-left:2px solid var(--cyan-bright); }
-        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:10px; height:10px; border-bottom:2px solid var(--cyan-bright); border-right:2px solid var(--cyan-bright); }
+        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:10px; height:10px; border-top:2px solid var(--cyan-bright); border-left:2px solid var(--cyan-bright); pointer-events: none;}
+        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:10px; height:10px; border-bottom:2px solid var(--cyan-bright); border-right:2px solid var(--cyan-bright); pointer-events: none;}
 
-        /* --- [ 인트로 & 헤더 & 사이드바 ] --- */
-        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 1.5s; }
+        /* --- [ 인트로 부팅 화면 (강화) ] --- */
+        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 2.5s; }
         .glitch-text { font-size: 3.5rem; font-weight: 900; color: var(--cyan-bright); text-shadow: var(--cyan-glow); animation: textPulse 1s infinite alternate; }
+        .loading-wrap { width: 250px; margin-top: 20px; }
+        .loading-text { font-size: 0.75rem; color: var(--cyan-main); margin-bottom: 5px; animation: blink 0.5s infinite; }
+        .loading-bar { width: 100%; height: 3px; background: var(--cyan-dim); position: relative; overflow: hidden; }
+        .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--cyan-bright); box-shadow: 0 0 10px var(--cyan-bright); animation: fillBar 2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
         
+        .sys-frame-info { position: fixed; font-size: 0.7rem; color: var(--cyan-dim); z-index: 80; pointer-events: none; }
+        .top-left-info { top: 8px; left: 12px; }
+        .bottom-right-info { bottom: 8px; right: 12px; text-align: right; }
+        .blink-dot { display: inline-block; width: 6px; height: 6px; background: var(--cyan-main); border-radius: 50%; margin-left: 6px; animation: blink 1s infinite; }
+
+        /* --- [ 헤더 & 사이드바 ] --- */
         header { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--cyan-dim); background: rgba(10, 14, 23, 0.95); position: sticky; top: 0; z-index: 100; }
         header h1 { font-size: 1.5rem; color: var(--cyan-bright); letter-spacing: 3px; cursor: pointer; text-shadow: var(--cyan-glow); }
         .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
@@ -52,7 +60,6 @@
         #sidebar.open { right: 0; box-shadow: -12px 0 35px rgba(0,0,0,0.8); }
         .menu-item { font-family: var(--font-title); font-size: 1.1rem; margin-bottom: 22px; color: var(--cyan-dim); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: color 0.3s, text-shadow 0.3s; }
         .menu-item.active-menu { color: var(--cyan-bright); text-shadow: var(--cyan-glow); font-weight: bold; }
-        .menu-item:hover { color: var(--cyan-main); }
 
         /* --- [ 메인 뷰 공통 ] --- */
         #main-content > div { display: none; padding: 18px; padding-bottom: 80px; min-height: calc(100vh - 80px); box-sizing: border-box; }
@@ -60,28 +67,41 @@
         .view-title { font-size: 1.3rem; color: var(--cyan-bright); margin-bottom: 18px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--cyan-glow); }
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--cyan-dim); margin-left: 12px; position: relative;}
 
-        /* --- [ 1. 로비 뷰 ] --- */
-        #lobby-view { flex-direction: column; gap: 18px; align-items: center; justify-content: center; }
-        .lobby-main-title { font-size: 3.5rem; color: var(--cyan-bright); text-shadow: var(--cyan-glow); font-family: var(--font-title); letter-spacing: 5px; margin-bottom: 20px; animation: textPulse 2s infinite alternate;}
-        .lobby-btn { width: 100%; max-width: 320px; padding: 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
-        .lobby-btn:active { transform: scale(0.96); background: rgba(0, 255, 255, 0.15); border-color: var(--cyan-bright); box-shadow: var(--cyan-glow); }
+        /* --- [ 1. 로비 뷰 (타이틀 강화 & 애니메이션) ] --- */
+        #lobby-view { flex-direction: column; gap: 15px; align-items: center; justify-content: center; }
+        .lobby-main-title { font-size: 4rem; color: #fff; text-shadow: 0 0 10px var(--cyan-main), 0 0 20px var(--cyan-main), 0 0 40px var(--cyan-main); font-family: var(--font-title); letter-spacing: 5px; margin-bottom: 0; font-style: italic; }
+        .lobby-sub-title { font-size: 0.9rem; color: var(--cyan-bright); letter-spacing: 8px; margin-bottom: 30px; opacity: 0.8; font-weight: bold;}
+        
+        .lobby-btn { width: 100%; max-width: 320px; padding: 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; opacity: 0; transform: translateY(20px); }
+        #lobby-view.view-fade-in .lobby-btn { animation: slideUpFade 0.5s forwards; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(3) { animation-delay: 0.1s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(4) { animation-delay: 0.2s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(5) { animation-delay: 0.3s; }
+        .lobby-btn:active { transform: scale(0.96) !important; background: rgba(0, 255, 255, 0.15); border-color: var(--cyan-bright); box-shadow: var(--cyan-glow); }
 
         .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.9); border-top: 1px solid var(--cyan-dim); padding: 8px 0; overflow: hidden; z-index: 50; }
         .news-content { display: inline-block; white-space: nowrap; font-size: 0.85rem; color: var(--cyan-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 20s linear infinite; }
         .news-content span { margin-right: 50px; }
         .news-tag { background: var(--cyan-dim); color: #fff; padding: 2px 6px; border-radius: 2px; font-weight: bold; margin-right: 8px; font-family: var(--font-title);}
 
-        /* --- [ 2. 인물 데이터 뷰 ] --- */
+        /* --- [ 2. 인물 데이터 뷰 (미니 프로필 탑재) ] --- */
         .filter-container { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
         .filter-btn { flex: 1 1 calc(33% - 5px); background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan-main); padding: 8px 0; font-family: var(--font-title); font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; }
         .filter-btn.active { background: rgba(0, 255, 255, 0.2); border-color: var(--cyan-bright); color: var(--cyan-bright); text-shadow: var(--cyan-glow); box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2); }
+        
         .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .char-card { padding: 12px; font-size: 0.75rem; border-color: rgba(0, 255, 255, 0.3); cursor: pointer; transform-origin: center;}
-        .char-card:active { transform: scale(0.92); border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
+        .char-card { padding: 10px; font-size: 0.75rem; border-color: rgba(0, 255, 255, 0.3); cursor: pointer; display: flex; align-items: center; gap: 10px;}
+        .char-card:active { transform: scale(0.95); border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
         .char-fade-in { animation: smoothFadeIn 0.3s forwards; opacity: 0; }
-        .card-header { display: flex; justify-content: space-between; color: var(--cyan-main); opacity: 0.8; font-size: 0.65rem; margin-bottom: 5px; }
-        .char-name { font-size: 1.1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 3px; text-shadow: 0 0 3px #fff;}
-        .char-faction { text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 2px; font-weight: bold;}
+        
+        .mini-profile-img { width: 45px; height: 55px; border: 1px solid var(--cyan-dim); flex-shrink: 0; overflow: hidden; background: #000; }
+        .mini-profile-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .char-card:hover .mini-profile-img img { opacity: 1; transform: scale(1.1); transition: 0.3s; }
+        
+        .char-info-wrap { flex: 1; overflow: hidden; }
+        .card-header { display: flex; justify-content: space-between; color: var(--cyan-main); opacity: 0.8; font-size: 0.6rem; margin-bottom: 3px; }
+        .char-name { font-size: 1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; text-shadow: 0 0 3px #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 2px; font-weight: bold; font-size: 0.65rem;}
 
         /* --- [ 3. 지도 뷰 ] --- */
         .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(16,22,35,0.8) 0%, rgba(10,14,23,1) 100%); }
@@ -99,33 +119,36 @@
         .db-container { display: flex; flex-direction: column; gap: 12px; }
         .db-folder { background: rgba(20, 28, 45, 0.8); border: 1px solid var(--cyan-main); padding: 14px 18px; font-family: var(--font-title); font-size: 1.1rem; color: var(--cyan-bright); cursor: pointer; transition: background 0.3s, box-shadow 0.3s; text-shadow: var(--cyan-glow); }
         .db-folder.open { background: rgba(16, 22, 35, 0.9); }
-        .db-folder::before { content: '[+] '; color: var(--cyan-main); margin-right: 6px; transition: color 0.3s;}
+        .db-folder::before { content: '[+] '; color: var(--cyan-main); margin-right: 6px; }
         .db-folder.open::before { content: '[-] '; color: var(--cyan-bright); }
         .db-folder-content { display: none; flex-direction: column; gap: 6px; padding-left: 18px; margin-top: -6px; margin-bottom: 12px; border-left: 1px dashed var(--cyan-dim); }
         .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
-        .db-file { padding: 12px; background: rgba(16, 22, 35, 0.6); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 1rem; color: #fff; cursor: pointer; text-shadow: 0 0 2px #fff; }
+        .db-file { padding: 12px; background: rgba(16, 22, 35, 0.6); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 1rem; color: #fff; cursor: pointer; }
         .db-file.active { border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.1); padding-left: 20px; box-shadow: var(--cyan-glow); }
         .db-data-box { display: none; padding: 16px; background: rgba(8, 11, 19, 0.9); border: 1px solid var(--aqua-matrix); color: var(--aqua-matrix); font-size: 0.9rem; line-height: 1.7; margin-top: -6px; margin-bottom: 12px; box-shadow: 0 0 15px rgba(175, 255, 255, 0.2); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
         .highlight { color: #fff; background: rgba(0, 255, 255, 0.3); padding: 0 4px; font-family: var(--font-title); text-shadow: var(--cyan-glow); }
         .warning { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 5px var(--neon-red); }
 
-        /* --- [ 인물 상세 모달 ] --- */
+        /* --- [ 인물 상세 모달 (스크롤 버그 수정 완벽판) ] --- */
         #char-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(10, 14, 23, 0.9); z-index: 500; backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
         #char-modal.show { display: flex; opacity: 1; }
-        .modal-content { width: 100%; max-width: 420px; max-height: 85vh; background: rgba(16, 22, 35, 0.98); border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); overflow-y: auto; position: relative; padding: 22px; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        #char-modal.show .modal-content { transform: translateY(0) scale(1); }
-        .modal-content::-webkit-scrollbar { width: 6px; }
-        .modal-content::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
+        
+        /* 외부 박스 (고정, 테두리/장식 유지) */
+        .modal-box { width: 100%; max-width: 420px; height: 85vh; background: rgba(16, 22, 35, 0.98); border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;}
+        #char-modal.show .modal-box { transform: translateY(0) scale(1); }
         .modal-close { position: absolute; top: 12px; right: 18px; color: var(--cyan-bright); font-size: 1.8rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; text-shadow: var(--cyan-glow); z-index: 10;}
+        
+        /* 내부 스크롤 영역 */
+        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 22px; }
+        .modal-scroll-area::-webkit-scrollbar { width: 6px; }
+        .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
+        
         .m-header { border-bottom: 1px dashed var(--cyan-dim); padding-bottom: 12px; margin-bottom: 18px; }
         .m-name { font-size: 1.6rem; color: #fff; font-weight: bold; font-family: var(--font-title); text-shadow: 0 0 5px #fff; }
-        
-        /* 💡 프로필 이미지 영역 css */
         .m-profile-img-wrap { width: 100%; height: 220px; border: 1px solid var(--cyan-dim); margin-bottom: 15px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center;}
         .m-profile-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; opacity: 0.9; }
         .m-profile-img-wrap:hover img { transform: scale(1.05); opacity: 1; }
-        
         .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
         .m-stat-box { border: 1px solid rgba(0, 255, 255, 0.3); padding: 10px; background: rgba(20, 28, 45, 0.6); }
         .m-label { font-size: 0.7rem; color: var(--cyan-main); opacity: 0.8; display: block; margin-bottom: 3px; }
@@ -134,6 +157,8 @@
         .m-desc { font-size: 0.85rem; color: #eee; line-height: 1.6; background: rgba(8, 11, 19, 0.6); padding: 12px; border: 1px dotted var(--cyan-dim); }
         .tag { display: inline-block; padding: 3px 8px; background: rgba(0, 255, 255, 0.15); border: 1px solid rgba(0, 255, 255, 0.3); color: var(--cyan-bright); font-size: 0.7rem; border-radius: 4px; margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-shadow: var(--cyan-glow);}
         .tag-warning { background: rgba(255, 51, 51, 0.15); border-color: rgba(255, 51, 51, 0.3); color: #fff; text-shadow: 0 0 5px var(--neon-red); }
+        
+        .text-glitch { position: relative; color: var(--color-gord); font-weight: 900; animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 cyan; }
         .tag-glitch { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); color: #fff; text-shadow: 1px 0 red, -1px 0 blue; }
 
         /* --- [ 전체 화면 이미지 뷰어 ] --- */
@@ -142,22 +167,27 @@
         #img-viewer img { max-width: 90%; max-height: 90%; border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); object-fit: contain; }
         .viewer-close { position: absolute; top: 20px; right: 25px; color: var(--cyan-bright); font-size: 3rem; cursor: pointer; text-shadow: var(--cyan-glow); font-family: var(--font-title); z-index: 3010; }
 
-        /* --- [ 특수 글리치 애니메이션 ] --- */
-        .text-glitch { position: relative; color: var(--color-gord); font-weight: 900; animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 cyan; }
-        @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
-
         /* --- 애니메이션 키프레임 --- */
         @keyframes introEnd { to { opacity: 0; visibility: hidden; } }
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
+        @keyframes fillBar { 0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; } }
         @keyframes mapScan { 0% { top: -12px; } 100% { top: 100%; } }
         @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDownFade { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+        @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
     </style>
 </head>
 <body>
 
-    <div id="intro"><div class="glitch-text">OVER SOUL</div></div>
+    <div id="intro">
+        <div class="glitch-text">OVER SOUL</div>
+        <div class="loading-wrap">
+            <div class="loading-text">CONNECTING TO AETERNA NET...</div>
+            <div class="loading-bar"><div class="loading-fill"></div></div>
+        </div>
+    </div>
 
     <header>
         <h1 onclick="navTo('lobby')">O.S Terminal</h1>
@@ -174,8 +204,11 @@
     </div>
 
     <div id="main-content">
+        
         <div id="lobby-view" class="view-fade-in" style="display: flex;">
             <h2 class="lobby-main-title">OVER SOUL</h2>
+            <div class="lobby-sub-title">AETERNA NETWORK TERMINAL</div>
+
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
                 CHARACTER_DATA <span style="font-size:0.6rem; color:var(--cyan-bright)">ACCESS ></span>
             </div>
@@ -228,36 +261,37 @@
     </div>
 
     <div id="char-modal">
-        <div class="modal-content cyber-border decor-corners">
+        <div class="modal-box cyber-border decor-corners">
             <div class="modal-close" onclick="closeModal()">×</div>
             
-            <div class="m-profile-img-wrap" onclick="openImageViewer()">
-                <img id="md-img" src="" alt="Profile Image">
-            </div>
-
-            <div class="m-header">
-                <div class="m-faction" id="md-faction"></div>
-                <div class="m-name" id="md-name"></div>
-                <div style="margin-top:8px;" id="md-tags"></div>
-            </div>
-            <div class="m-grid">
-                <div class="m-stat-box cyber-border"><span class="m-label">THREAT</span><span class="m-val" id="md-rank" style="color:#ff2a2a"></span></div>
-                <div class="m-stat-box cyber-border"><span class="m-label">AGE</span><span class="m-val" id="md-age"></span></div>
-                <div class="m-stat-box cyber-border"><span class="m-label">MBTI</span><span class="m-val" id="md-mbti"></span></div>
-                <div class="m-stat-box cyber-border"><span class="m-label">ENNEAGRAM</span><span class="m-val" id="md-ennea"></span></div>
-            </div>
-            <div class="m-section" style="margin-bottom: 15px;">
-                <div class="m-section-title">COMBAT_DATA</div>
-                <div class="m-desc cyber-border">
-                    <span style="color:var(--cyan-main)">[레조넌스]</span> <span id="md-reso"></span><br>
-                    <span style="color:var(--cyan-main)">[능력]</span> <span id="md-ability"></span><br>
-                    <span style="color:var(--cyan-main)">[커튼콜]</span> <span id="md-curtain"></span><br>
-                    <span style="color:var(--cyan-main)">[상태]</span> 조율: <span id="md-tune"></span> / 백스테이지: <span id="md-back"></span> / 오버소울: <span id="md-over"></span>
+            <div class="modal-scroll-area">
+                <div class="m-profile-img-wrap" onclick="openImageViewer()">
+                    <img id="md-img" src="" alt="Profile Image">
                 </div>
-            </div>
-            <div class="m-section">
-                <div class="m-section-title">PERSONAL_RECORD</div>
-                <div class="m-desc cyber-border" id="md-detail" style="color:#eee;"></div>
+                <div class="m-header">
+                    <div class="m-faction" id="md-faction"></div>
+                    <div class="m-name" id="md-name"></div>
+                    <div style="margin-top:8px;" id="md-tags"></div>
+                </div>
+                <div class="m-grid">
+                    <div class="m-stat-box cyber-border"><span class="m-label">THREAT</span><span class="m-val" id="md-rank"></span></div>
+                    <div class="m-stat-box cyber-border"><span class="m-label">AGE</span><span class="m-val" id="md-age"></span></div>
+                    <div class="m-stat-box cyber-border"><span class="m-label">MBTI</span><span class="m-val" id="md-mbti"></span></div>
+                    <div class="m-stat-box cyber-border"><span class="m-label">ENNEAGRAM</span><span class="m-val" id="md-ennea"></span></div>
+                </div>
+                <div class="m-section" style="margin-bottom: 15px;">
+                    <div class="m-section-title">COMBAT_DATA</div>
+                    <div class="m-desc cyber-border">
+                        <span style="color:var(--cyan-main)">[레조넌스]</span> <span id="md-reso"></span><br>
+                        <span style="color:var(--cyan-main)">[능력]</span> <span id="md-ability"></span><br>
+                        <span style="color:var(--cyan-main)">[커튼콜]</span> <span id="md-curtain"></span><br>
+                        <span style="color:var(--cyan-main)">[상태]</span> 조율: <span id="md-tune"></span> / 백스테이지: <span id="md-back"></span> / 오버소울: <span id="md-over"></span>
+                    </div>
+                </div>
+                <div class="m-section">
+                    <div class="m-section-title">PERSONAL_RECORD</div>
+                    <div class="m-desc cyber-border" id="md-detail" style="color:#eee;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -268,37 +302,7 @@
     </div>
 
     <script>
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
-        function navTo(viewId) {
-            document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
-            const target = document.getElementById(viewId + '-view');
-            if(target) { target.style.display = (viewId === 'lobby') ? 'flex' : 'block'; void target.offsetWidth; target.classList.add('view-fade-in'); }
-            document.getElementById('sidebar').classList.remove('open');
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
-            const activeNav = document.getElementById('nav-' + viewId);
-            if(activeNav) activeNav.classList.add('active-menu');
-            window.scrollTo(0, 0);
-        }
-
-        const newsItems = [
-            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
-            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
-            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 K-Pop 앨범 발표, '이번 비트는 당신의 심장을 찢어놓을 것'",
-            "<span class='news-tag'>[사회]</span> 최근 불법 '조율' 시술 받던 민간인 3명 글리치화... 당국 수사 착수",
-            "<span class='news-tag'>[속보]</span> 서부 빈민가에서 신원 미상의 인물이 대량의 'lo-fi' 유통 중인 것으로 밝혀져",
-            "<span class='news-tag'>[기상]</span> 내일 오전 동북부 지역 미세한 '더 뮤트' 현상 발생 가능성... 외출 자제 요망",
-            "<span class='news-tag'>[종교]</span> 신흥 종교 신도 수 급증... 교황 크리스 '고드의 이름으로 모두를 사랑하라'",
-            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각적인 경계 태세 돌입"
-        ];
-        function updateNews() {
-            let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 4);
-            let newsHTML = "";
-            shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
-            document.getElementById('news-ticker').innerHTML = newsHTML;
-        }
-        updateNews(); setInterval(updateNews, 20000); 
-
-        // --- 이미지 URL이 추가된 캐릭터 DB ---
+        // --- 1. 이미지 사전 로딩 (Pre-load) ---
         const charDB = [
             { img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
             { img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
@@ -316,6 +320,30 @@
             { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "천국의 업무를 때려치우고 저승에서 놀다가 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
         ];
 
+        // 사전 로딩
+        const preloadedImages = [];
+        charDB.forEach(char => {
+            if(char.img) {
+                const img = new Image();
+                img.src = char.img;
+                preloadedImages.push(img);
+            }
+        });
+
+        // --- 부드러운 네비게이션 로직 ---
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
+        function navTo(viewId) {
+            document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
+            const target = document.getElementById(viewId + '-view');
+            if(target) { target.style.display = (viewId === 'lobby') ? 'flex' : 'block'; void target.offsetWidth; target.classList.add('view-fade-in'); }
+            document.getElementById('sidebar').classList.remove('open');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
+            const activeNav = document.getElementById('nav-' + viewId);
+            if(activeNav) activeNav.classList.add('active-menu');
+            window.scrollTo(0, 0);
+        }
+
+        // --- 캐릭터 렌더링 (미니 프로필 이미지 추가) ---
         function getFactionColor(faction) {
             if(faction === "애스터") return "var(--color-aster)";
             if(faction === "델라쿠르아") return "var(--color-dela)";
@@ -335,10 +363,13 @@
 
                     const cardHtml = `
                         <div class="char-card cyber-border char-fade-in decor-corners" style="animation-delay: ${delayTime}s" onclick="openModal(${i})">
-                            <div class="card-header"><span>ID: <span style="color:${rColor}">${char.rank}</span></span> <span>[DETAILS >]</span></div>
-                            <div class="${cNameClass}">${char.name}</div>
-                            <div class="char-faction" style="color:${facColor}; border-color: ${facColor}; opacity: 0.8;">${char.faction}</div>
-                            <div style="color:var(--cyan-main); font-size:0.65rem; margin-top:5px;">Resonance: ${char.reso}</div>
+                            <div class="mini-profile-img"><img src="${char.img}"></div>
+                            <div class="char-info-wrap">
+                                <div class="card-header"><span>ID: <span style="color:${rColor}">${char.rank}</span></span></div>
+                                <div class="${cNameClass}">${char.name}</div>
+                                <div class="char-faction" style="color:${facColor}; border-color: ${facColor}; opacity: 0.8;">${char.faction}</div>
+                                <div style="color:var(--cyan-main); font-size:0.65rem; margin-top:2px;">Resonance: ${char.reso}</div>
+                            </div>
                         </div>`;
                     container.insertAdjacentHTML('beforeend', cardHtml);
                     delayTime += 0.05; 
@@ -351,12 +382,11 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // --- 모달 로직 ---
+        // --- 모달 & 이미지 뷰어 로직 (스크롤 버그 수정) ---
         function openModal(index) {
             const char = charDB[index];
             const facColor = getFactionColor(char.faction);
             
-            // 이미지 및 텍스트 데이터 바인딩
             document.getElementById('md-img').src = char.img;
             document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
             document.getElementById('md-faction').style.color = facColor;
@@ -392,9 +422,8 @@
                 tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
             });
             
-            // 모달 띄우고 배경 스크롤 락
             const modal = document.getElementById('char-modal');
-            document.body.classList.add('no-scroll');
+            document.body.classList.add('no-scroll'); // 💡 모달 열 때 배경 스크롤 락
             modal.style.display = 'flex'; void modal.offsetWidth; modal.classList.add('show'); 
         }
         
@@ -403,11 +432,10 @@
             modal.classList.remove('show'); 
             setTimeout(() => { 
                 modal.style.display = 'none'; 
-                document.body.classList.remove('no-scroll'); // 스크롤 락 해제
+                document.body.classList.remove('no-scroll'); // 💡 모달 닫을 때 스크롤 해제
             }, 300);
         }
 
-        // --- 전체화면 뷰어 로직 ---
         function openImageViewer() {
             const imgSrc = document.getElementById('md-img').src;
             document.getElementById('viewer-img').src = imgSrc;
@@ -420,6 +448,25 @@
             viewer.classList.remove('show');
             setTimeout(() => { viewer.style.display = 'none'; }, 300);
         }
+
+        // --- 랜덤 뉴스 티커 ---
+        const newsItems = [
+            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
+            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
+            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 K-Pop 앨범 발표, '이번 비트는 당신의 심장을 찢어놓을 것'",
+            "<span class='news-tag'>[사회]</span> 최근 불법 '조율' 시술 받던 민간인 3명 글리치화... 당국 수사 착수",
+            "<span class='news-tag'>[속보]</span> 서부 빈민가에서 신원 미상의 인물이 대량의 'lo-fi' 유통 중인 것으로 밝혀져",
+            "<span class='news-tag'>[기상]</span> 내일 오전 동북부 지역 미세한 '더 뮤트' 현상 발생 가능성... 외출 자제 요망",
+            "<span class='news-tag'>[종교]</span> 신흥 종교 신도 수 급증... 교황 크리스 '고드의 이름으로 모두를 사랑하라'",
+            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각 경계 태세 돌입"
+        ];
+        function updateNews() {
+            let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 4);
+            let newsHTML = "";
+            shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
+            document.getElementById('news-ticker').innerHTML = newsHTML;
+        }
+        updateNews(); setInterval(updateNews, 20000);
 
         // --- 시스템 DB ---
         const systemDB = [
@@ -459,6 +506,7 @@
             dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
         });
 
+        // 초기 실행
         renderCharacters('ALL');
     </script>
 </body>
