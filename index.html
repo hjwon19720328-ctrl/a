@@ -3,163 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal Final</title>
+    <title>OVER SOUL - Hologram Terminal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* --- [ 공통 변수 및 배경 ] --- */
         :root {
-            --bg-base: #020202; --gold-main: #d4af37; --gold-bright: #ffe680;
-            --gold-dim: #5c4b1a; --danger: #ff2a2a; --matrix-green: #44ff44;
-            --font-title: 'Orbitron', sans-serif; --font-data: 'Share Tech Mono', monospace;
-            --cyber-glow: 0 0 10px rgba(212, 175, 55, 0.5);
+            /* 밝은 홀로그램 테마 색상으로 전면 교체 */
+            --bg-base: #0a0e17; /* 깊고 어두운 네이비 블루 배경 */
+            --cyan-main: #00ffff; /* 선명한 네온 블루 */
+            --cyan-bright: #ccffff; /* 매우 밝은 아쿠아 블루 */
+            --cyan-dim: #004d4d; /* 어두운 Cyan (배경 데코용) */
+            --neon-red: #ff3333; /* 밝은 네온 레드 (위험 등급용) */
+            --aqua-matrix: #afffff; /* 시스템 DB용 밝은 아쿠아 */
+            --magenta-glitch: #ff00ff; /* 고드 전용 마젠타 글리치 */
+            
+            --font-title: 'Orbitron', sans-serif; 
+            --font-data: 'Share Tech Mono', monospace;
+            /* 빛 번짐 효과 강화 */
+            --cyan-glow: 0 0 12px rgba(0, 255, 255, 0.7);
         }
 
         body {
-            margin: 0; background-color: var(--bg-base); color: var(--gold-main);
+            margin: 0; background-color: var(--bg-base); color: var(--cyan-main);
             font-family: var(--font-data); overflow-x: hidden; user-select: none;
             -webkit-tap-highlight-color: transparent;
+            /* 텍스트에도 은은한 빛 번짐 추가 */
+            text-shadow: 0 0 2px var(--cyan-main);
         }
 
-        body::after {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 999; background-size: 100% 3px, 4px 100%; pointer-events: none; opacity: 0.6;
+        /* 스캔라인 효과 제거 */
+
+        /* 배경 회로 패턴 Cyan으로 변경 */
+        body::before {
+            content:''; position: fixed; top:0; left:0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(var(--bg-base) 0%, transparent 80%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%2300ffff" stroke-width="1" fill="none"/></svg>');
+            background-size: cover, 150px 150px; opacity: 0.3; pointer-events: none;
         }
 
         h1, h2, h3 { font-family: var(--font-title); margin: 0; }
-        .cyber-border { border: 1px solid var(--gold-dim); background: rgba(10, 10, 10, 0.7); position: relative; transition: all 0.3s ease; }
-        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:8px; height:8px; border-top:2px solid var(--gold-bright); border-left:2px solid var(--gold-bright); }
-        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:8px; height:8px; border-bottom:2px solid var(--gold-bright); border-right:2px solid var(--gold-bright); }
+        .cyber-border { border: 1px solid var(--cyan-dim); background: rgba(16, 22, 35, 0.7); position: relative; transition: all 0.3s ease; }
+        .cyber-border:hover { border-color: var(--cyan-main); box-shadow: var(--cyan-glow); }
+        
+        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:10px; height:10px; border-top:2px solid var(--cyan-bright); border-left:2px solid var(--cyan-bright); }
+        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:10px; height:10px; border-bottom:2px solid var(--cyan-bright); border-right:2px solid var(--cyan-bright); }
 
         /* --- [ 인트로 & 상시 UI ] --- */
         #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 1.5s; }
-        .glitch-text { font-size: 3rem; font-weight: 900; color: var(--gold-bright); text-shadow: var(--cyber-glow); animation: textPulse 1s infinite alternate; }
-        .sys-frame-info { position: fixed; font-size: 0.65rem; color: var(--gold-dim); z-index: 80; pointer-events: none; }
-        .top-left-info { top: 5px; left: 10px; }
-        .bottom-right-info { bottom: 5px; right: 10px; text-align: right; }
-        .blink-dot { display: inline-block; width: 5px; height: 5px; background: var(--matrix-green); border-radius: 50%; margin-left: 5px; animation: blink 1s infinite; }
+        .glitch-text { font-size: 3.5rem; font-weight: 900; color: var(--cyan-bright); text-shadow: var(--cyan-glow); animation: textPulse 1s infinite alternate; }
+        .sys-frame-info { position: fixed; font-size: 0.7rem; color: var(--cyan-dim); z-index: 80; pointer-events: none; }
+        .top-left-info { top: 8px; left: 12px; }
+        .bottom-right-info { bottom: 8px; right: 12px; text-align: right; }
+        .blink-dot { display: inline-block; width: 6px; height: 6px; background: var(--cyan-main); border-radius: 50%; margin-left: 6px; animation: blink 1s infinite; }
 
         /* --- [ 헤더 & 사이드바 ] --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--gold-dim); background: rgba(2, 2, 2, 0.95); position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
-        header h1 { font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 2px; cursor: pointer; transition: text-shadow 0.3s;}
-        header h1:active { text-shadow: 0 0 15px var(--gold-bright); }
-        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 5px; transition: transform 0.3s;}
-        .hamburger:active { transform: scale(0.9); }
-        .hamburger div { width: 22px; height: 2px; background-color: var(--gold-main); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--cyan-dim); background: rgba(10, 14, 23, 0.95); position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
+        header h1 { font-size: 1.5rem; color: var(--cyan-bright); letter-spacing: 3px; cursor: pointer; transition: text-shadow 0.3s; text-shadow: var(--cyan-glow); }
+        header h1:active { text-shadow: 0 0 18px var(--cyan-bright); }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; transition: transform 0.3s;}
+        .hamburger:active { transform: scale(0.85); }
+        .hamburger div { width: 24px; height: 2px; background-color: var(--cyan-main); box-shadow: var(--cyan-glow); }
         
-        #sidebar { position: fixed; top: 0; right: -100%; width: 230px; height: 100vh; background: rgba(5, 5, 5, 0.98); border-left: 1px solid var(--gold-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 60px 15px 30px; z-index: 90; }
-        #sidebar.open { right: 0; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
-        .menu-item { font-family: var(--font-title); font-size: 1rem; margin-bottom: 20px; color: var(--gold-dim); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: color 0.3s, text-shadow 0.3s; }
-        .menu-item.active-menu { color: var(--gold-bright); text-shadow: var(--cyber-glow); font-weight: bold; }
-        .menu-item:hover { color: var(--gold-main); }
+        #sidebar { position: fixed; top: 0; right: -100%; width: 240px; height: 100vh; background: rgba(8, 11, 19, 0.98); border-left: 1px solid var(--cyan-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 70px 18px 35px; z-index: 90; }
+        #sidebar.open { right: 0; box-shadow: -12px 0 35px rgba(0,0,0,0.8); }
+        .menu-item { font-family: var(--font-title); font-size: 1.1rem; margin-bottom: 22px; color: var(--cyan-dim); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: color 0.3s, text-shadow 0.3s; }
+        .menu-item.active-menu { color: var(--cyan-bright); text-shadow: var(--cyan-glow); font-weight: bold; }
+        .menu-item:not(.active-menu):hover { color: var(--cyan-main); text-shadow: 0 0 5px var(--cyan-main); }
 
         /* --- [ 메인 뷰 공통 ] --- */
-        #main-content > div { display: none; padding: 15px; padding-bottom: 50px; min-height: calc(100vh - 70px); box-sizing: border-box; }
+        #main-content > div { display: none; padding: 18px; padding-bottom: 55px; min-height: calc(100vh - 80px); box-sizing: border-box; }
         .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
-        .view-title { font-size: 1.1rem; color: var(--gold-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; }
-        .view-title-decor { flex-grow: 1; height: 1px; background: var(--gold-dim); margin-left: 10px; position: relative;}
+        .view-title { font-size: 1.3rem; color: var(--cyan-bright); margin-bottom: 18px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--cyan-glow); }
+        .view-title-decor { flex-grow: 1; height: 1px; background: var(--cyan-dim); margin-left: 12px; position: relative;}
+        .view-title-decor::after { content:''; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; background: var(--cyan-bright); box-shadow: var(--cyan-glow); }
 
         /* --- [ 1. 로비 뷰 ] --- */
-        #lobby-view { flex-direction: column; gap: 15px; }
-        .lobby-btn { padding: 18px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; }
-        .lobby-btn:active { transform: scale(0.97); background: rgba(212, 175, 55, 0.15); border-color: var(--gold-bright); }
-        .log-container { flex-grow: 1; padding: 10px; font-size: 0.75rem; color: var(--gold-dim); transition: box-shadow 0.3s; }
-        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(212, 175, 55, 0.05); padding-bottom: 2px;}
+        #lobby-view { flex-direction: column; gap: 18px; }
+        .lobby-btn { padding: 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
+        .lobby-btn:active { transform: scale(0.96); background: rgba(0, 255, 255, 0.15); border-color: var(--cyan-bright); box-shadow: var(--cyan-glow); }
+        .log-container { flex-grow: 1; padding: 12px; font-size: 0.8rem; color: var(--cyan-main); opacity: 0.8; }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px solid rgba(0, 255, 255, 0.1); padding-bottom: 3px;}
 
         /* --- [ 2. 인물 데이터 뷰 ] --- */
-        .filter-container { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 15px; }
-        .filter-btn { flex: 1 1 calc(33% - 4px); background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-dim); padding: 7px 0; font-family: var(--font-title); font-size: 0.7rem; cursor: pointer; transition: all 0.3s ease; }
-        .filter-btn.active { background: rgba(212, 175, 55, 0.15); border-color: var(--gold-bright); color: var(--gold-bright); text-shadow: var(--cyber-glow); }
+        .filter-container { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
+        .filter-btn { flex: 1 1 calc(33% - 5px); background: transparent; border: 1px solid var(--cyan-dim); color: var(--cyan-main); padding: 8px 0; font-family: var(--font-title); font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; }
+        .filter-btn.active { background: rgba(0, 255, 255, 0.2); border-color: var(--cyan-bright); color: var(--cyan-bright); text-shadow: var(--cyan-glow); box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2); }
+        .filter-btn:not(.active):hover { border-color: var(--cyan-main); background: rgba(0, 255, 255, 0.1); }
         
-        .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .char-card { padding: 10px; font-size: 0.7rem; border-color: rgba(212, 175, 55, 0.2); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; transform-origin: center;}
-        .char-card:active { transform: scale(0.92); border-color: var(--gold-bright); background: rgba(212, 175, 55, 0.1); }
+        .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .char-card { padding: 12px; font-size: 0.75rem; border-color: rgba(0, 255, 255, 0.3); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; transform-origin: center;}
+        .char-card:active { transform: scale(0.92); border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
         .char-fade-in { animation: smoothFadeIn 0.3s forwards; opacity: 0; }
 
-        .card-header { display: flex; justify-content: space-between; color: var(--gold-dim); font-size: 0.6rem; margin-bottom: 4px; }
-        .char-name { font-size: 1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; transition: color 0.3s;}
-        .char-faction { color: var(--gold-main); text-transform: uppercase; margin-bottom: 5px; border-bottom: 1px solid rgba(212, 175, 55, 0.1);}
+        .card-header { display: flex; justify-content: space-between; color: var(--cyan-main); opacity: 0.7; font-size: 0.65rem; margin-bottom: 5px; }
+        .char-name { font-size: 1.1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 3px; text-shadow: 0 0 3px #fff;}
+        .char-faction { color: var(--cyan-bright); text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); padding-bottom: 2px;}
 
         /* --- [ 3. 지도 뷰 ] --- */
-        .map-wrapper { width: 100%; height: 60vh; border: 1px solid var(--gold-dim); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(10,10,10,0.8) 0%, rgba(0,0,0,1) 100%); }
+        .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(16,22,35,0.8) 0%, rgba(10,14,23,1) 100%); }
         .map-overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
-        .map-grid { background-image: linear-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.08) 1px, transparent 1px); background-size: 15px 15px; }
-        .map-scanlines { height: 10px; background: rgba(212, 175, 55, 0.1); animation: mapScan 6s linear infinite; }
-        .tower-mark { position: absolute; top: 48%; left: 55%; width: 10px; height: 10px; background: #fff; box-shadow: 0 0 15px #fff; transform: translate(-50%, -50%) rotate(45deg); z-index: 20; }
-        .map-zone { position: absolute; border: 1px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.6rem; font-weight: bold; color: #fff; text-shadow: 0 0 5px #000; transition: all 0.3s ease; }
-        .map-zone:active { transform: scale(1.05); background: rgba(255,255,255,0.15); }
-        .zone-pol-aster { width: 130px; height: 110px; top: 20%; left: 5%; background: rgba(255, 204, 0, 0.1); border-color: #ffcc00; clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
-        .zone-pol-dela { width: 90px; height: 80px; bottom: 15%; left: 65%; background: rgba(192, 192, 192, 0.1); border-color: #c0c0c0; clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
-        .zone-pol-star { width: 65px; height: 60px; top: 15%; left: 75%; background: rgba(255, 248, 220, 0.1); border-color: #fff8dc; clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
-        .map-data-panel { font-size: 0.7rem; color: var(--gold-dim); margin-top: 10px; border-top: 1px solid rgba(212, 175, 55, 0.1); padding-top: 8px;}
+        .map-grid { background-image: linear-gradient(rgba(0, 255, 255, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.12) 1px, transparent 1px); background-size: 18px 18px; }
+        .map-scanlines { height: 12px; background: rgba(0, 255, 255, 0.15); animation: mapScan 6s linear infinite; }
+        .tower-mark { position: absolute; top: 48%; left: 55%; width: 12px; height: 12px; background: #fff; box-shadow: 0 0 18px #fff, var(--cyan-glow); transform: translate(-50%, -50%) rotate(45deg); z-index: 20; }
+        .map-zone { position: absolute; border: 2px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.65rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px #000; transition: all 0.3s ease; backdrop-filter: blur(1px); }
+        .map-zone:active { transform: scale(1.08); background: rgba(255,255,255,0.2); }
+        .zone-pol-aster { width: 135px; height: 115px; top: 20%; left: 5%; background: rgba(255, 204, 0, 0.15); border-color: #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
+        .zone-pol-dela { width: 95px; height: 85px; bottom: 15%; left: 65%; background: rgba(192, 192, 192, 0.15); border-color: #c0c0c0; box-shadow: 0 0 15px rgba(192, 192, 192, 0.4); clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
+        .zone-pol-star { width: 70px; height: 65px; top: 15%; left: 75%; background: rgba(255, 248, 220, 0.15); border-color: #fff8dc; box-shadow: 0 0 15px rgba(255, 248, 220, 0.4); clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
+        .map-data-panel { font-size: 0.75rem; color: var(--cyan-main); margin-top: 12px; border-top: 1px solid rgba(0, 255, 255, 0.2); padding-top: 10px;}
 
         /* --- [ 4. 시스템 DB 뷰 ] --- */
-        .db-container { display: flex; flex-direction: column; gap: 10px; }
-        .db-folder { background: rgba(20, 20, 20, 0.8); border: 1px solid var(--gold-main); padding: 12px 15px; font-family: var(--font-title); font-size: 1rem; color: var(--gold-bright); cursor: pointer; transition: background 0.3s; }
-        .db-folder:active { background: rgba(212, 175, 55, 0.2); }
-        .db-folder::before { content: '[+] '; color: var(--gold-dim); margin-right: 5px; transition: color 0.3s;}
-        .db-folder.open::before { content: '[-] '; color: var(--gold-bright); }
+        .db-container { display: flex; flex-direction: column; gap: 12px; }
+        .db-folder { background: rgba(20, 28, 45, 0.8); border: 1px solid var(--cyan-main); padding: 14px 18px; font-family: var(--font-title); font-size: 1.1rem; color: var(--cyan-bright); cursor: pointer; transition: background 0.3s, box-shadow 0.3s; text-shadow: var(--cyan-glow); }
+        .db-folder:active { background: rgba(0, 255, 255, 0.15); box-shadow: var(--cyan-glow); }
+        .db-folder::before { content: '[+] '; color: var(--cyan-main); margin-right: 6px; transition: color 0.3s;}
+        .db-folder.open::before { content: '[-] '; color: var(--cyan-bright); }
+        .db-folder.open { background: rgba(16, 22, 35, 0.9); }
         
-        .db-folder-content { display: none; flex-direction: column; gap: 5px; padding-left: 15px; margin-top: -5px; margin-bottom: 10px; border-left: 1px dashed var(--gold-dim); }
+        .db-folder-content { display: none; flex-direction: column; gap: 6px; padding-left: 18px; margin-top: -6px; margin-bottom: 12px; border-left: 1px dashed var(--cyan-dim); }
         .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
 
-        .db-file { padding: 10px; background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(212, 175, 55, 0.3); font-size: 0.9rem; color: #fff; cursor: pointer; transition: all 0.2s ease; }
-        .db-file::before { content: '> '; color: var(--gold-dim); margin-right: 8px; }
-        .db-file.active { border-color: var(--gold-main); background: rgba(212, 175, 55, 0.1); padding-left: 15px;}
+        .db-file { padding: 12px; background: rgba(16, 22, 35, 0.6); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 1rem; color: #fff; cursor: pointer; transition: all 0.2s ease; text-shadow: 0 0 2px #fff; }
+        .db-file::before { content: '> '; color: var(--cyan-main); margin-right: 10px; }
+        .db-file.active { border-color: var(--cyan-bright); background: rgba(0, 255, 255, 0.1); padding-left: 20px; box-shadow: var(--cyan-glow); }
         
-        .db-data-box { display: none; padding: 15px; background: #050505; border: 1px solid var(--matrix-green); color: var(--matrix-green); font-size: 0.8rem; line-height: 1.6; margin-top: -5px; margin-bottom: 10px; }
+        /* 시스템 DB 내용 아쿠아 블루로 변경 */
+        .db-data-box { display: none; padding: 16px; background: rgba(8, 11, 19, 0.9); border: 1px solid var(--aqua-matrix); color: var(--aqua-matrix); font-size: 0.9rem; line-height: 1.7; margin-top: -6px; margin-bottom: 12px; box-shadow: 0 0 15px rgba(175, 255, 255, 0.2); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
         
-        .highlight { color: #fff; background: rgba(212, 175, 55, 0.3); padding: 0 3px; font-family: var(--font-title); }
-        .warning { color: var(--danger); font-weight: bold; }
+        .highlight { color: #fff; background: rgba(0, 255, 255, 0.3); padding: 0 4px; font-family: var(--font-title); text-shadow: var(--cyan-glow); }
+        .warning { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 5px var(--neon-red); }
 
-        /* --- [ 인물 상세 모달 ] --- */
+        /* --- [ 인물 상세 모달 (배경 약간 밝게) ] --- */
         #char-modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            background: rgba(0, 0, 0, 0.85); z-index: 500; backdrop-filter: blur(5px); 
+            background: rgba(10, 14, 23, 0.9); z-index: 500; backdrop-filter: blur(4px); 
             justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; 
             opacity: 0; transition: opacity 0.3s ease; 
         }
         #char-modal.show { display: flex; opacity: 1; }
         
         .modal-content { 
-            width: 100%; max-width: 400px; max-height: 85vh; background: #080808; 
-            border: 2px solid var(--gold-main); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); 
-            overflow-y: auto; position: relative; padding: 20px; 
+            width: 100%; max-width: 420px; max-height: 85vh; background: rgba(16, 22, 35, 0.98); 
+            border: 2px solid var(--cyan-main); box-shadow: var(--cyan-glow); 
+            overflow-y: auto; position: relative; padding: 22px; 
             transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         #char-modal.show .modal-content { transform: translateY(0) scale(1); }
 
-        .modal-content::-webkit-scrollbar { width: 5px; }
-        .modal-content::-webkit-scrollbar-thumb { background: var(--gold-dim); }
-        .modal-close { position: absolute; top: 10px; right: 15px; color: var(--gold-bright); font-size: 1.5rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s;}
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
+        .modal-close { position: absolute; top: 12px; right: 18px; color: var(--cyan-bright); font-size: 1.8rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; text-shadow: var(--cyan-glow); }
         .modal-close:active { transform: scale(0.8); }
-        .m-header { border-bottom: 1px dashed var(--gold-dim); padding-bottom: 10px; margin-bottom: 15px; }
-        .m-name { font-size: 1.5rem; color: #fff; font-weight: bold; font-family: var(--font-title); }
-        .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .m-stat-box { border: 1px solid rgba(212, 175, 55, 0.3); padding: 8px; background: rgba(20, 20, 20, 0.5); }
-        .m-label { font-size: 0.65rem; color: var(--gold-dim); display: block; margin-bottom: 2px; }
-        .m-val { font-size: 0.85rem; color: var(--gold-bright); font-weight: bold; }
-        .m-section-title { font-size: 0.8rem; color: var(--gold-main); border-left: 3px solid var(--gold-bright); padding-left: 5px; margin-bottom: 5px; }
-        .m-desc { font-size: 0.8rem; color: #ddd; line-height: 1.5; background: rgba(0,0,0,0.5); padding: 10px; border: 1px dotted var(--gold-dim); }
-        .tag { display: inline-block; padding: 2px 6px; background: var(--gold-dim); color: #000; font-size: 0.65rem; border-radius: 3px; margin-right: 4px; margin-bottom: 4px; font-weight: bold;}
-        .tag-warning { background: var(--danger); color: #fff; }
+        .m-header { border-bottom: 1px dashed var(--cyan-dim); padding-bottom: 12px; margin-bottom: 18px; }
+        .m-name { font-size: 1.6rem; color: #fff; font-weight: bold; font-family: var(--font-title); text-shadow: 0 0 5px #fff; }
+        .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+        .m-stat-box { border: 1px solid rgba(0, 255, 255, 0.3); padding: 10px; background: rgba(20, 28, 45, 0.6); }
+        .m-label { font-size: 0.7rem; color: var(--cyan-main); opacity: 0.8; display: block; margin-bottom: 3px; }
+        .m-val { font-size: 0.9rem; color: var(--cyan-bright); font-weight: bold; text-shadow: var(--cyan-glow); }
+        .m-section-title { font-size: 0.9rem; color: var(--cyan-main); border-left: 4px solid var(--cyan-bright); padding-left: 7px; margin-bottom: 7px; text-shadow: var(--cyan-glow); }
+        .m-desc { font-size: 0.85rem; color: #eee; line-height: 1.6; background: rgba(8, 11, 19, 0.6); padding: 12px; border: 1px dotted var(--cyan-dim); }
+        .tag { display: inline-block; padding: 3px 8px; background: rgba(0, 255, 255, 0.15); border: 1px solid rgba(0, 255, 255, 0.3); color: var(--cyan-bright); font-size: 0.7rem; border-radius: 4px; margin-right: 5px; margin-bottom: 5px; font-weight: bold; text-shadow: var(--cyan-glow);}
+        .tag-warning { background: rgba(255, 51, 51, 0.15); border-color: rgba(255, 51, 51, 0.3); color: #fff; text-shadow: 0 0 5px var(--neon-red); }
+        .tag-glitch { background: rgba(255, 0, 255, 0.15); border-color: rgba(255, 0, 255, 0.3); color: #fff; text-shadow: 1px 0 red, -1px 0 blue; }
+
+        /* --- [ 특수 글리치 애니메이션 (고드 전용, 마젠타로 변경) ] --- */
+        .text-glitch {
+            position: relative; color: var(--magenta-glitch); font-weight: 900;
+            animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 cyan;
+        }
+        @keyframes textGlitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(-1px, -1px); }
+            60% { transform: translate(2px, 1px); }
+            80% { transform: translate(1px, -1px); }
+            100% { transform: translate(0); }
+        }
 
         /* --- 애니메이션 키프레임 --- */
         @keyframes introEnd { to { opacity: 0; visibility: hidden; } }
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes mapScan { 0% { top: -10px; } 100% { top: 100%; } }
-        @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes mapScan { 0% { top: -12px; } 100% { top: 100%; } }
+        @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDownFade { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div id="intro"><div class="glitch-text">OVER SOUL</div></div>
-    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv4.0 <span class="blink-dot"></span></div>
+    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv5.1 <span class="blink-dot"></span></div>
     <div class="sys-frame-info bottom-right-info">UTC: <span id="frame-time"></span></div>
 
     <header>
@@ -180,7 +217,7 @@
         
         <div id="lobby-view" class="view-fade-in" style="display: flex;">
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
-                CHARACTER_DATA <span style="font-size:0.6rem; color:var(--gold-bright)">ACCESS ></span>
+                CHARACTER_DATA <span style="font-size:0.6rem; color:var(--cyan-bright)">ACCESS ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('map')">
                 TACTICAL_MAP <span style="font-size:0.6rem">VIEW ></span>
@@ -190,9 +227,10 @@
             </div>
             
             <div class="cyber-border decor-corners log-container">
-                <div style="color:var(--gold-main); font-weight:bold; margin-bottom:5px; border-bottom:1px solid var(--gold-dim)">SYSTEM_LOG</div>
-                <div class="log-entry"><span style="color:var(--gold-main)">[SYSTEM]</span> All Modules Online.</div>
-                <div class="log-entry"><span style="color:var(--gold-main)">[DB]</span> Char_Data & Sys_Config Synced.</div>
+                <div style="color:var(--cyan-main); font-weight:bold; margin-bottom:5px; border-bottom:1px solid var(--cyan-dim)">SYSTEM_LOG</div>
+                <div class="log-entry"><span style="color:var(--cyan-main)">[SYSTEM]</span> All Modules Online.</div>
+                <div class="log-entry"><span style="color:var(--neon-red)">[WARN]</span> Unidentified Entity (Gord) detected.</div>
+                <div class="log-entry"><span style="color:var(--cyan-main)">[DB]</span> Char_Data v5.1 Synced.</div>
             </div>
         </div>
 
@@ -219,7 +257,7 @@
                 <div class="map-zone zone-pol-star">STARDUST</div>
             </div>
             <div class="map-data-panel">
-                <div style="font-weight:bold; color:var(--gold-bright); margin-bottom:4px;">REGION DATA</div>
+                <div style="font-weight:bold; color:var(--cyan-bright); margin-bottom:4px;">REGION DATA</div>
                 <div><span style="color:#ffcc00">[ASTER]</span> 서부 점령 / 최대 세력</div>
                 <div><span style="color:#c0c0c0">[DELACRUA]</span> 동남부 주둔 / 중간 세력</div>
                 <div><span style="color:#fff8dc">[STARDUST]</span> 동북부 고립 / 연구 구역</div>
@@ -234,7 +272,7 @@
     </div>
 
     <div id="char-modal">
-        <div class="modal-content">
+        <div class="modal-content cyber-border decor-corners">
             <div class="modal-close" onclick="closeModal()">×</div>
             <div class="m-header">
                 <div class="m-faction" id="md-faction"></div>
@@ -242,23 +280,23 @@
                 <div style="margin-top:8px;" id="md-tags"></div>
             </div>
             <div class="m-grid">
-                <div class="m-stat-box"><span class="m-label">THREAT</span><span class="m-val" id="md-rank" style="color:#ff2a2a"></span></div>
-                <div class="m-stat-box"><span class="m-label">AGE</span><span class="m-val" id="md-age"></span></div>
-                <div class="m-stat-box"><span class="m-label">MBTI</span><span class="m-val" id="md-mbti"></span></div>
-                <div class="m-stat-box"><span class="m-label">ENNEAGRAM</span><span class="m-val" id="md-ennea"></span></div>
+                <div class="m-stat-box cyber-border"><span class="m-label">THREAT</span><span class="m-val" id="md-rank" style="color:#ff2a2a"></span></div>
+                <div class="m-stat-box cyber-border"><span class="m-label">AGE</span><span class="m-val" id="md-age"></span></div>
+                <div class="m-stat-box cyber-border"><span class="m-label">MBTI</span><span class="m-val" id="md-mbti"></span></div>
+                <div class="m-stat-box cyber-border"><span class="m-label">ENNEAGRAM</span><span class="m-val" id="md-ennea"></span></div>
             </div>
             <div class="m-section" style="margin-bottom: 15px;">
                 <div class="m-section-title">COMBAT_DATA</div>
-                <div class="m-desc">
-                    <span style="color:var(--gold-main)">[레조넌스]</span> <span id="md-reso"></span><br>
-                    <span style="color:var(--gold-main)">[능력]</span> <span id="md-ability"></span><br>
-                    <span style="color:var(--gold-main)">[커튼콜]</span> <span id="md-curtain"></span><br>
-                    <span style="color:var(--gold-main)">[상태]</span> 조율: <span id="md-tune"></span> / 백스테이지: <span id="md-back"></span> / 오버소울: <span id="md-over"></span>
+                <div class="m-desc cyber-border">
+                    <span style="color:var(--cyan-main)">[레조넌스]</span> <span id="md-reso"></span><br>
+                    <span style="color:var(--cyan-main)">[능력]</span> <span id="md-ability"></span><br>
+                    <span style="color:var(--cyan-main)">[커튼콜]</span> <span id="md-curtain"></span><br>
+                    <span style="color:var(--cyan-main)">[상태]</span> 조율: <span id="md-tune"></span> / 백스테이지: <span id="md-back"></span> / 오버소울: <span id="md-over"></span>
                 </div>
             </div>
             <div class="m-section">
                 <div class="m-section-title">PERSONAL_RECORD</div>
-                <div class="m-desc" id="md-detail" style="color:#aaa;"></div>
+                <div class="m-desc cyber-border" id="md-detail" style="color:#eee;"></div>
             </div>
         </div>
     </div>
@@ -291,16 +329,22 @@
             window.scrollTo(0, 0);
         }
 
-        // --- 캐릭터 데이터 (고드 추가 및 설정 독립화) ---
+        // --- 캐릭터 데이터 수정 (비교 문구 삭제 및 개별 설정 강화) ---
         const charDB = [
             { name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
-            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력을 구사하지만 위력과 범위가 제한적임", curtain: "미개방", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
+            { name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력을 구사하지만 위력과 범위가 제한적임", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
             { name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
-            { name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
-            { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
+            { name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
+            { name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
             { name: "시안", faction: "델라쿠르아", rank: "E", age: 18, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
-            { name: "송", faction: "델라쿠르아", rank: "A", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 입혀준 메이드복을 입고 다니며, 누나가 앞이 보이지 않는 몸으로 희생한다는 사실을 모른다." },
-            { name: "고드", faction: "무소속", rank: "UNKNOWN", age: "불명", mbti: "ENTP", ennea: "7w8", tags: ["사후세계", "농땡이", "에테르나", "규격외"], reso: "휘파람", ability: "영혼 및 인과율 간섭 (저승의 권능 일부 사용)", curtain: "미운영 (귀찮아서 안 씀)", tune: "자유자재", back: "자유자재", over: "상시 적용", detail: "사후 세계에서 영혼을 관리하는 기관인 '에테르나(Aeterna)' 소속의 존재. 그러나 끝없이 밀려드는 저승의 업무와 야근에 진저리가 나버려, 모든 직무를 내팽개치고 인간계로 도주해 띵가띵가 농땡이를 피우고 있다. 오버 소울 세계관의 멸망 위기나 피 터지는 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓는 중이다. 본래 규격 외의 존재이기에 인간계의 레조넌스 제약을 거의 받지 않는다." }
+            { name: "송", faction: "델라쿠르아", rank: "B", age: 18, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 앞이 보이지 않는 몸으로 희생하며 자신의 일을 대신 해주고 있다는 유일한 진실만을 모른채, 누나가 예쁘다며 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
+            { name: "세라피나(가주)", faction: "스타 더스트", rank: "S", age: 32, mbti: "ENFJ", ennea: "3w2", tags: ["진보파", "활발", "내강내유"], reso: "K-Pop", ability: "BPM 동기화 (적의 심박수와 움직임을 극악의 템포로 강제 동기화시켜 붕괴시킴)", curtain: "[Dome Tour] 영역 내 아군 극대화 버프 및 적 리듬 강제 종속", tune: "가능", back: "가능", over: "경험함", detail: "스타 더스트 가문의 가주. 겉보기에 매우 활발하고 부드러워 보이지만 속은 단단한 외유내강형 인물이다. 최신 K-Pop의 강렬한 비트를 레조넌스로 승화시켜 전장을 지배한다." },
+            { name: "클로에", faction: "스타 더스트", rank: "A", age: 21, mbti: "INTP", ennea: "5w4", tags: ["진보파", "해커기질"], reso: "Pop", ability: "Auto-Tune (오토튠) - 범위 내 날아오는 투사체나 소리의 궤도/속도를 임의로 왜곡 조작", curtain: "[Billboard Top 100] 영역 내 모든 공격이 가장 위협적인 타겟을 자동 추적하여 필중", tune: "불가", back: "가능", over: "미경험", detail: "트렌디한 Pop 음악을 다루는 스타 더스트 소속 연주자. 오토튠을 물리법칙에 적용시켜 전장의 흐름 자체를 왜곡시키는 독특한 재능을 지녔다." },
+            { name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "천국의 업무를 때려치우고 저승에서 놀다가 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." },
+            { name: "노아", faction: "무소속", rank: "S", age: 23, mbti: "ESTP", ennea: "8w7", tags: ["사이코패스", "마약상", "완전동기화"], reso: "백색소음 (White Noise)", ability: "의도적으로 백색소음을 발생시켜 상대의 고막과 정신을 파괴", curtain: "백색소음 범위 극대화 및 침식 속도 가속", tune: "불가", back: "불가", over: "미경험", detail: "날 때부터 레조넌스가 뒤틀려 있어 몸과 정신이 글리치화와 완전 동기화된 사이코패스 연주자. 뒷골목에서 마약(lo-fi 등)을 판매하며 사람들을 쾌락과 광기로 몰아넣는 것을 즐긴다." },
+            { name: "아리아", faction: "무소속", rank: "A", age: 27, mbti: "ISFJ", ennea: "2w1", tags: ["수녀", "자기희생", "수명연소"], reso: "하프", ability: "주변 치유 (대가로 자신의 노이즈 수치가 증가함)", curtain: "[생명력 커튼콜] 강제 발동하여 회복 범위를 극대화", tune: "가능", back: "불가", over: "미경험", detail: "부드럽고 헌신적인 수녀. 타인을 치유하는 능력을 가졌으나, 그 부작용으로 노이즈를 전부 자신이 흡수해 영구적으로 레조넌스가 뒤틀려버렸다. 그럼에도 인간성을 잃지 않으며, 긴급 상황 시 생명력을 실시간으로 깎아먹는 '생명력 커튼콜'을 써서 대의를 위해 목숨을 던진다." },
+            { name: "세라", faction: "무소속", rank: "일반인", age: 35, mbti: "ESTJ", ennea: "3w2", tags: ["일반인", "몰락", "알콜중독"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "과거엔 가장 잘 나가는 세일즈맨이었으나, 모종의 사건으로 쫄딱 망한 뒤 현재는 뒷골목에 처박혀 매일 술만 퍼먹으며 사는 평범한 일반인." },
+            { name: "크리스", faction: "무소속", rank: "A+", age: 29, mbti: "ENFJ", ennea: "1w2", tags: ["교황", "고드신앙", "박애주의", "후원자"], reso: "파이프 오르간", ability: "주변인들의 신앙/감정을 흡수하여 절대적인 방어막으로 변환", curtain: "[Sanctuary (성역)] 구역 내 일체의 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'고드'를 신으로 믿고 모두를 사랑하라는 교리를 전파하는 신흥 종교의 교황. 부드러운 언변으로 일반인들에게 엄청난 인기를 누리고 있다. 교단의 모든 수입과 관리를 사비로 충당하며, 남몰래 수녀 아리아의 고아원 및 빈민 구호 활동을 막대한 자금으로 지원하고 있다." }
         ];
 
         function renderCharacters(filter) {
@@ -309,13 +353,15 @@
             let delayTime = 0;
             charDB.forEach((char, i) => {
                 if (filter === 'ALL' || char.faction === filter) {
-                    let rColor = char.rank === 'UNKNOWN' ? '#a020f0' : char.rank === 'SS' ? '#ff2a2a' : 'var(--gold-dim)';
+                    let rColor = char.rank === 'UNKNOWN' ? 'var(--god-color)' : char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--cyan-main)';
+                    let cNameClass = char.name === "고드" ? "char-name text-glitch" : "char-name";
+
                     const cardHtml = `
-                        <div class="char-card cyber-border char-fade-in" style="animation-delay: ${delayTime}s" onclick="openModal(${i})">
+                        <div class="char-card cyber-border char-fade-in decor-corners" style="animation-delay: ${delayTime}s" onclick="openModal(${i})">
                             <div class="card-header"><span>ID: <span style="color:${rColor}">${char.rank}</span></span> <span>[DETAILS >]</span></div>
-                            <div class="char-name">${char.name}</div>
+                            <div class="${cNameClass}">${char.name}</div>
                             <div class="char-faction">${char.faction}</div>
-                            <div style="color:var(--gold-dim); font-size:0.65rem;">Resonance: ${char.reso}</div>
+                            <div style="color:var(--cyan-main); font-size:0.65rem;">Resonance: ${char.reso}</div>
                         </div>`;
                     container.insertAdjacentHTML('beforeend', cardHtml);
                     delayTime += 0.05; 
@@ -328,15 +374,26 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // --- 모달 로직 ---
+        // --- 모달 부드러운 열기/닫기 로직 ---
         function openModal(index) {
             const char = charDB[index];
             document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
-            document.getElementById('md-name').innerText = char.name;
             
-            let rColor = char.rank === 'UNKNOWN' ? '#a020f0' : char.rank === 'SS' ? '#ff2a2a' : 'var(--gold-bright)';
-            document.getElementById('md-rank').innerText = char.rank;
-            document.getElementById('md-rank').style.color = rColor;
+            const mdName = document.getElementById('md-name');
+            const mdRank = document.getElementById('md-rank');
+            if(char.name === "고드") {
+                mdName.innerText = char.name;
+                mdName.className = "m-name text-glitch";
+                mdRank.innerText = char.rank;
+                mdRank.className = "m-val text-glitch";
+                mdRank.style.color = 'var(--god-color)';
+            } else {
+                mdName.innerText = char.name;
+                mdName.className = "m-name";
+                mdRank.innerText = char.rank;
+                mdRank.className = "m-val";
+                mdRank.style.color = char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--cyan-bright)';
+            }
 
             document.getElementById('md-age').innerText = char.age;
             document.getElementById('md-mbti').innerText = char.mbti;
@@ -352,7 +409,9 @@
             const tagsDiv = document.getElementById('md-tags');
             tagsDiv.innerHTML = '';
             char.tags.forEach(t => {
-                const cls = (t === "시각장애" || t === "청각장애") ? "tag tag-warning" : "tag";
+                let cls = "tag";
+                if(t === "시각장애" || t === "청각장애" || t === "수명연소" || t === "사이코패스") cls = "tag tag-warning";
+                if(t === "글리치" || t === "규격외") cls = "tag tag-glitch"; 
                 tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
             });
             
@@ -368,7 +427,7 @@
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
-        // --- 시스템 데이터베이스 전체 내용 복구 ---
+        // --- 시스템 데이터베이스 아코디언 애니메이션 로직 ---
         const systemDB = [
             {
                 category: "등급제도 (THREAT_LEVEL)",
@@ -379,7 +438,8 @@
                     { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span><br>정규 군대와 맞먹는 전투력을 보유한 수준." },
                     { name: "C Rank", desc: "[일반인 단체 급]<br>다수의 일반인이 무장한 단체를 혼자서 제압 가능한 수준." },
                     { name: "D Rank", desc: "[일반인 급]<br>표준적인 성인 인간의 신체 능력 및 레조넌스 수치." },
-                    { name: "E Rank", desc: "[일반인 미만 급]<br>기준치 이하. 전투나 레조넌스 활용 불가." }
+                    { name: "E Rank", desc: "[일반인 미만 급]<br>기준치 이하. 전투나 레조넌스 활용 불가." },
+                    { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span><br>현존하는 레조넌스 측정망을 벗어난 초월적 개체. 데이터 수집 및 분석 불가." }
                 ]
             },
             {
@@ -412,11 +472,10 @@
             }
         ];
 
-        // --- 아코디언 애니메이션 (버그 수정) ---
         const dbContainer = document.getElementById('db-container');
         systemDB.forEach(folderData => {
             const folder = document.createElement('div');
-            folder.className = 'db-folder';
+            folder.className = 'db-folder cyber-border';
             folder.innerHTML = folderData.category;
             
             const folderContent = document.createElement('div');
@@ -424,47 +483,33 @@
 
             folderData.items.forEach(itemData => {
                 const file = document.createElement('div');
-                file.className = 'db-file'; file.innerHTML = itemData.name;
+                file.className = 'db-file cyber-border'; file.innerHTML = itemData.name;
                 const dataBox = document.createElement('div');
-                dataBox.className = 'db-data-box'; dataBox.innerHTML = itemData.desc;
+                dataBox.className = 'db-data-box cyber-border show'; dataBox.innerHTML = itemData.desc;
 
                 file.onclick = function() {
                     const isVis = dataBox.classList.contains('show');
-                    
-                    folderContent.querySelectorAll('.db-data-box').forEach(b => {
-                        if (b !== dataBox) b.classList.remove('show');
-                    });
-                    folderContent.querySelectorAll('.db-file').forEach(f => {
-                        if (f !== file) f.classList.remove('active');
-                    });
+                    folderContent.querySelectorAll('.db-data-box').forEach(b => b.classList.remove('show'));
+                    folderContent.querySelectorAll('.db-file').forEach(f => f.classList.remove('active'));
                     
                     if(!isVis) { 
                         dataBox.classList.add('show');
                         file.classList.add('active'); 
-                    } else {
-                        dataBox.classList.remove('show');
-                        file.classList.remove('active');
                     }
                 };
                 folderContent.appendChild(file); folderContent.appendChild(dataBox);
+                // 초기 로딩 시 첫 번째 항목 열어두기 버그 수정: 모두 닫아둠
+                dataBox.classList.remove('show');
             });
 
             folder.onclick = function() {
                 const isOp = folder.classList.contains('open');
-                
-                document.querySelectorAll('.db-folder').forEach(f => {
-                    if (f !== folder) f.classList.remove('open');
-                });
-                document.querySelectorAll('.db-folder-content').forEach(fc => {
-                    if (fc !== folderContent) fc.classList.remove('show');
-                });
+                document.querySelectorAll('.db-folder').forEach(f => f.classList.remove('open'));
+                document.querySelectorAll('.db-folder-content').forEach(fc => fc.classList.remove('show'));
                 
                 if(!isOp) { 
                     folder.classList.add('open'); 
                     folderContent.classList.add('show');
-                } else {
-                    folder.classList.remove('open');
-                    folderContent.classList.remove('show');
                 }
             };
             dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
