@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal</title>
+    <title>OVER SOUL - OS Terminal v2.5</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
+        /* (이전과 동일한 기본 CSS 변수 및 배경 설정) */
         :root {
-            --bg-base: #030303;
-            --gold-main: #d4af37;
-            --gold-bright: #ffe680;
-            --gold-dim: #7a631c;
-            --danger: #ff2a2a;
-            --font-title: 'Orbitron', sans-serif;
-            --font-data: 'Share Tech Mono', monospace;
+            --bg-base: #020202; --gold-main: #d4af37; --gold-bright: #ffe680;
+            --gold-dim: #5c4b1a; --danger: #ff2a2a; --matrix-green: #44ff44;
+            --font-title: 'Orbitron', sans-serif; --font-data: 'Share Tech Mono', monospace;
+            --cyber-glow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         body {
@@ -24,340 +22,255 @@
             -webkit-tap-highlight-color: transparent; user-select: none;
         }
 
-        /* CRT 화면 스캔라인 효과 (화면 전체 덮기) */
         body::after {
-            content: " "; display: block; position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999; background-size: 100% 4px, 6px 100%; pointer-events: none;
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 999; background-size: 100% 3px, 4px 100%; pointer-events: none; opacity: 0.6;
+        }
+
+        body::before {
+            content:''; position: fixed; top:0; left:0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--bg-base) 0%, transparent 80%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.05"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%23d4af37" stroke-width="1" fill="none"/></svg>');
+            background-size: cover, 150px 150px; opacity: 0.4; pointer-events: none;
         }
 
         h1, h2, h3 { font-family: var(--font-title); margin: 0; }
 
-        /* --- [ 인트로: 글리치 효과 ] --- */
-        #intro {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: var(--bg-base); z-index: 2000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            animation: introEnd 0.5s forwards; animation-delay: 3s;
-        }
-        
-        .glitch-text {
-            font-size: 3.5rem; font-weight: 900; color: var(--gold-bright);
-            position: relative; text-shadow: 0 0 10px var(--gold-main);
-        }
-        .glitch-text::before, .glitch-text::after {
-            content: 'OVER SOUL'; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-base);
-        }
-        .glitch-text::before {
-            left: 2px; text-shadow: -2px 0 red; animation: glitch-anim-1 2s infinite linear alternate-reverse;
-        }
-        .glitch-text::after {
-            left: -2px; text-shadow: -2px 0 blue; animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-        .loading-bar {
-            width: 200px; height: 2px; background: var(--gold-dim); margin-top: 20px; overflow: hidden;
-        }
-        .loading-fill {
-            height: 100%; background: var(--gold-bright); width: 0%; box-shadow: 0 0 10px var(--gold-bright);
-            animation: loadProgress 2.5s ease-in-out forwards;
-        }
+        /* 공통 UI (헤더, 사이드바, 프레임 등 이전과 동일) */
+        .sys-frame-info { position: fixed; font-size: 0.65rem; color: var(--gold-dim); z-index: 80; pointer-events: none; }
+        .top-left-info { top: 5px; left: 10px; }
+        .bottom-right-info { bottom: 5px; right: 10px; text-align: right; }
+        .blink-dot { display: inline-block; width: 5px; height: 5px; background: var(--matrix-green); border-radius: 50%; margin-left: 5px; animation: blink 1s infinite; }
 
-        /* --- [ UI 공통 ] --- */
-        .cyber-border {
-            border: 1px solid var(--gold-dim);
-            position: relative; background: rgba(10, 10, 10, 0.8);
-        }
-        .cyber-border::before {
-            content:''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
-            border-top: 2px solid var(--gold-bright); border-left: 2px solid var(--gold-bright);
-        }
-        .cyber-border::after {
-            content:''; position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px;
-            border-bottom: 2px solid var(--gold-bright); border-right: 2px solid var(--gold-bright);
-        }
-
-        /* --- [ 헤더 & 사이드바 ] --- */
         header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; border-bottom: 1px solid var(--gold-dim);
-            background: rgba(3, 3, 3, 0.9); position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--gold-dim);
+            background: rgba(2, 2, 2, 0.95); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(3px);
         }
-        header h1 { font-size: 1.5rem; color: var(--gold-bright); letter-spacing: 3px; text-shadow: 0 0 8px var(--gold-main); }
-        
-        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px;}
-        .hamburger div { width: 25px; height: 2px; background-color: var(--gold-main); }
+        header h1 { font-size: 1.3rem; color: var(--gold-bright); letter-spacing: 2px; }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 5px;}
+        .hamburger div { width: 22px; height: 2px; background-color: var(--gold-main); }
 
         #sidebar {
-            position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
-            background: rgba(5, 5, 5, 0.95); border-left: 1px solid var(--gold-main);
-            box-shadow: -5px 0 20px rgba(212, 175, 55, 0.2);
-            transition: 0.3s; display: flex; flex-direction: column; padding: 70px 20px 30px; z-index: 90;
+            position: fixed; top: 0; right: -100%; width: 230px; height: 100vh; background: rgba(5, 5, 5, 0.98);
+            border-left: 1px solid var(--gold-main); transition: 0.3s; display: flex; flex-direction: column; padding: 60px 15px 30px; z-index: 90;
         }
         #sidebar.open { right: 0; }
-        .menu-item {
-            font-family: var(--font-title); font-size: 1.1rem; margin-bottom: 25px;
-            color: var(--gold-dim); cursor: pointer; text-transform: uppercase; transition: 0.2s;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .menu-item::before { content: '>'; color: var(--gold-bright); opacity: 0; transition: 0.2s; }
-        .menu-item:hover, .menu-item.active-menu { color: var(--gold-bright); text-shadow: 0 0 10px var(--gold-main); }
-        .menu-item:hover::before, .menu-item.active-menu::before { opacity: 1; }
-
-        .sys-btn {
-            background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-main);
-            padding: 10px; font-family: var(--font-data); font-size: 0.9rem; cursor: pointer; margin-top: 10px;
-        }
+        .menu-item { font-family: var(--font-title); font-size: 1rem; margin-bottom: 20px; color: var(--gold-dim); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .menu-item.active-menu { color: var(--gold-bright); text-shadow: var(--cyber-glow); font-weight: bold; }
+        
+        .sys-btn { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-dim); padding: 8px; font-size: 0.8rem; cursor: pointer; margin-top: 8px; }
         .sys-btn.danger { border-color: var(--danger); color: var(--danger); }
-        .sys-btn.danger:active { background: var(--danger); color: #000; }
 
-        /* --- [ 메인 뷰 공통 ] --- */
-        #main-content > div { display: none; padding: 20px; padding-bottom: 60px; min-height: calc(100vh - 80px); }
-        .view-title { font-size: 1.2rem; color: var(--gold-bright); margin-bottom: 20px; border-bottom: 1px dashed var(--gold-dim); padding-bottom: 10px; }
+        #main-content > div { display: none; padding: 15px; padding-bottom: 50px; min-height: calc(100vh - 70px); box-sizing: border-box;}
+        .view-title { font-size: 1.1rem; color: var(--gold-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; }
+        .view-title-decor { flex-grow: 1; height: 1px; background: var(--gold-dim); margin-left: 10px; position: relative;}
+        .view-title-decor::after { content:''; position: absolute; right: 0; top: -2px; width: 5px; height: 5px; background: var(--gold-bright); }
 
-        /* --- [ 로비 뷰 ] --- */
-        #lobby-view { flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
-        .sys-status { font-size: 0.8rem; color: var(--gold-dim); margin-bottom: 10px; text-align: center; }
+        .cyber-border { border: 1px solid var(--gold-dim); background: rgba(10, 10, 10, 0.7); position: relative; }
+        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:8px; height:8px; border-top:2px solid var(--gold-bright); border-left:2px solid var(--gold-bright); }
+        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:8px; height:8px; border-bottom:2px solid var(--gold-bright); border-right:2px solid var(--gold-bright); }
+
+        /* 로비 뷰 CSS 간소화 */
+        #lobby-view { flex-direction: column; gap: 15px; }
+        .lobby-btn { padding: 18px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; }
+        .log-container { flex-grow: 1; padding: 10px; font-size: 0.75rem; color: var(--gold-dim); }
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(212, 175, 55, 0.05); padding-bottom: 2px;}
+
+        /* --- [ 시스템 뷰 특화 CSS (아코디언 DB 메뉴) ] --- */
+        .db-container { display: flex; flex-direction: column; gap: 10px; }
         
-        .lobby-btn {
-            width: 100%; max-width: 300px; padding: 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            font-family: var(--font-title); font-size: 1.2rem; cursor: pointer;
-            transition: 0.2s;
+        /* 폴더 (카테고리) */
+        .db-folder {
+            background: rgba(20, 20, 20, 0.8); border: 1px solid var(--gold-main);
+            padding: 12px 15px; font-family: var(--font-title); font-size: 1rem;
+            color: var(--gold-bright); cursor: pointer; display: flex; justify-content: space-between; align-items: center;
         }
-        .lobby-btn:active { transform: scale(0.98); background: rgba(212, 175, 55, 0.2); }
-        .lobby-btn .icon { font-size: 0.8rem; color: var(--gold-dim); }
+        .db-folder:active { background: rgba(212, 175, 55, 0.2); }
+        .db-folder::before { content: '[+] '; color: var(--gold-dim); margin-right: 5px; }
+        .db-folder.open::before { content: '[-] '; color: var(--gold-bright); }
         
-        #btn-char-lobby { border-color: var(--gold-bright); box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.2); }
-        .blink-dot { width: 8px; height: 8px; background: var(--gold-bright); border-radius: 50%; animation: blink 1s infinite; }
-
-        /* --- [ 인물 데이터 뷰 ] --- */
-        .filter-container { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
-        .filter-btn {
-            flex: 1 1 calc(33% - 5px); background: transparent; border: 1px solid var(--gold-dim);
-            color: var(--gold-dim); padding: 8px 0; font-family: var(--font-title); font-size: 0.75rem;
-            cursor: pointer; transition: 0.2s; text-align: center;
-        }
-        .filter-btn.active { background: rgba(212, 175, 55, 0.15); border-color: var(--gold-bright); color: var(--gold-bright); }
-
-        .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .char-card { padding: 12px; display: flex; flex-direction: column; gap: 5px; }
-        .char-id { font-size: 0.65rem; color: var(--gold-dim); }
-        .char-faction { font-size: 0.7rem; color: var(--gold-main); font-family: var(--font-title); }
-        .char-name { font-size: 1.1rem; color: #fff; font-weight: bold; margin-bottom: 5px; }
-        .char-status { font-size: 0.65rem; color: #44ff44; display: flex; align-items: center; gap: 4px; }
-        .char-status::before { content:''; width: 4px; height: 4px; background: #44ff44; border-radius: 50%; }
-
-        /* --- [ 지도 뷰 ] --- */
-        .map-wrapper {
-            width: 100%; height: 65vh; border: 1px solid var(--gold-dim);
-            position: relative; overflow: hidden; background: radial-gradient(circle at center, rgba(20,20,20,1) 0%, rgba(0,0,0,1) 100%);
-        }
-        .grid-bg {
-            position: absolute; width: 100%; height: 100%;
-            background-image: linear-gradient(var(--gold-dim) 1px, transparent 1px), linear-gradient(90deg, var(--gold-dim) 1px, transparent 1px);
-            background-size: 20px 20px; opacity: 0.1;
-        }
-        .radar-sweep {
-            position: absolute; top: 50%; left: 50%; width: 150%; height: 150%;
-            background: conic-gradient(from 0deg, transparent 70%, rgba(212, 175, 55, 0.4) 100%);
-            transform-origin: 0 0; animation: radarSpin 4s linear infinite; pointer-events: none;
-        }
+        /* 폴더 내용 (아이템 리스트) */
+        .db-folder-content { display: none; flex-direction: column; gap: 5px; padding-left: 15px; margin-top: -5px; margin-bottom: 10px; border-left: 1px dashed var(--gold-dim); }
         
-        /* 세력 공통 */
-        .zone {
-            position: absolute; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-family: var(--font-title); font-size: 0.7rem; color: rgba(255,255,255,0.8);
-            border: 1px dashed var(--gold-main); background: rgba(212, 175, 55, 0.05);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); backdrop-filter: blur(2px);
+        /* 파일 (아이템) */
+        .db-file {
+            padding: 10px; background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 0.9rem; color: #fff; cursor: pointer; display: flex; align-items: center; transition: 0.2s;
         }
-        .zone span { background: rgba(0,0,0,0.7); padding: 2px 5px; border-radius: 3px; }
-
-        .tower {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 12px; height: 12px; background: #fff; box-shadow: 0 0 15px #fff, 0 0 30px var(--gold-bright);
-            transform: translate(-50%, -50%) rotate(45deg); z-index: 10;
-        }
+        .db-file::before { content: '> '; color: var(--gold-dim); margin-right: 8px; font-weight: bold; }
+        .db-file:hover, .db-file.active { border-color: var(--gold-main); background: rgba(212, 175, 55, 0.1); }
         
-        .zone-aster { width: 160px; height: 160px; top: 15%; left: 10%; border-color: #ffcc00; animation: pulseZone 3s infinite alternate; }
-        .zone-dela { width: 110px; height: 110px; bottom: 15%; right: 10%; border-color: #c0c0c0; animation: pulseZone 4s infinite alternate; }
-        .zone-star { width: 75px; height: 75px; top: 20%; right: 20%; border-color: #fff8dc; animation: pulseZone 2.5s infinite alternate; }
+        /* 상세 데이터 출력창 */
+        .db-data-box {
+            display: none; padding: 15px; background: #050505; border: 1px solid var(--matrix-green);
+            color: var(--matrix-green); font-size: 0.8rem; line-height: 1.6; margin-top: -5px;
+            box-shadow: inset 0 0 15px rgba(68, 255, 68, 0.1); margin-bottom: 10px; position: relative;
+        }
+        .db-data-box::after { content: 'END OF FILE_'; display: block; margin-top: 10px; color: var(--gold-dim); font-size: 0.65rem; }
+        
+        /* 데이터 내부 강조 텍스트 */
+        .highlight { color: #fff; background: rgba(212, 175, 55, 0.3); padding: 0 3px; font-family: var(--font-title); }
+        .warning { color: var(--danger); font-weight: bold; }
 
-        /* --- [ 애니메이션 ] --- */
-        @keyframes introEnd { to { opacity: 0; visibility: hidden; } }
-        @keyframes loadProgress { to { width: 100%; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes radarSpin { 100% { transform: rotate(360deg); } }
-        @keyframes pulseZone { from { transform: scale(1); opacity: 0.8; } to { transform: scale(1.05); opacity: 1; } }
-        @keyframes glitch-anim-1 {
-            0% { clip-path: inset(20% 0 80% 0); } 20% { clip-path: inset(60% 0 10% 0); }
-            40% { clip-path: inset(40% 0 50% 0); } 60% { clip-path: inset(80% 0 5% 0); }
-            80% { clip-path: inset(10% 0 70% 0); } 100% { clip-path: inset(30% 0 20% 0); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip-path: inset(10% 0 60% 0); } 20% { clip-path: inset(30% 0 20% 0); }
-            40% { clip-path: inset(70% 0 10% 0); } 60% { clip-path: inset(20% 0 50% 0); }
-            80% { clip-path: inset(90% 0 5% 0); } 100% { clip-path: inset(5% 0 80% 0); }
-        }
     </style>
 </head>
 <body>
 
-    <div id="intro">
-        <div class="glitch-text">OVER SOUL</div>
-        <div class="sys-status" style="margin-top:10px;">SYSTEM INITIALIZING...</div>
-        <div class="loading-bar"><div class="loading-fill"></div></div>
-    </div>
+    <div class="sys-frame-info top-left-info">USER: ADMIN // OS_TERTv2.5 // SYS_CONFIG_ACCESS <span class="blink-dot"></span></div>
 
     <header>
-        <h1 onclick="navTo('lobby')">O.S_TERM</h1>
+        <h1 onclick="navTo('lobby')">O.S Terminal</h1>
         <div class="hamburger" onclick="toggleMenu()">
             <div></div><div></div><div></div>
         </div>
     </header>
 
     <div id="sidebar">
-        <div class="menu-item active-menu" id="nav-lobby" onclick="navTo('lobby')">MAIN LOBBY</div>
-        <div class="menu-item" id="nav-character" onclick="navTo('character')">DB: CHARACTERS</div>
-        <div class="menu-item" id="nav-map" onclick="navTo('map')">TACTICAL MAP</div>
-        <div class="menu-item" id="nav-system" onclick="navTo('system')">SYSTEM CONFIG</div>
-        
-        <div style="margin-top: auto; display:flex; flex-direction:column; gap:8px;">
-            <button class="sys-btn" onclick="alert('AUDIO: MUTED')">[ AUDIO TOGGLE ]</button>
-            <button class="sys-btn danger" onclick="alert('ACCESS DENIED: 보안 인가 부족')">[ DISCONNECT ]</button>
-        </div>
+        <div class="menu-item" id="nav-lobby" onclick="navTo('lobby')">> MAIN_LOBBY</div>
+        <div class="menu-item active-menu" id="nav-system" onclick="navTo('system')">> SYSTEM_CONFIG</div>
+        <div class="sys-btn danger">DISCONNECT</div>
     </div>
 
     <div id="main-content">
         
-        <div id="lobby-view" style="display: flex;">
-            <div class="sys-status">CONNECTION SECURE // US_REGION // ONLINE</div>
+        <div id="lobby-view">
+            <div class="cyber-border decor-corners lobby-btn" onclick="navTo('system')">
+                SYSTEM_CONFIG
+                <span style="font-size:0.6rem; color:var(--gold-bright)">DB_ACCESS ></span>
+            </div>
+            <div class="cyber-border decor-corners log-container">
+                <div style="color:var(--gold-main); font-weight:bold; margin-bottom:5px;">SYSTEM_LOG</div>
+                <div class="log-entry">[00:00] NET_SECURE. DB LOADED.</div>
+            </div>
+        </div>
+
+        <div id="system-view" style="display: block;">
+            <div class="view-title">
+                OS_DATABASE // 설정 열람 <div class="view-title-decor"></div>
+            </div>
             
-            <div class="cyber-border lobby-btn" id="btn-char-lobby" onclick="navTo('character')">
-                <span>CHARACTER DATA</span>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <span class="icon">SYS.01</span>
-                    <div class="blink-dot"></div>
+            <div class="db-container" id="db-container">
                 </div>
-            </div>
-            
-            <div class="cyber-border lobby-btn" onclick="navTo('map')">
-                <span>NETWORK MAP</span>
-                <span class="icon">SYS.02</span>
-            </div>
-            
-            <div class="cyber-border lobby-btn" onclick="navTo('system')">
-                <span>SYSTEM</span>
-                <span class="icon">SYS.03</span>
-            </div>
-        </div>
-
-        <div id="character-view">
-            <div class="view-title">DATABASE // ENTITIES</div>
-            
-            <div class="filter-container">
-                <button class="filter-btn active" onclick="filterData('ALL', this)">ALL</button>
-                <button class="filter-btn" onclick="filterData('애스터', this)">ASTER</button>
-                <button class="filter-btn" onclick="filterData('델라쿠르아', this)">DELACRUA</button>
-                <button class="filter-btn" onclick="filterData('스타 더스트', this)">STARDUST</button>
-                <button class="filter-btn" onclick="filterData('무소속', this)">NONE</button>
-            </div>
-
-            <div class="char-grid" id="char-container"></div>
-        </div>
-
-        <div id="map-view">
-            <div class="view-title">TACTICAL // US_TERRITORY</div>
-            
-            <div class="map-wrapper cyber-border">
-                <div class="grid-bg"></div>
-                <div class="radar-sweep"></div>
-                
-                <div class="tower"></div>
-                
-                <div class="zone zone-aster"><span>ASTER</span></div>
-                <div class="zone zone-dela"><span>DELACRUA</span></div>
-                <div class="zone zone-star"><span>STARDUST</span></div>
-            </div>
-            
-            <div class="sys-status" style="margin-top: 15px; text-align: left;">
-                > SCANNING REGIONS...<br>
-                > ASTER : 68% DOMINANCE<br>
-                > DELACRUA : STABLE<br>
-                > STARDUST : ISOLATED
-            </div>
-        </div>
-
-        <div id="system-view">
-            <div class="view-title">SYSTEM CONFIG</div>
-            <div class="sys-status">> DATA CORRUPTED OR PENDING INPUT...</div>
         </div>
 
     </div>
 
     <script>
-        // 사이드바 토글
+        // --- UI 네비게이션 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
-
-        // 화면 이동 로직
         function navTo(viewId) {
-            // 모든 뷰 숨기기
             document.querySelectorAll('#main-content > div').forEach(el => el.style.display = 'none');
-            // 대상 뷰 보이기 (로비는 flex)
-            document.getElementById(viewId + '-view').style.display = (viewId === 'lobby') ? 'flex' : 'block';
-            
-            // 사이드바 닫기 및 메뉴 활성화 표시 변경
+            document.getElementById(viewId + '-view').style.display = 'flex';
+            if(viewId === 'system') document.getElementById('system-view').style.display = 'block';
             document.getElementById('sidebar').classList.remove('open');
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
             const activeNav = document.getElementById('nav-' + viewId);
             if(activeNav) activeNav.classList.add('active-menu');
-            
             window.scrollTo(0, 0);
         }
 
-        // 인물 데이터 생성 로직
-        const chars = [
-            { name: "엘라라(가주)", faction: "애스터" }, { name: "루나", faction: "애스터" }, { name: "루시", faction: "애스터" },
-            { name: "시몬(가주)", faction: "델라쿠르아" }, { name: "사라", faction: "델라쿠르아" }, { name: "시안", faction: "델라쿠르아" }, { name: "송", faction: "델라쿠르아" },
-            { name: "세라피나", faction: "스타 더스트" }, { name: "클로에", faction: "스타 더스트" },
-            { name: "크리스", faction: "무소속" }, { name: "노아", faction: "무소속" }, { name: "아리아", faction: "무소속" }, { name: "세라", faction: "무소속" }, { name: "고드", faction: "무소속" }
+        // --- 세계관 DB 데이터 ---
+        const systemDB = [
+            {
+                category: "등급제도 (THREAT_LEVEL)",
+                items: [
+                    { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급.<br>> 데이터 예시: 애스터 가주" },
+                    { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span><br>대도시 하나를 완전히 지도에서 지워버릴 수 있는 파괴력을 지님." },
+                    { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span><br>국지적 범위의 도시 기능을 마비시키고 파괴할 수 있는 등급." },
+                    { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span><br>정규 군대와 맞먹는 전투력을 보유한 수준." },
+                    { name: "C Rank", desc: "[일반인 단체 급]<br>다수의 일반인이 무장한 단체를 혼자서 제압 가능한 수준." },
+                    { name: "D Rank", desc: "[일반인 급]<br>표준적인 성인 인간의 신체 능력 및 레조넌스 수치." },
+                    { name: "E Rank", desc: "[일반인 미만 급]<br>기준치 이하. 전투나 레조넌스 활용 불가." }
+                ]
+            },
+            {
+                category: "연주자 (PERFORMERS)",
+                items: [
+                    { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해진다." },
+                    { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>.<br>> 연주자들은 이 에너지를 다량 보유하고 있으며, 신체강화 및 고유 능력 발동의 에너지원으로 사용한다." },
+                    { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span><br>기존 대비 능력이 2배 강화되며, 특수 영역인 <span class='highlight'>'커튼콜(Curtain Call)'</span>의 사용이 해방된다." },
+                    { name: "커튼콜 (Curtain Call)", desc: "오버소울 도달자가 펼치는 '무대(영역)'. 시전자의 허락 없이는 탈출이 불가능.<br>등급이 낮을수록 유지 시간과 공간 장악력이 비례하여 감소한다.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 시간, 위력, 범위 대폭 상승. 능력의 과부하 에너지를 신체로 역류시켜 폭발적인 신체 강화 가능.<br>- 페널티: 종료 후 1분간 과부하로 인한 모든 능력 봉쇄.<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 생명력을 직접 연소시켜 강제 발동.<br>- 효과: 오버소울 버전에 비해 전체적인 성능 저하.<br>- 페널티: 종료 후 1분간 모든 능력 봉쇄 및 <span class='warning'>레조넌스 사용 불가</span>. (사실상 일반인 상태로 전락하는 극한의 위험성 보유)" },
+                    { name: "백스테이지 (Backstage)", desc: "커튼콜의 '필중 주파수'와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>.<br>- 외부에서 내부로 진입하는 능력은 즉시 소멸. (영역 이탈 시 해제)<br>- 시전자와 대상의 등급 차이가 2단계 이상일 경우 무효화가 아닌 미세 교란으로 격하됨.<br>- <span class='warning'>제약:</span> 유지 중 시전자는 고유 능력 사용이 봉쇄되며, 오직 레조넌스를 이용한 물리전(신체강화)만 가능." },
+                    { name: "조율 (Tuning)", desc: "레조넌스로 몸을 치료하고 노이즈 수치를 대폭 낮추는 고난도 기술.<br>> 연주자 중 극히 일부만 사용 가능하며, 부유층 사이에서 미용 목적으로 고가에 암거래되고 있음." },
+                    { name: "노이즈 (Noise)", desc: "<span class='warning'>[경고: 레조넌스 과용 부작용]</span><br>신체 일부가 점차 악기화되며 인간성이 마모되는 현상. 극복 실패 시 '글리치'로 변이함." },
+                    { name: "글리치 (Glitch)", desc: "<span class='warning'>[경고: 비인간화 괴물 개체]</span><br>노이즈에 잠식되어 인간성을 잃은 상태.<br>- 수치가 높을수록 기계음 글리치가 발생.<br>- 80% 이상 잠식 시: 모든 대사를 특수문자와 깨진 문자로 출력.<br>> <span class='highlight'>완화 조치:</span> 성적 교감(육체적 접촉)이나 충분한 휴식을 통해 수치를 소폭 완화할 수 있음." }
+                ]
+            },
+            {
+                category: "특수현상 (ANOMALIES)",
+                items: [
+                    { name: "더 뮤트 (The Mute)", desc: "<span class='warning'>[미스터리 공백 현상]</span><br>지정된 공간 내의 모든 레조넌스와 존재가 영구적으로 소거되는 현상." },
+                    { name: "lo-fi (로파이)", desc: "<span class='warning'>[마약성 주파수]</span><br>대상에게 몽롱한 쾌락을 제공하지만, 주파수를 뒤틀어 체내 '노이즈 수치'를 폭등시키는 위험 물질." }
+                ]
+            },
+            {
+                category: "명령어 (TERMINAL_CMDS)",
+                items: [
+                    { name: "/scan_resonance", desc: "반경 10km 내의 레조넌스 파동 밀도를 스캔합니다. (현재 권한 대기 중)" },
+                    { name: "/auth_override", desc: "<span class='warning'>[접근 거부]</span> 오버소울 관리자 권한이 필요합니다." },
+                    { name: "/purge_noise", desc: "단말기 내 임시 노이즈 캐시를 삭제합니다." }
+                ]
+            }
         ];
 
-        // 랜덤 ID 생성 함수 (디테일 추가)
-        function generateID() {
-            return "ID-" + Math.floor(Math.random() * 8999 + 1000) + "X";
-        }
+        // --- 아코디언 메뉴 렌더링 로직 ---
+        const dbContainer = document.getElementById('db-container');
 
-        function renderCharacters(filterFaction) {
-            const container = document.getElementById('char-container');
-            container.innerHTML = ''; 
+        systemDB.forEach((folderData, fIndex) => {
+            // 1. 폴더(카테고리) 생성
+            const folder = document.createElement('div');
+            folder.className = 'db-folder';
+            folder.innerHTML = folderData.category;
+            
+            const folderContent = document.createElement('div');
+            folderContent.className = 'db-folder-content';
 
-            chars.forEach(char => {
-                if (filterFaction === 'ALL' || char.faction === filterFaction) {
-                    const html = `
-                        <div class="char-card cyber-border">
-                            <div style="display:flex; justify-content:space-between;">
-                                <span class="char-id">${generateID()}</span>
-                                <span class="char-faction">[${char.faction}]</span>
-                            </div>
-                            <div class="char-name">${char.name}</div>
-                            <div class="char-status">ACTIVE</div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', html);
-                }
+            // 2. 파일(아이템) 생성
+            folderData.items.forEach((itemData, iIndex) => {
+                const file = document.createElement('div');
+                file.className = 'db-file';
+                file.innerHTML = itemData.name;
+
+                const dataBox = document.createElement('div');
+                dataBox.className = 'db-data-box';
+                dataBox.innerHTML = itemData.desc;
+
+                // 파일 클릭 시 상세 데이터 출력 이벤트
+                file.onclick = function() {
+                    const isVisible = dataBox.style.display === 'block';
+                    // 같은 폴더 내 다른 데이터창 모두 닫기
+                    folderContent.querySelectorAll('.db-data-box').forEach(box => box.style.display = 'none');
+                    folderContent.querySelectorAll('.db-file').forEach(f => f.classList.remove('active'));
+                    
+                    if (!isVisible) {
+                        dataBox.style.display = 'block';
+                        file.classList.add('active');
+                    }
+                };
+
+                folderContent.appendChild(file);
+                folderContent.appendChild(dataBox);
             });
-        }
 
-        function filterData(faction, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-            renderCharacters(faction);
-        }
+            // 폴더 클릭 시 파일 목록 출력 이벤트
+            folder.onclick = function() {
+                const isOpened = folder.classList.contains('open');
+                // 모든 폴더 닫기
+                document.querySelectorAll('.db-folder').forEach(f => f.classList.remove('open'));
+                document.querySelectorAll('.db-folder-content').forEach(fc => fc.style.display = 'none');
+                
+                if (!isOpened) {
+                    folder.classList.add('open');
+                    folderContent.style.display = 'flex';
+                }
+            };
 
-        // 초기 데이터 로드
-        renderCharacters('ALL');
+            dbContainer.appendChild(folder);
+            dbContainer.appendChild(folderContent);
+        });
+
     </script>
 </body>
 </html>
