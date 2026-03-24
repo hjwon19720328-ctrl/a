@@ -3,213 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL</title>
+    <title>OVER SOUL - Digital Frontier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* 기본 설정 (검은색 배경, 금색 텍스트) */
-        body {
-            margin: 0;
-            background-color: #0a0a0a;
-            color: #d4af37;
-            font-family: 'Malgun Gothic', sans-serif;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent; /* 모바일 터치 시 깜빡임 제거 */
+        /* --- 공통 변수 및 사이버 스타일 --- */
+        :root {
+            --bg-black: #050505; /* 더 깊은 검은색 */
+            --primary-gold: #d4af37; /* 클래식 금색 */
+            --cyber-gold: #f0d575; /* 발광하는 연한 금색 */
+            --dark-gold: #8c6e1e; /* 어두운 금색 */
+            --header-font: 'Orbitron', sans-serif;
+            --body-font: 'Roboto', sans-serif;
+            --cyber-border: 2px solid var(--primary-gold);
+            --cyber-glow: 0 0 15px rgba(212, 175, 55, 0.6);
         }
 
-        /* 공통 헤더 (모바일 비율에 맞춘 여백과 크기) */
+        body {
+            margin: 0;
+            background-color: var(--bg-black);
+            color: var(--primary-gold);
+            font-family: var(--body-font);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            /* 배경 격자 패턴 (사이버 분위기) */
+            background-image: 
+                linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                linear-gradient(90px, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* 각도 커팅 효과 (사이버 스타일 버튼/박스) */
+        .cyber-cut {
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+        }
+
+        h1, h2, h3, .menu-item {
+            font-family: var(--header-font);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- 인트로 화면 --- */
+        #intro {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--bg-black);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+            animation: introFadeOut 3s forwards;
+            animation-delay: 2.5s; /* 2.5초 보여주고 사라짐 */
+        }
+
+        #intro-title {
+            font-size: 3rem;
+            text-align: center;
+            color: var(--cyber-gold);
+            text-shadow: 0 0 20px var(--cyber-gold), 0 0 40px var(--primary-gold);
+            animation: titlePulse 2s infinite;
+        }
+
+        /* --- 헤더 --- */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(5, 5, 5, 0.9);
+            position: sticky; top: 0; z-index: 100;
         }
 
         header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            letter-spacing: 5px;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            margin: 0; font-size: 1.6rem;
+            color: var(--cyber-gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
             cursor: pointer;
         }
 
-        /* 햄버거 메뉴 (세 개의 선) */
+        /* 햄버거 메뉴 */
         .hamburger {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            display: flex; flex-direction: column; gap: 6px;
             cursor: pointer;
-            z-index: 100;
         }
 
         .hamburger div {
-            width: 28px;
-            height: 3px;
-            background-color: #d4af37;
+            width: 30px; height: 2px;
+            background-color: var(--primary-gold);
+            box-shadow: 0 0 5px var(--primary-gold);
             transition: 0.3s;
         }
 
-        /* 사이드바 (모바일 화면의 절반 이상을 덮도록 설정) */
+        /* --- 사이드바 --- */
         #sidebar {
-            position: fixed;
-            top: 0;
-            right: -100%; /* 기본적으로 숨김 */
-            width: 70%;
-            max-width: 250px;
-            height: 100vh;
-            background-color: #111;
-            border-left: 2px solid #d4af37;
+            position: fixed; top: 0; right: -100%;
+            width: 75%; max-width: 300px; height: 100vh;
+            background-color: rgba(10, 10, 10, 0.95);
+            border-left: 2px solid var(--primary-gold);
             transition: right 0.4s ease;
-            display: flex;
-            flex-direction: column;
-            padding: 80px 20px 20px 20px;
-            z-index: 50;
-            box-sizing: border-box;
+            display: flex; flex-direction: column;
+            padding: 80px 20px 30px 20px;
+            z-index: 90; box-sizing: border-box;
+            backdrop-filter: blur(5px);
         }
 
-        #sidebar.open {
-            right: 0;
-        }
+        #sidebar.open { right: 0; }
 
         #sidebar div.menu-item {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            cursor: pointer;
-            letter-spacing: 1px;
+            font-size: 1.3rem; margin-bottom: 30px;
+            cursor: pointer; color: var(--primary-gold);
+            transition: 0.3s;
+        }
+
+        #sidebar div.menu-item:hover {
+            color: #fff; text-shadow: 0 0 10px var(--cyber-gold);
         }
 
         .sidebar-bottom {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            margin-top: auto; display: flex; flex-direction: column; gap: 15px;
         }
 
         .sidebar-btn {
-            background: transparent;
-            color: #d4af37;
-            border: 1px solid #d4af37;
-            padding: 12px;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 5px;
+            background: transparent; color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+            padding: 12px; font-size: 0.9rem;
+            cursor: pointer; text-transform: uppercase;
+            font-family: var(--header-font);
         }
 
-        /* 메인 콘텐츠 영역 (로비 화면) */
+        .sidebar-btn:hover { background: rgba(212, 175, 55, 0.1); }
+
+        /* --- 메인 콘텐츠 영역 (로비) --- */
+        #main-content > div { display: none; padding: 20px; padding-bottom: 50px;}
+
         #lobby-view {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: calc(100vh - 70px);
-            gap: 25px;
-            padding: 0 20px;
-            box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; height: calc(100vh - 70px);
+            gap: 25px; box-sizing: border-box;
         }
 
         .lobby-box {
-            position: relative;
-            width: 100%; /* 모바일 화면에 꽉 차게 */
-            max-width: 320px;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border: 2px solid #d4af37;
-            border-radius: 5px;
+            position: relative; width: 100%; max-width: 340px;
+            padding: 25px; text-align: center;
+            font-size: 1.3rem; font-weight: bold;
+            border: var(--cyber-border);
             cursor: pointer;
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(20, 20, 20, 0.6);
+            transition: all 0.3s ease;
         }
 
-        /* 인물데이터 박스 특화 (발광 및 동그라미) */
+        .lobby-box:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* 인물데이터 특화 */
         #btn-character {
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-            animation: pulseGlow 2s infinite alternate;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            animation: lobbyBoxGlow 2s infinite alternate;
         }
 
         .circle-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 10px;
-            height: 10px;
-            background-color: #d4af37;
+            position: absolute; top: 10px; right: 10px;
+            width: 10px; height: 10px;
+            background-color: var(--cyber-gold);
             border-radius: 50%;
-            box-shadow: 0 0 10px #d4af37;
+            box-shadow: 0 0 10px var(--cyber-gold);
         }
 
-        @keyframes pulseGlow {
-            from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
-            to { box-shadow: 0 0 20px rgba(212, 175, 55, 0.9); }
-        }
-
-        /* 인물데이터 화면 */
-        #character-view {
-            display: none;
-            padding: 20px;
-            box-sizing: border-box;
-            padding-bottom: 50px; /* 모바일 하단 스크롤 여유 공간 */
+        /* --- [인물데이터 화면] --- */
+        .view-header {
+            text-align: center; margin-bottom: 30px;
+            color: var(--cyber-gold); font-size: 1.6rem;
         }
 
         .filter-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            display: flex; justify-content: center;
+            gap: 8px; margin-bottom: 25px; flex-wrap: wrap;
         }
 
         .filter-buttons button {
-            background: transparent;
-            color: #d4af37;
-            border: 1px solid #d4af37;
-            padding: 8px 12px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border-radius: 3px;
-            flex-grow: 1; /* 모바일에서 버튼들이 꽉 차게 배열됨 */
-            text-align: center;
+            background: transparent; color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+            padding: 8px 12px; font-size: 0.85rem;
+            cursor: pointer; font-family: var(--header-font);
+            flex-grow: 1; text-align: center;
         }
 
         .filter-buttons button.active {
-            background: #d4af37;
-            color: #0a0a0a;
-            font-weight: bold;
+            background: var(--primary-gold);
+            color: var(--bg-black); font-weight: bold;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
-        /* 모바일 환경에 맞춘 2열 그리드 */
         .character-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
         }
 
         .char-card {
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            padding: 15px 10px;
-            text-align: center;
-            background: #111;
-            border-radius: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 20px 10px; text-align: center;
+            background: rgba(10, 10, 10, 0.7);
+            position: relative;
+        }
+        
+        /* 카드 하단 코너 데코 */
+        .char-card::after {
+            content:''; position: absolute; bottom: 0; right: 0;
+            width: 10px; height: 10px;
+            background: var(--primary-gold);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
         }
 
         .faction-label {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            margin-bottom: 8px;
-            display: block;
+            font-size: 0.75rem; color: var(--dark-gold);
+            margin-bottom: 8px; display: block; font-family: var(--header-font);
         }
 
         .char-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            word-break: keep-all; /* 이름 줄바꿈 방지 */
+            font-size: 1.1rem; font-weight: bold; color: #fff;
+            word-break: keep-all;
+        }
+
+        /* --- [지도 화면] - 미국 배경 및 세력 시각화 --- */
+        #map-view { padding: 10px; }
+
+        .map-container {
+            width: 100%; height: 70vh; /* 모바일에서 길게 보이도록 */
+            border: var(--cyber-border);
+            position: relative;
+            background-color: #080808;
+            background-image: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" opacity="0.15"><path d="M963,165 L968,175... (미국지도 SVG 간략화패스 - 실제 패스필요)" fill="none" stroke="%23d4af37" stroke-width="2"/></svg>');
+            /* 위 SVG는 실제 미국 지도 패스 데이터가 필요합니다. 여기서는 분위기만 내는 플레이스홀더입니다. */
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            overflow: hidden;
+            box-shadow: var(--cyber-glow);
+        }
+
+        /* 레이더 스캔 효과 */
+        .map-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            animation: radarScan 4s linear infinite;
+            z-index: 5;
+        }
+
+        /* 중앙탑 */
+        .central-tower {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px; height: 30px;
+            background-color: var(--cyber-gold);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* 삼각형 모양 탑 */
+            box-shadow: 0 0 20px var(--cyber-gold);
+            z-index: 10;
+        }
+        .tower-label {
+            position: absolute; top: calc(50% + 25px); left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--header-font); font-size: 0.8rem;
+            color: var(--cyber-gold); text-align: center; width: 100px;
+        }
+
+        /* 세력 구역 공통 스타일 (발광하는 원) */
+        .faction-district {
+            position: absolute; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--header-font); font-weight: bold;
+            color: #fff; text-shadow: 0 0 5px #000;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--primary-gold);
+            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.3);
+            transition: 0.3s;
+        }
+        .faction-district:active {
+            transform: scale(1.1); background: rgba(212, 175, 55, 0.2);
+        }
+
+        /* 비율: 애스터 > 델라쿠르아 > 스타더스트 */
+        .district-aster {
+            width: 140px; height: 140px; /* 가장 큼 */
+            top: 20%; left: 15%; /* 미국 서부 쪽 배치 */
+            border-color: #ffcc00; /* 약간 더 진한 금색 */
+        }
+
+        .district-delacrua {
+            width: 100px; height: 100px; /* 중간 */
+            bottom: 20%; right: 15%; /* 미국 동남부 쪽 배치 */
+            border-color: #c0c0c0; /* 차가운 느낌의 금색/은색 */
+        }
+
+        .district-stardust {
+            width: 70px; height: 70px; /* 가장 작음 */
+            top: 15%; right: 25%; /* 미국 동북부 쪽 배치 */
+            border-color: #fff8dc; /* 연한 발광 금색 */
+        }
+
+        .map-legend {
+            margin-top: 20px; padding: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(10, 10, 10, 0.6);
+        }
+        .legend-item {
+            font-size: 0.9rem; margin-bottom: 5px; color: #fff;
+        }
+
+        /* --- 애니메이션 정의 --- */
+        @keyframes introFadeOut {
+            from { opacity: 1; visibility: visible; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        @keyframes titlePulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes lobbyBoxGlow {
+            from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); border-color: var(--dark-gold); }
+            to { box-shadow: 0 0 25px rgba(212, 175, 55, 0.8); border-color: var(--cyber-gold); }
+        }
+        @keyframes radarScan {
+            0% { top: 0; }
+            100% { top: 100%; }
         }
 
     </style>
 </head>
 <body>
 
+    <div id="intro">
+        <div id="intro-title">OVER SOUL</div>
+    </div>
+
     <header>
-        <h1 onclick="showLobby()">OVER SOUL</h1>
+        <h1 onclick="showView('lobby')">OVER SOUL</h1>
         <div class="hamburger" onclick="toggleSidebar()">
             <div></div>
             <div></div>
@@ -218,86 +346,104 @@
     </header>
 
     <div id="sidebar">
-        <div class="menu-item" onclick="showCharacterView()">CHARACTER DATA</div>
-        <div class="menu-item">MAP</div>
-        <div class="menu-item">SYSTEM</div>
+        <div class="menu-item" onclick="showView('character')">Character Data</div>
+        <div class="menu-item" onclick="showView('map')">Network Map</div>
+        <div class="menu-item">System Status</div>
         
         <div class="sidebar-bottom">
-            <button class="sidebar-btn" onclick="toggleSound()">소리 켜기/끄기</button>
-            <button class="sidebar-btn" onclick="exitApp()" style="color: #ff4d4d; border-color: #ff4d4d;">나가기</button>
+            <button class="sidebar-btn cyber-cut" onclick="toggleSound()">Sound ON/OFF</button>
+            <button class="sidebar-btn cyber-cut" onclick="exitApp()" style="color: #ff4d4d; border-color: #ff4d4d; box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);">Exit</button>
         </div>
     </div>
 
-    <div id="lobby-view">
-        <div class="lobby-box" id="btn-character" onclick="showCharacterView()">
-            인물데이터
-            <div class="circle-indicator"></div>
-        </div>
-        <div class="lobby-box">지도</div>
-        <div class="lobby-box">시스템</div>
-    </div>
-
-    <div id="character-view">
-        <h2 style="text-align: center; margin-bottom: 20px; font-size: 1.5rem;">CHARACTER DATA</h2>
+    <div id="main-content">
         
-        <div class="filter-buttons">
-            <button class="active" onclick="filterData('ALL', this)">ALL</button>
-            <button onclick="filterData('애스터', this)">애스터</button>
-            <button onclick="filterData('델라쿠르아', this)">델라쿠르아</button>
-            <button onclick="filterData('스타 더스트', this)">스타 더스트</button>
-            <button onclick="filterData('무소속', this)">무소속</button>
+        <div id="lobby-view" style="display: flex;"> <div class="lobby-box cyber-cut" id="btn-character" onclick="showView('character')">
+                인물데이터
+                <div class="circle-indicator"></div>
+            </div>
+            <div class="lobby-box cyber-cut" onclick="showView('map')">지도</div>
+            <div class="lobby-box cyber-cut">시스템</div>
         </div>
 
-        <div class="character-grid" id="char-container">
+        <div id="character-view">
+            <h2 class="view-header">Character Data</h2>
+            
+            <div class="filter-buttons">
+                <button class="active cyber-cut" onclick="filterData('ALL', this)">ALL</button>
+                <button class="cyber-cut" onclick="filterData('애스터', this)">애스터</button>
+                <button class="cyber-cut" onclick="filterData('델라쿠르아', this)">델라쿠르아</button>
+                <button class="cyber-cut" onclick="filterData('스타 더스트', this)">스타 더스트</button>
+                <button class="cyber-cut" onclick="filterData('무소속', this)">무소속</button>
             </div>
+
+            <div class="character-grid" id="char-container">
+                </div>
+        </div>
+
+        <div id="map-view">
+            <h2 class="view-header">Network Map</h2>
+            
+            <div class="map-container cyber-cut">
+                <div class="central-tower"></div>
+                <div class="tower-label">중앙탑<br>(Central)</div>
+
+                <div class="faction-district district-aster" onclick="alert('애스터 영역')">ASTER</div>
+                <div class="faction-district district-delacrua" onclick="alert('델라쿠르아 영역')">DELACRUA</div>
+                <div class="faction-district district-stardust" onclick="alert('스타더스트 영역')">STARDUST</div>
+            </div>
+
+            <div class="map-legend cyber-cut">
+                <div class="legend-item" style="color:#ffcc00">● ASTER: 최대 세력 구역</div>
+                <div class="legend-item" style="color:#c0c0c0">● DELACRUA: 중간 세력 구역</div>
+                <div class="legend-item" style="color:#fff8dc">● STARDUST: 소규모 연구 구역</div>
+                <p style="font-size:0.8rem; color:var(--dark-gold); margin-top:10px;">※ 미국 배경 네트워크망 기반 세력 분포도</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // 사이드바 토글
+        // --- UI 로직 ---
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
+            document.getElementById('sidebar').classList.toggle('open');
         }
 
-        // 나가기 버튼 경고
-        function exitApp() {
-            alert('경고: 접근이 거부되었음.');
-            toggleSidebar(); // 경고 후 사이드바 닫기
-        }
+        // 화면 전환 (로비, 인물, 지도)
+        function showView(viewName) {
+            // 모든 뷰 숨김
+            const views = document.querySelectorAll('#main-content > div');
+            views.forEach(v => v.style.display = 'none');
 
-        // 소리 토글
-        function toggleSound() {
-            alert('사운드 시스템이 토글되었습니다.');
-        }
+            // 선택한 뷰 표시
+            const targetView = document.getElementById(viewName + '-view');
+            if (viewName === 'lobby') {
+                targetView.style.display = 'flex'; // 로비는 flex
+            } else {
+                targetView.style.display = 'block'; // 나머지는 block
+            }
 
-        // 화면 전환
-        function showCharacterView() {
-            document.getElementById('lobby-view').style.display = 'none';
-            document.getElementById('character-view').style.display = 'block';
+            // 사이드바 닫기
             document.getElementById('sidebar').classList.remove('open');
+            window.scrollTo(0, 0); // 스크롤 상단으로
         }
 
-        function showLobby() {
-            document.getElementById('lobby-view').style.display = 'flex';
-            document.getElementById('character-view').style.display = 'none';
+        // 시스템 버튼들
+        function exitApp() {
+            alert('CRITICAL ERROR: 접근이 거부되었음.');
+            toggleSidebar();
         }
 
-        // 인물 데이터
+        function toggleSound() {
+            alert('사운드 시스템 토글.');
+        }
+
+        // --- 인물 데이터 로직 ---
         const characters = [
-            { name: "엘라라(가주)", faction: "애스터" },
-            { name: "루나", faction: "애스터" },
-            { name: "루시", faction: "애스터" },
-            { name: "시몬(가주)", faction: "델라쿠르아" },
-            { name: "사라", faction: "델라쿠르아" },
-            { name: "시안", faction: "델라쿠르아" },
-            { name: "송", faction: "델라쿠르아" },
-            { name: "세라피나", faction: "스타 더스트" },
-            { name: "클로에", faction: "스타 더스트" },
-            { name: "크리스", faction: "무소속" },
-            { name: "노아", faction: "무소속" },
-            { name: "아리아", faction: "무소속" },
-            { name: "세라", faction: "무소속" },
-            { name: "고드", faction: "무소속" }
+            { name: "엘라라(가주)", faction: "애스터" }, { name: "루나", faction: "애스터" }, { name: "루시", faction: "애스터" },
+            { name: "시몬(가주)", faction: "델라쿠르아" }, { name: "사라", faction: "델라쿠르아" }, { name: "시안", faction: "델라쿠르아" }, { name: "송", faction: "델라쿠르아" },
+            { name: "세라피나", faction: "스타 더스트" }, { name: "클로에", faction: "스타 더스트" },
+            { name: "크리스", faction: "무소속" }, { name: "노아", faction: "무소속" }, { name: "아리아", faction: "무소속" }, { name: "세라", faction: "무소속" }, { name: "고드", faction: "무소속" }
         ];
 
         function renderCharacters(filterFaction) {
@@ -307,9 +453,9 @@
             characters.forEach(char => {
                 if (filterFaction === 'ALL' || char.faction === filterFaction) {
                     const card = document.createElement('div');
-                    card.className = 'char-card';
+                    card.className = 'char-card cyber-cut'; // 사이버 컷 스타일 적용
                     card.innerHTML = `
-                        <span class="faction-label">[ ${char.faction} ]</span>
+                        <span class="faction-label">${char.faction}</span>
                         <div class="char-name">${char.name}</div>
                     `;
                     container.appendChild(card);
@@ -321,11 +467,10 @@
             const buttons = document.querySelectorAll('.filter-buttons button');
             buttons.forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-
             renderCharacters(faction);
         }
 
-        // 초기 로드
+        // 초기화
         renderCharacters('ALL');
 
     </script>
