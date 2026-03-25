@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v10.1</title>
+    <title>OVER SOUL - OS Terminal v10.5</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -102,77 +102,67 @@
         .loading-bar { width: 100%; height: 3px; background: var(--theme-dim); position: relative; overflow: hidden; border-radius: 5px;}
         .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--theme-bright); box-shadow: 0 0 10px var(--theme-bright); animation: fillBar 2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
         
-        .sys-frame-info { position: fixed; font-size: 0.7rem; color: var(--theme-dim); z-index: 80; pointer-events: none; text-shadow: none; font-weight: bold;}
+        .sys-frame-info { position: fixed; font-size: 0.75rem; color: var(--theme-dim); z-index: 80; pointer-events: none; text-shadow: none; font-weight: bold;}
         .top-left-info { top: 10px; left: 15px; }
         .bottom-right-info { bottom: 35px; right: 15px; text-align: right; } 
         .blink-dot { display: inline-block; width: 6px; height: 6px; background: var(--theme-main); border-radius: 50%; margin-left: 6px; animation: blink 1s infinite; box-shadow: 0 0 5px var(--theme-main);}
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--theme-dim); background: rgba(var(--bg-nav-rgb), 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;}
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--theme-dim); background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;}
         header h1 { font-size: 1.6rem; color: var(--theme-bright); letter-spacing: 4px; cursor: pointer; text-shadow: var(--theme-glow); }
         .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
         .hamburger div { width: 26px; height: 2px; background-color: var(--theme-main); box-shadow: var(--theme-glow); transition: 0.3s;}
         
-        #sidebar { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(var(--bg-side-rgb), 0.95); border-left: 1px solid var(--theme-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 80px 20px 35px; z-index: 90; backdrop-filter: blur(15px);}
+        #sidebar { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(5, 5, 5, 0.95); border-left: 1px solid var(--theme-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 80px 20px 35px; z-index: 90; backdrop-filter: blur(15px);}
         #sidebar.open { right: 0; box-shadow: -15px 0 40px rgba(0,0,0,0.9); }
-        .menu-item { font-family: var(--font-title); font-size: 1.15rem; margin-bottom: 25px; color: var(--theme-dim); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s, text-shadow 0.3s; }
-        .menu-item.active-menu { color: var(--theme-bright); text-shadow: var(--theme-glow); font-weight: bold; }
+        .menu-item { font-family: var(--font-title); font-size: 1.15rem; margin-bottom: 25px; color: var(--theme-dim); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s; }
+        .menu-item.active-menu { color: var(--theme-bright); font-weight: bold; }
         .menu-item:hover { color: var(--theme-main); }
 
-        /* 💡 메인 뷰 공통 여백 수정 (스크롤 버그 방지) */
-        #main-content > div { display: none; padding: 15px; padding-bottom: 60px; min-height: calc(100vh - 65px); box-sizing: border-box; }
+        #main-content > div { display: none; padding: 20px; padding-bottom: 90px; min-height: calc(100vh - 80px); box-sizing: border-box; }
         .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
-        .view-title { font-size: 1.4rem; color: var(--theme-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--theme-glow); letter-spacing: 1px;}
+        .view-title { font-size: 1.4rem; color: var(--theme-bright); margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; letter-spacing: 1px; transition: 0.3s;}
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--theme-dim); margin-left: 15px; position: relative;}
 
-        /* 💡 로비 뷰 (한 화면에 다 들어오도록 크기/여백 축소) */
-        #lobby-view { flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding-bottom: 30px;}
-        .lobby-main-title { font-size: 2.8rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main); font-family: var(--font-title); letter-spacing: 4px; margin-bottom: 0; font-style: italic; transition: 0.5s;}
-        .lobby-sub-title { font-size: 0.8rem; color: var(--theme-bright); letter-spacing: 6px; margin-bottom: 15px; opacity: 0.9; font-weight: bold; text-align: center;}
-        .lobby-btn { width: 100%; max-width: 340px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; opacity: 0; transform: translateY(20px); letter-spacing: 1px; box-sizing: border-box;}
+        /* 로비 뷰 */
+        #lobby-view { flex-direction: column; gap: 18px; align-items: center; justify-content: center; padding-bottom: 30px;}
+        .lobby-main-title { font-size: 4.2rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main), 0 0 45px var(--theme-main); font-family: var(--font-title); letter-spacing: 6px; margin-bottom: 5px; font-style: italic; transition: 0.5s;}
+        .lobby-sub-title { font-size: 0.9rem; color: var(--theme-bright); letter-spacing: 6px; margin-bottom: 40px; opacity: 0.9; font-weight: bold; text-align: center; transition: 0.3s;}
+        .lobby-btn { width: 100%; max-width: 340px; padding: 20px 22px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.15rem; cursor: pointer; opacity: 0; transform: translateY(20px); letter-spacing: 1px; box-sizing: border-box;}
         #lobby-view.view-fade-in .lobby-btn { animation: slideUpFade 0.5s forwards; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(3) { animation-delay: 0.05s; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(4) { animation-delay: 0.1s; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(5) { animation-delay: 0.15s; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(6) { animation-delay: 0.2s; } 
+        #lobby-view.view-fade-in .lobby-btn:nth-child(3) { animation-delay: 0.1s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(4) { animation-delay: 0.2s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(5) { animation-delay: 0.3s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(6) { animation-delay: 0.4s; } 
         .lobby-btn:active { transform: scale(0.96) !important; }
+        .btn-text { transition: 0.3s; }
+        .btn-arrow { font-size:0.6rem; color:var(--theme-bright); transition: 0.3s;}
 
-        /* 💡 설정 뷰 (보이지 않던 버그 완벽 수정) */
-        .settings-btn { 
-            margin-bottom: 12px; width: 100%; box-sizing: border-box;
-            display: flex; justify-content: flex-start; align-items: center;
-            padding: 18px 20px; font-family: var(--font-title); font-size: 1rem; 
-            cursor: pointer; opacity: 0; transform: translateY(20px);
-        }
+        /* 설정 뷰 */
+        .settings-btn { margin-bottom: 15px; width: 100%; text-align: left; justify-content: flex-start; padding-left: 25px; font-size: 1.1rem;}
         .settings-btn.active-theme { border-color: var(--theme-bright); color: var(--theme-bright); font-weight: bold; background: rgba(var(--theme-main-rgb), 0.3); box-shadow: var(--theme-glow);}
-        /* 설정 버튼 개별 애니메이션 트리거 */
-        #settings-view.view-fade-in .settings-btn { animation: slideUpFade 0.5s forwards; }
-        #settings-view.view-fade-in > div > .settings-btn:nth-child(1) { animation-delay: 0.1s; }
-        #settings-view.view-fade-in > div > .settings-btn:nth-child(2) { animation-delay: 0.2s; }
-        #settings-view.view-fade-in > div > .settings-btn:nth-child(3) { animation-delay: 0.3s; }
 
         /* 뉴스 티커 */
         .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); border-top: 1px solid var(--theme-main); padding: 8px 0; overflow: hidden; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);}
         .news-content { display: inline-block; white-space: nowrap; font-size: 0.9rem; color: var(--theme-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 50s linear infinite; }
         .news-content span { margin-right: 60px; text-shadow: none; letter-spacing: 0.5px;}
-        .news-tag { background: var(--theme-dim); color: #fff; padding: 3px 7px; border-radius: 3px; font-weight: bold; margin-right: 10px; font-family: var(--font-title); }
+        .news-tag { background: var(--theme-dim); color: #fff; padding: 3px 7px; border-radius: 3px; font-weight: bold; margin-right: 10px; font-family: var(--font-title); box-shadow: 0 0 5px var(--theme-dim);}
 
-        /* 💡 인물 뷰 (이름 짤림 버그 수정) */
+        /* 인물 뷰 */
         .filter-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .filter-btn { flex: 1 1 calc(33% - 8px); background: rgba(var(--bg-box-rgb), 0.5); border: 1px solid var(--theme-dim); color: var(--theme-main); padding: 10px 0; font-family: var(--font-title); font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px); border-radius: inherit;}
         .filter-btn.active { background: rgba(var(--theme-main-rgb), 0.3); border-color: var(--theme-bright); color: var(--theme-bright); text-shadow: var(--theme-glow); box-shadow: inset 0 0 12px rgba(var(--theme-main-rgb), 0.3); }
         
-        .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .char-card { padding: 10px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px;}
-        .char-card:active { transform: scale(0.95); }
+        .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .char-card { padding: 12px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 12px;}
+        .char-card:active { transform: scale(0.95); border-color: var(--theme-bright); background: rgba(var(--theme-main-rgb), 0.2); box-shadow: var(--theme-glow); }
         .char-fade-in { animation: smoothFadeIn 0.3s forwards; opacity: 0; }
-        .mini-profile-img { width: 40px; height: 50px; border: 1px solid var(--theme-dim); flex-shrink: 0; overflow: hidden; background: #000; border-radius: inherit;}
+        .mini-profile-img { width: 50px; height: 60px; border: 1px solid var(--theme-dim); flex-shrink: 0; overflow: hidden; background: #000; border-radius: inherit;}
         .mini-profile-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.3s;}
         .char-card:hover .mini-profile-img img { opacity: 1; transform: scale(1.1); }
         .char-info-wrap { flex: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: center;}
-        .card-header { display: flex; justify-content: space-between; color: var(--theme-main); opacity: 0.8; font-size: 0.6rem; margin-bottom: 2px; font-family: var(--font-data);}
-        /* 텍스트 줄바꿈 허용으로 짤림 방지 */
-        .char-name { font-size: 0.9rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; text-shadow: 0 0 3px #fff; line-height: 1.1; white-space: normal; word-break: keep-all;}
-        .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 2px; font-weight: bold; font-size: 0.65rem;}
+        .card-header { display: flex; justify-content: space-between; color: var(--theme-main); opacity: 0.8; font-size: 0.65rem; margin-bottom: 4px; font-family: var(--font-data);}
+        .char-name { font-size: 1.05rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 3px; text-shadow: 0 0 3px #fff; line-height: 1.1; white-space: normal; word-break: keep-all;}
+        .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 3px; font-weight: bold; font-size: 0.65rem;}
 
         /* 지도 뷰 */
         .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--theme-main); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(30,30,30,0.8) 0%, rgba(0,0,0,1) 100%); }
@@ -196,18 +186,18 @@
         .lm-star { top: 22%; left: 82%; }
         .lm-center { top: 43%; left: 55%; transform: translate(-50%, 0); }
 
-        .map-data-panel { font-size: 0.8rem; color: var(--theme-main); margin-top: 15px; border-top: 1px solid var(--theme-dim); padding-top: 12px; cursor: default; }
+        .map-data-panel { font-size: 0.8rem; color: var(--theme-main); margin-top: 15px; border-top: 1px solid var(--theme-dim); padding-top: 12px; cursor: default; transition: 0.3s;}
 
         /* 시스템 DB 뷰 */
         .db-container { display: flex; flex-direction: column; gap: 15px; }
-        .db-folder { padding: 16px 20px; font-family: var(--font-title); font-size: 1.1rem; color: var(--theme-bright); cursor: pointer; }
+        .db-folder { padding: 16px 20px; font-family: var(--font-title); font-size: 1.15rem; color: var(--theme-bright); cursor: pointer; }
         .db-folder::before { content: '[+] '; color: var(--theme-main); margin-right: 8px; }
         .db-folder.open::before { content: '[-] '; }
         .db-folder-content { display: none; flex-direction: column; gap: 8px; padding-left: 20px; margin-top: -8px; margin-bottom: 15px; border-left: 2px dashed var(--theme-dim); }
         .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
-        .db-file { padding: 12px 14px; font-size: 1rem; color: #fff; cursor: pointer; }
+        .db-file { padding: 14px; font-size: 1.05rem; color: #fff; cursor: pointer; }
         .db-file.active { border-color: var(--theme-bright); padding-left: 25px; }
-        .db-data-box { display: none; padding: 15px; font-size: 0.9rem; line-height: 1.7; margin-top: -8px; margin-bottom: 15px; color: var(--theme-bright); }
+        .db-data-box { display: none; padding: 18px; font-size: 0.95rem; line-height: 1.8; margin-top: -8px; margin-bottom: 15px; color: var(--theme-bright); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
         .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2);}
 
@@ -217,28 +207,28 @@
         .modal-box { width: 100%; max-width: 440px; max-height: 85vh; position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; background: #0a0a0a;}
         .generic-modal.show .modal-box { transform: translateY(0) scale(1); }
         .modal-close { position: absolute; top: 15px; right: 20px; color: var(--theme-bright); font-size: 2rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; z-index: 10;}
-        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
+        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 25px; }
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--theme-dim); border-radius: 3px;}
         
-        .m-header { border-bottom: 2px dashed var(--theme-dim); padding-bottom: 10px; margin-bottom: 15px; }
-        .m-name { font-size: 1.6rem; color: #fff; font-weight: bold; font-family: var(--font-title); }
-        .m-profile-img-wrap { width: 100%; height: 220px; border: 1px solid var(--theme-dim); margin-bottom: 15px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center; border-radius: inherit;}
+        .m-header { border-bottom: 2px dashed var(--theme-dim); padding-bottom: 15px; margin-bottom: 20px; }
+        .m-name { font-size: 1.8rem; color: #fff; font-weight: bold; font-family: var(--font-title); }
+        .m-profile-img-wrap { width: 100%; height: 240px; border: 1px solid var(--theme-dim); margin-bottom: 18px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center; border-radius: inherit;}
         .m-profile-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; opacity: 0.95; }
         .m-profile-img-wrap:hover img { transform: scale(1.05); opacity: 1; }
-        .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .m-stat-box { border: 1px solid var(--theme-dim); padding: 10px; }
-        .m-label { font-size: 0.7rem; color: var(--theme-main); opacity: 0.9; display: block; margin-bottom: 4px; font-weight: bold;}
-        .m-val { font-size: 0.9rem; color: var(--theme-bright); font-weight: bold; }
-        .m-section-title { font-size: 0.9rem; color: var(--theme-main); border-left: 4px solid var(--theme-bright); padding-left: 8px; margin-bottom: 8px; font-family: var(--font-title);}
-        .m-desc { font-size: 0.85rem; color: #eee; line-height: 1.6; padding: 12px; border: 1px dotted var(--theme-dim); }
-        .tag { display: inline-block; padding: 4px 8px; border: 1px solid var(--theme-dim); color: var(--theme-bright); font-size: 0.7rem; border-radius: 4px; margin-right: 6px; margin-bottom: 6px; font-weight: bold;}
+        .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .m-stat-box { border: 1px solid var(--theme-dim); padding: 12px; }
+        .m-label { font-size: 0.75rem; color: var(--theme-main); opacity: 0.9; display: block; margin-bottom: 4px; font-weight: bold;}
+        .m-val { font-size: 1rem; color: var(--theme-bright); font-weight: bold; }
+        .m-section-title { font-size: 1rem; color: var(--theme-main); border-left: 4px solid var(--theme-bright); padding-left: 8px; margin-bottom: 8px; font-family: var(--font-title);}
+        .m-desc { font-size: 0.9rem; color: #eee; line-height: 1.7; padding: 15px; border: 1px dotted var(--theme-dim); }
+        .tag { display: inline-block; padding: 4px 10px; border: 1px solid var(--theme-dim); color: var(--theme-bright); font-size: 0.75rem; border-radius: 4px; margin-right: 6px; margin-bottom: 6px; font-weight: bold;}
         .tag-warning { background: rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.5); color: #fff; }
         .text-glitch { position: relative; color: var(--color-gord); font-weight: 900; animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 var(--theme-main); }
         .tag-glitch { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.5); color: #fff; text-shadow: 1px 0 red, -1px 0 blue; }
 
-        #map-modal-title { font-family: var(--font-title); font-size: 1.3rem; color: var(--theme-bright); margin-bottom: 10px; }
-        #map-modal-desc { font-size: 0.9rem; color: #eee; line-height: 1.6; }
+        #map-modal-title { font-family: var(--font-title); font-size: 1.5rem; color: var(--theme-bright); margin-bottom: 12px; }
+        #map-modal-desc { font-size: 0.95rem; color: #eee; line-height: 1.8; }
 
         #img-viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.95); z-index: 3000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; cursor: zoom-out; backdrop-filter: blur(5px);}
         #img-viewer.show { display: flex; opacity: 1; }
@@ -251,15 +241,19 @@
         @keyframes mapScan { 0% { top: -15px; } 100% { top: 100%; } }
         @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDownFade { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
         @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
     </style>
 </head>
-<body class="theme-classic"> <div id="intro">
+<body class="theme-classic">
+
+    <audio id="bgm-player" loop></audio>
+
+    <div id="intro">
         <div class="glitch-text">OVER SOUL</div>
         <div class="loading-wrap">
-            <div class="loading-text">CONNECTING TO AETERNA NET...</div>
+            <div class="loading-text" id="intro-loading-text">CONNECTING TO O.S. CORE NETWORK...</div>
             <div class="loading-bar"><div class="loading-fill"></div></div>
         </div>
     </div>
@@ -276,25 +270,25 @@
         <div class="menu-item" id="nav-character" onclick="navTo('character')">> DB_CHARACTERS</div>
         <div class="menu-item" id="nav-map" onclick="navTo('map')">> TACTICAL_MAP</div>
         <div class="menu-item" id="nav-system" onclick="navTo('system')">> SYSTEM_CONFIG</div>
-        <div class="menu-item" id="nav-settings" onclick="navTo('settings')">> SETTINGS (THEME)</div>
+        <div class="menu-item" id="nav-settings" onclick="navTo('settings')">> SETTINGS</div>
     </div>
 
     <div id="main-content">
         <div id="lobby-view" class="view-fade-in" style="display: flex;">
             <h2 class="lobby-main-title">OVER SOUL</h2>
-            <div class="lobby-sub-title">AETERNA NETWORK TERMINAL</div>
+            <div class="lobby-sub-title" id="lobby-sub-title">CORE NETWORK TERMINAL</div>
             
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
-                CHARACTER_DATA <span>ACCESS ></span>
+                <span class="btn-text" id="btn-txt-char">인물 정보 열람</span> <span class="btn-arrow">ACCESS ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('map')">
-                TACTICAL_MAP <span>VIEW ></span>
+                <span class="btn-text" id="btn-txt-map">전술 지도 확인</span> <span class="btn-arrow">VIEW ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('system')">
-                SYSTEM_CONFIG <span>VIEW ></span>
+                <span class="btn-text" id="btn-txt-sys">시스템 규율 확인</span> <span class="btn-arrow">VIEW ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('settings')">
-                TERMINAL_SETTINGS <span>CONFIG ></span>
+                <span class="btn-text" id="btn-txt-set">터미널 환경 설정</span> <span class="btn-arrow">CONFIG ></span>
             </div>
         </div>
 
@@ -329,8 +323,8 @@
             </div>
             <div class="map-data-panel">
                 <div style="font-weight:bold; margin-bottom:6px; font-family: var(--font-title);">[ TERMINAL HELP ]</div>
-                <div style="margin-bottom: 4px;">> 지도 내 <span style="color:var(--neon-red); font-weight:bold; font-size: 0.9rem;">[ X ]</span> 마크를 터치하여 랜드마크 정보를 확인하십시오.</div>
-                <div>> 각 세력 <span style="color:#fff; font-weight:bold;">[ 영역 ]</span>을 터치하여 가문 상세 정보를 확인하십시오.</div>
+                <div style="margin-bottom: 4px;" id="map-help-1">> 지도 내 <span style="color:var(--neon-red); font-weight:bold; font-size: 0.9rem;">[ X ]</span> 마크를 터치하여 랜드마크 정보를 확인하십시오.</div>
+                <div id="map-help-2">> 각 세력 <span style="color:#fff; font-weight:bold;">[ 영역 ]</span>을 터치하여 가문 상세 정보를 확인하십시오.</div>
             </div>
         </div>
 
@@ -340,18 +334,20 @@
         </div>
 
         <div id="settings-view">
-            <div class="view-title">TERMINAL_SETTINGS <div class="view-title-decor"></div></div>
+            <div class="view-title" id="setting-title">[ 단말기 환경 설정 ] <div class="view-title-decor"></div></div>
             
             <div class="m-section-title" style="margin-top: 25px; font-size: 1.1rem;">[ UI MUSIC THEME ]</div>
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
-                <div class="settings-btn cyber-border decor-corners active-theme" onclick="setTheme('theme-classic', this)">
-                    <span>[01] CLASSIC (클래식 - 앤틱 골드)</span>
+            <div style="color:var(--theme-bright); font-size:0.8rem; margin-bottom: 10px; opacity:0.8;" id="setting-desc">열람 환경을 원하시는 양식으로 변경하십시오.</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                <div class="lobby-btn settings-btn cyber-border decor-corners active-theme" onclick="setTheme('theme-classic', this, '1.mp3')">
+                    <span>[01] CLASSIC (클래식 - 장엄한 관현악)</span>
                 </div>
-                <div class="settings-btn cyber-border decor-corners" onclick="setTheme('theme-jazz', this)">
-                    <span>[02] JAZZ (재즈 - 심야 바이올렛)</span>
+                <div class="lobby-btn settings-btn cyber-border decor-corners" onclick="setTheme('theme-jazz', this, '2.mp3')">
+                    <span>[02] JAZZ (재즈 - 심야의 즉흥곡)</span>
                 </div>
-                <div class="settings-btn cyber-border decor-corners" onclick="setTheme('theme-pop', this)">
-                    <span>[03] POP (팝 - 네온 핫핑크)</span>
+                <div class="lobby-btn settings-btn cyber-border decor-corners" onclick="setTheme('theme-pop', this, '3.mp3')">
+                    <span>[03] POP (팝 - 화려한 네온 비트)</span>
                 </div>
             </div>
         </div>
@@ -413,7 +409,7 @@
     </div>
 
     <script>
-        // --- 캐릭터 데이터 ---
+        // --- 캐릭터 데이터 (에테르나 관련 삭제 완료) ---
         const charDB = [
             { img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
             { img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
@@ -428,7 +424,7 @@
             { img: "https://igx.kr/u/tR/n/1", name: "아리아", faction: "무소속", rank: "A", age: 27, mbti: "ISFJ", ennea: "2w1", tags: ["수녀", "자기희생", "수명연소"], reso: "하프", ability: "주변 치유 (대가로 자신의 노이즈 수치가 증가함)", curtain: "[생명력 커튼콜] 강제 발동하여 회복 범위를 극대화", tune: "가능", back: "불가", over: "미경험", detail: "부드럽고 헌신적인 수녀. 타인을 치유하는 능력을 가졌으나, 그 부작용으로 노이즈를 전부 자신이 흡수해 영구적으로 레조넌스가 뒤틀려버렸다. 그럼에도 인간성을 잃지 않으며, 긴급 상황 시 생명력을 실시간으로 깎아먹는 '생명력 커튼콜'을 써서 대의를 위해 목숨을 던진다." },
             { img: "https://igx.kr/u/tR/q/1", name: "세라", faction: "무소속", rank: "일반인", age: 35, mbti: "ESTJ", ennea: "3w2", tags: ["일반인", "몰락", "알콜중독"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "과거엔 가장 잘 나가는 세일즈맨이었으나, 모종의 사건으로 쫄딱 망한 뒤 현재는 뒷골목에 처박혀 매일 술만 퍼먹으며 사는 평범한 일반인." },
             { img: "https://igx.kr/u/tR/v/1", name: "크리스", faction: "무소속", rank: "A+", age: 29, mbti: "ENFJ", ennea: "1w2", tags: ["교황", "고드신앙", "박애주의", "후원자"], reso: "파이프 오르간", ability: "주변인들의 신앙/감정을 흡수하여 절대적인 방어막으로 변환", curtain: "[Sanctuary (성역)] 구역 내 일체의 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'고드'를 신으로 믿고 모두를 사랑하라는 교리를 전파하는 신흥 종교의 교황. 부드러운 언변으로 일반인들에게 엄청난 인기를 누리고 있다. 교단의 모든 수입과 관리를 사비로 충당하며, 남몰래 수녀 아리아의 고아원 및 빈민 구호 활동을 막대한 자금으로 지원하고 있다." },
-            { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "천국의 업무를 때려치우고 저승에서 놀다가 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
+            { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["천국출신", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "정체불명의 차원에서 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
         ];
 
         // 사전 로딩
@@ -439,7 +435,7 @@
             }
         });
 
-        // --- 네비게이션 및 테마 변경 ---
+        // --- 네비게이션 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
             document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
@@ -452,15 +448,70 @@
             window.scrollTo(0, 0);
         }
 
-        // 💡 테마 설정 시스템 (클래식, 재즈, 팝)
-        function setTheme(themeClass, btn) {
+        // 💡 테마별 다이나믹 텍스트 딕셔너리
+        const themeTexts = {
+            'theme-classic': {
+                lobbySub: "OVER SOUL CORE TERMINAL",
+                btnChar: "인물 정보 열람",
+                btnMap: "전술 지도 확인",
+                btnSys: "시스템 규율 확인",
+                btnSet: "터미널 환경 설정",
+                mapHelp1: "> 지도 내 <span style='color:var(--neon-red); font-weight:bold; font-size: 0.9rem;'>[ X ]</span> 표식을 선택하여 랜드마크 정보를 확인하십시오.",
+                mapHelp2: "> 각 세력 <span style='color:#fff; font-weight:bold;'>[ 영역 ]</span>을 선택하여 가문 상세 정보를 열람하십시오.",
+                settingTitle: "[ 단말기 환경 설정 ]",
+                settingDesc: "열람 환경을 원하시는 양식으로 변경하십시오."
+            },
+            'theme-jazz': {
+                lobbySub: "O.S. UNDERGROUND NET",
+                btnChar: "녀석들 프로필 보기",
+                btnMap: "나와바리 지도 확인",
+                btnSys: "이 구역의 룰 확인",
+                btnSet: "터미널 분위기 바꾸기",
+                mapHelp1: "> 지도에 찍힌 <span style='color:var(--neon-red); font-weight:bold; font-size: 0.9rem;'>[ X ]</span> 마크를 눌러봐, 재밌는 곳일지도 모르지.",
+                mapHelp2: "> 색칠된 <span style='color:#fff; font-weight:bold;'>[ 영역 ]</span>을 누르면 그 녀석들 뒷조사가 가능해.",
+                settingTitle: "[ 터미널 세팅 ]",
+                settingDesc: "원하는 리듬으로 터미널을 세팅해봐."
+            },
+            'theme-pop': {
+                lobbySub: "O.S. STAGE NETWORK ✨",
+                btnChar: "캐릭터 프로필 보기 🎤",
+                btnMap: "스테이지 맵 확인 🗺️",
+                btnSys: "세계관 시스템 체크 ⚙️",
+                btnSet: "터미널 테마 꾸미기 🎨",
+                mapHelp1: "> 맵의 <span style='color:var(--neon-red); font-weight:bold; font-size: 0.9rem;'>[ X ]</span> 픽을 터치해서 핫플레이스를 확인해봐요!",
+                mapHelp2: "> 각 <span style='color:#fff; font-weight:bold;'>[ 영역 ]</span>을 터치하면 소속 크루들의 상세 프로필이 나와요!",
+                settingTitle: "[ 터미널 테마 설정 ]",
+                settingDesc: "터미널 스킨을 내 맘대로 픽해봐요!"
+            }
+        };
+
+        // 💡 테마 변경 & 오디오 재생 & 텍스트 교체 함수
+        function setTheme(themeClass, btn, audioSrc) {
+            // 1. 테마 CSS 클래스 변경
             document.body.className = ''; 
             document.body.classList.add(themeClass);
             document.querySelectorAll('.settings-btn').forEach(b => b.classList.remove('active-theme'));
             btn.classList.add('active-theme');
+
+            // 2. 동적 텍스트 변경
+            const texts = themeTexts[themeClass];
+            document.getElementById('lobby-sub-title').innerText = texts.lobbySub;
+            document.getElementById('btn-txt-char').innerText = texts.btnChar;
+            document.getElementById('btn-txt-map').innerText = texts.btnMap;
+            document.getElementById('btn-txt-sys').innerText = texts.btnSys;
+            document.getElementById('btn-txt-set').innerText = texts.btnSet;
+            document.getElementById('map-help-1').innerHTML = texts.mapHelp1;
+            document.getElementById('map-help-2').innerHTML = texts.mapHelp2;
+            document.getElementById('setting-title').innerHTML = texts.settingTitle + ' <div class="view-title-decor"></div>';
+            document.getElementById('setting-desc').innerText = texts.settingDesc;
+
+            // 3. 오디오 BGM 재생
+            const player = document.getElementById('bgm-player');
+            player.src = audioSrc;
+            player.play().catch(e => console.log("BGM 재생 대기 (브라우저 정책):", e));
         }
 
-        // --- 랜덤 뉴스 티커 ---
+        // --- 랜덤 뉴스 티커 (에테르나 삭제 완료) ---
         const newsItems = [
             "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
             "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
@@ -479,7 +530,7 @@
             "<span class='news-tag'>[사회]</span> 뒷골목 마약 'lo-fi' 중독자 급증... 치안 붕괴 우려",
             "<span class='news-tag'>[속보]</span> 애리나 가문 루시, 또 다시 폭주... 주변 일대 폐허로",
             "<span class='news-tag'>[뉴스]</span> 정체불명의 휘파람 소리 들은 후 기적적으로 병 완치된 사례 보고",
-            "<span class='news-tag'>[사회]</span> 사후세계 기업 에테르나(Aeterna) 이승 지사 설립 루머 확산",
+            "<span class='news-tag'>[사회]</span> 정체불명의 차원 균열, 중앙탑 인근에서 지속 관측",
             "<span class='news-tag'>[사건]</span> 하프 연주하는 수녀 목격담 SNS서 화제... '천사가 내려왔다'",
             "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 가격 급등"
         ];
@@ -490,7 +541,7 @@
         }
         updateNews(); setInterval(updateNews, 50000); 
 
-        // --- 캐릭터 카드 렌더링 (짤림 버그 수정) ---
+        // --- 캐릭터 카드 렌더링 ---
         function getFactionColor(faction) {
             if(faction === "애스터") return "var(--color-aster)";
             if(faction === "델라쿠르아") return "var(--color-dela)";
@@ -579,6 +630,7 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
+        // 전체 화면 이미지 뷰어
         function openImageViewer() {
             const imgSrc = document.getElementById('md-img').src;
             document.getElementById('viewer-img').src = imgSrc;
@@ -592,7 +644,7 @@
             setTimeout(() => { viewer.style.display = 'none'; }, 300);
         }
 
-        // --- 지도 모달 로직 ---
+        // --- 지도 모달 로직 (에테르나 삭제 반영) ---
         const mapData = {
             faction: {
                 "aster": { title: "세력 정보: 애스터 (ASTER)", desc: "서부를 장악한 최대 세력. 보수파가 중심이며, 가주 엘라라의 통치 하에 압도적인 레조넌스 무력을 자랑한다. 귀족적이고 통제된 질서를 중시한다." },
@@ -604,7 +656,7 @@
                 "aster": { title: "랜드마크: 그랜드 오페라 하우스", desc: "애스터 가문의 본거지. 엘라라가 직접 지휘를 펼치는 거대한 원형 극장 형태의 요새로, 평소엔 호화로운 연회장으로 쓰인다." },
                 "dela": { title: "랜드마크: 침묵의 성채", desc: "델라쿠르아 가문의 핵심 방어선. 가주 시몬의 첼로 선율에 의해 주변의 중력이 항상 무겁게 짓눌려 있어 외부인의 침입을 불허한다." },
                 "star": { title: "랜드마크: 일루전 돔", desc: "스타 더스트의 거대 콘서트장이자 메인 연구 시설. 밤낮없이 화려한 네온 불빛과 기계적인 비트가 뿜어져 나오는 향락과 연구의 중심지다." },
-                "center": { title: "랜드마크: 중앙탑 코어 넥서스", desc: "절대중립지역 중앙탑 내부의 최고 회담장. 모든 네트워크망이 모이는 중심지이며, 사후세계 기업 '에테르나'와 모종의 연결이 되어 있다는 소문이 있다." }
+                "center": { title: "랜드마크: 중앙탑 코어 넥서스", desc: "절대중립지역 중앙탑 내부의 최고 회담장. 모든 네트워크망이 모이는 중심지이며, 우주 그 너머의 심연과 연결되어 있다는 소문이 있다." }
             }
         };
 
@@ -678,11 +730,15 @@
             dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
         });
 
-        // 초기 실행
+        // 초기 실행 (클래식 텍스트 바인딩)
+        document.getElementById('btn-txt-char').innerText = themeTexts['theme-classic'].btnChar;
+        document.getElementById('btn-txt-map').innerText = themeTexts['theme-classic'].btnMap;
+        document.getElementById('btn-txt-sys').innerText = themeTexts['theme-classic'].btnSys;
+        document.getElementById('btn-txt-set').innerText = themeTexts['theme-classic'].btnSet;
+        document.getElementById('map-help-1').innerHTML = themeTexts['theme-classic'].mapHelp1;
+        document.getElementById('map-help-2').innerHTML = themeTexts['theme-classic'].mapHelp2;
+        
         renderCharacters('ALL');
-    </script>
-</body>
-</html>
     </script>
 </body>
 </html>
