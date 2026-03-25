@@ -207,7 +207,7 @@
         .db-file.active { border-color: var(--theme-bright); padding-left: 25px; }
         .db-data-box { display: none; padding: 18px; font-size: 0.95rem; line-height: 1.8; margin-top: -8px; margin-bottom: 15px; color: var(--theme-bright); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
-        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2);}
+        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2); border-radius: 3px;}
 
         /* 모달 팝업 */
         .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
@@ -244,7 +244,7 @@
         #img-viewer img { max-width: 95%; max-height: 95%; border: 2px solid var(--theme-main); object-fit: contain; border-radius: inherit;}
         .viewer-close { position: absolute; top: 20px; right: 30px; color: var(--theme-bright); font-size: 3.5rem; cursor: pointer; font-family: var(--font-title); z-index: 3010; }
 
-        @keyframes introEnd { to { opacity: 0; visibility: hidden; display: none;} }
+        @keyframes introEnd { to { opacity: 0; visibility: hidden; } } /* 버그 방지를 위해 display:none 제거, js로 처리 */
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes fillBar { 0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; } }
         @keyframes mapScan { 0% { top: -15px; } 100% { top: 100%; } }
@@ -423,9 +423,9 @@
     </div>
 
     <script>
-        // --- 1. 전역 변수 및 인트로 처리 ---
         let currentTheme = 'theme-classic';
         
+        // 💡 로딩 화면 -> 들어가기 버튼 표시
         setTimeout(() => {
             document.getElementById('loading-wrap').style.display = 'none';
             const btnEnter = document.getElementById('btn-enter');
@@ -433,16 +433,29 @@
             btnEnter.classList.add('view-fade-in');
         }, 1600);
 
+        // 💡 들어가기 버튼 클릭 시 무조건 화면 넘김 + 오디오 예외처리 완벽 적용
         function startSystem() {
-            const player = document.getElementById('bgm-player');
-            if(player.src.indexOf('1.mp3') === -1) {
-                player.src = '1.mp3'; 
-            }
-            player.play().catch(e => console.log("BGM 재생 오류:", e));
-
+            // 1. 무조건 화면 전환 (애니메이션 적용 및 클릭 방지 처리)
             const intro = document.getElementById('intro');
             intro.style.animation = 'introEnd 0.6s ease-in-out forwards';
+            intro.style.pointerEvents = 'none'; 
             setTimeout(() => { intro.style.display = 'none'; }, 600);
+
+            // 2. 오디오 실행 시도 (파일이 없거나 브라우저에서 막아도 정상 작동)
+            try {
+                const player = document.getElementById('bgm-player');
+                if(!player.src || player.src.indexOf('1.mp3') === -1) {
+                    player.src = '1.mp3'; 
+                }
+                let playPromise = player.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("BGM 재생 대기/오류 (파일이 없거나 브라우저 차단):", error);
+                    });
+                }
+            } catch(err) {
+                console.log("오디오 시스템 오류:", err);
+            }
         }
         
         // 동적 텍스트 시스템
@@ -607,12 +620,26 @@
             { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["차원너머", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "알 수 없는 차원 너머에서 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
         ];
 
+        // 사전 로딩
         const preloadedImages = [];
         charDB.forEach(char => {
             if(char.img) { const img = new Image(); img.src = char.img; preloadedImages.push(img); }
         });
 
-        // 💡 테마 설정 & 오디오 & 동적 텍스트 적용
+        // --- 네비게이션 ---
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
+        function navTo(viewId) {
+            document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
+            const target = document.getElementById(viewId + '-view');
+            if(target) { target.style.display = (viewId === 'lobby') ? 'flex' : 'block'; void target.offsetWidth; target.classList.add('view-fade-in'); }
+            document.getElementById('sidebar').classList.remove('open');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active-menu'));
+            const activeNav = document.getElementById('nav-' + viewId);
+            if(activeNav) activeNav.classList.add('active-menu');
+            window.scrollTo(0, 0);
+        }
+
+        // 💡 테마 설정 & 오디오 & 동적 텍스트 적용 시스템
         function setTheme(themeClass, btn, audioSrc) {
             document.body.className = ''; 
             document.body.classList.add(themeClass);
@@ -667,10 +694,11 @@
             }
         }
 
-        // --- 시스템 DB 렌더링 ---
+        // --- 시스템 DB 렌더링 함수 ---
         function renderSystemDB(dbData) {
             const dbContainer = document.getElementById('db-container');
             dbContainer.innerHTML = ''; 
+
             dbData.forEach(folderData => {
                 const folder = document.createElement('div');
                 folder.className = 'db-folder cyber-border decor-corners'; folder.innerHTML = folderData.category;
@@ -702,7 +730,7 @@
             });
         }
 
-        // --- 뉴스 티커 ---
+        // --- 랜덤 뉴스 티커 ---
         const newsItems = [
             "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역 레조넌스 폭주 발생... 사상자 파악 중",
             "<span class='news-tag'>[속보]</span> 델라쿠르아 진영 병력 전진 배치... 국경 긴장감 고조",
@@ -820,6 +848,19 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
+        function openImageViewer() {
+            const imgSrc = document.getElementById('md-img').src;
+            document.getElementById('viewer-img').src = imgSrc;
+            const viewer = document.getElementById('img-viewer');
+            viewer.style.display = 'flex'; void viewer.offsetWidth; viewer.classList.add('show');
+        }
+
+        function closeImageViewer() {
+            const viewer = document.getElementById('img-viewer');
+            viewer.classList.remove('show');
+            setTimeout(() => { viewer.style.display = 'none'; }, 300);
+        }
+
         // --- 지도 모달 로직 ---
         function openMapModal(type, key) {
             const mapDataDict = themeTexts[currentTheme].mapData;
@@ -840,20 +881,7 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
-        function openImageViewer() {
-            const imgSrc = document.getElementById('md-img').src;
-            document.getElementById('viewer-img').src = imgSrc;
-            const viewer = document.getElementById('img-viewer');
-            viewer.style.display = 'flex'; void viewer.offsetWidth; viewer.classList.add('show');
-        }
-
-        function closeImageViewer() {
-            const viewer = document.getElementById('img-viewer');
-            viewer.classList.remove('show');
-            setTimeout(() => { viewer.style.display = 'none'; }, 300);
-        }
-
-        // 초기 실행
+        // 초기 실행 (클래식 세팅 텍스트만 바인딩, 오디오는 대기)
         setTheme('theme-classic', null, null);
         renderCharacters('ALL');
     </script>
