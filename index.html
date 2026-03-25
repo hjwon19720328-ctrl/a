@@ -3,52 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v9.5</title>
+    <title>OVER SOUL - OS Terminal v10.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* --- [ 테마별 공통 변수 ] --- */
-        :root, body.theme-cyan {
-            --bg-base: #050810; 
-            --theme-main: #00ffff; 
-            --theme-main-rgb: 0, 255, 255;
-            --theme-bright: #ccffff; 
-            --theme-dim: #004d4d; 
-            --bg-box-rgb: 12, 18, 30;
-            --bg-nav-rgb: 8, 12, 20;
-            --bg-side-rgb: 5, 8, 15;
-            --theme-glow: 0 0 15px rgba(0, 255, 255, 0.6);
-            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%2300ffff" stroke-width="1" fill="none"/></svg>');
-        }
-
-        body.theme-gold {
-            --bg-base: #0a0805; 
-            --theme-main: #d4af37; 
-            --theme-main-rgb: 212, 175, 55;
-            --theme-bright: #ffe680; 
-            --theme-dim: #5c4b1a; 
-            --bg-box-rgb: 26, 22, 15;
-            --bg-nav-rgb: 15, 12, 8;
-            --bg-side-rgb: 10, 8, 5;
-            --theme-glow: 0 0 15px rgba(212, 175, 55, 0.6);
-            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%23d4af37" stroke-width="1" fill="none"/></svg>');
-        }
-
-        body.theme-crimson {
-            --bg-base: #120000; 
-            --theme-main: #ff3333; 
-            --theme-main-rgb: 255, 51, 51;
-            --theme-bright: #ff9999; 
-            --theme-dim: #660000; 
-            --bg-box-rgb: 30, 10, 10;
-            --bg-nav-rgb: 20, 5, 5;
-            --bg-side-rgb: 15, 0, 0;
-            --theme-glow: 0 0 15px rgba(255, 51, 51, 0.6);
-            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%23ff3333" stroke-width="1" fill="none"/></svg>');
-        }
-
-        /* --- [ 범용 세력 컬러 및 시스템 ] --- */
+        /* =========================================
+           [0] 공통 변수 및 범용 설정
+           ========================================= */
         :root {
             --neon-red: #ff3333; 
             --color-aster: #ffd700; --color-dela: #ff8c00; --color-star: #ff66cc; --color-gord: #ffffff;
@@ -56,49 +18,103 @@
         }
 
         body {
-            margin: 0; background-color: var(--bg-base); color: var(--theme-main);
-            font-family: var(--font-data); overflow-x: hidden; user-select: none;
-            -webkit-tap-highlight-color: transparent; text-shadow: 0 0 3px rgba(var(--theme-main-rgb), 0.5);
-            transition: background-color 0.5s ease, color 0.5s ease;
+            margin: 0; font-family: var(--font-data); overflow-x: hidden; user-select: none;
+            -webkit-tap-highlight-color: transparent; 
+            transition: background-color 0.5s ease, color 0.5s ease, text-shadow 0.5s ease;
         }
         body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
-
-        body::before {
-            content:''; position: fixed; top:0; left:0; width: 100%; height: 100%;
-            background-image: radial-gradient(var(--bg-base) 0%, transparent 85%), var(--bg-svg);
-            background-size: cover, 120px 120px; opacity: 0.35; pointer-events: none;
-            z-index: -1;
-        }
-
         h1, h2, h3 { font-family: var(--font-title); margin: 0; }
-        
-        /* 💡 외형 업그레이드: 글래스모피즘(블러) 효과 추가 */
-        .cyber-border { 
-            border: 1px solid var(--theme-dim); 
-            background: rgba(var(--bg-box-rgb), 0.65); 
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            position: relative; transition: all 0.3s ease; 
-        }
-        .cyber-border:hover { border-color: var(--theme-main); box-shadow: var(--theme-glow); background: rgba(var(--bg-box-rgb), 0.8); }
-        .decor-corners::before { content:''; position: absolute; top:-1px; left:-1px; width:12px; height:12px; border-top:2px solid var(--theme-bright); border-left:2px solid var(--theme-bright); pointer-events: none;}
-        .decor-corners::after { content:''; position: absolute; bottom:-1px; right:-1px; width:12px; height:12px; border-bottom:2px solid var(--theme-bright); border-right:2px solid var(--theme-bright); pointer-events: none;}
 
-        /* --- [ 인트로 부팅 화면 ] --- */
+        /* 전환 애니메이션 공통 요소 */
+        .cyber-border, .decor-corners::before, .decor-corners::after, .char-card, .lobby-btn, header {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* =========================================
+           [1] 테마 1: CLASSIC (장엄한 관현악 / 골드)
+           ========================================= */
+        body.theme-classic {
+            --bg-base: #0a0805; --theme-main: #d4af37; --theme-main-rgb: 212, 175, 55;
+            --theme-bright: #ffe680; --theme-dim: #5c4b1a; 
+            --bg-box-rgb: 26, 22, 15; --bg-nav-rgb: 15, 12, 8; --bg-side-rgb: 10, 8, 5;
+            --theme-glow: 0 0 15px rgba(212, 175, 55, 0.6);
+            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M10 10 L90 10 L90 90 L10 90 Z M50 10 L50 90 M10 50 L90 50" stroke="%23d4af37" stroke-width="1" fill="none"/></svg>');
+            background-color: var(--bg-base); color: var(--theme-main); text-shadow: 0 0 2px var(--theme-dim);
+        }
+        body.theme-classic .cyber-border { 
+            border: 1px solid var(--theme-dim); background: rgba(var(--bg-box-rgb), 0.75); 
+            border-radius: 0px; /* 각지고 날카로운 테두리 */
+            backdrop-filter: blur(5px);
+        }
+        body.theme-classic .cyber-border:hover { border-color: var(--theme-main); box-shadow: var(--theme-glow); background: rgba(var(--bg-box-rgb), 0.9); }
+        body.theme-classic .decor-corners::before { content:''; position: absolute; top:-2px; left:-2px; width:12px; height:12px; border-top:2px solid var(--theme-bright); border-left:2px solid var(--theme-bright); pointer-events: none;}
+        body.theme-classic .decor-corners::after { content:''; position: absolute; bottom:-2px; right:-2px; width:12px; height:12px; border-bottom:2px solid var(--theme-bright); border-right:2px solid var(--theme-bright); pointer-events: none;}
+
+        /* =========================================
+           [2] 테마 2: JAZZ (심야의 즉흥곡 / 바이올렛)
+           ========================================= */
+        body.theme-jazz {
+            --bg-base: #0a0514; --theme-main: #a64dff; --theme-main-rgb: 166, 77, 255;
+            --theme-bright: #d9b3ff; --theme-dim: #4d0099; 
+            --bg-box-rgb: 20, 10, 35; --bg-nav-rgb: 15, 8, 25; --bg-side-rgb: 10, 5, 18;
+            --theme-glow: 0 0 20px rgba(166, 77, 255, 0.7);
+            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><circle cx="50" cy="50" r="40" stroke="%23a64dff" stroke-width="1" fill="none"/></svg>');
+            background-color: var(--bg-base); color: var(--theme-main); text-shadow: 0 0 5px var(--theme-main);
+        }
+        body.theme-jazz .cyber-border { 
+            border: 2px dashed var(--theme-dim); /* 점선으로 리드미컬한 느낌 */
+            background: rgba(var(--bg-box-rgb), 0.6); 
+            border-radius: 12px; /* 부드러운 라운드 처리 */
+            backdrop-filter: blur(8px);
+        }
+        body.theme-jazz .cyber-border:hover { border-color: var(--theme-bright); box-shadow: var(--theme-glow); background: rgba(var(--bg-box-rgb), 0.85); }
+        body.theme-jazz .decor-corners::before, body.theme-jazz .decor-corners::after { display: none; } /* 각진 장식 제거 */
+
+        /* =========================================
+           [3] 테마 3: POP (화려한 네온 비트 / 핫핑크)
+           ========================================= */
+        body.theme-pop {
+            --bg-base: #14000a; --theme-main: #ff007f; --theme-main-rgb: 255, 0, 127;
+            --theme-bright: #ff66b2; --theme-dim: #800040; 
+            --bg-box-rgb: 35, 5, 20; --bg-nav-rgb: 25, 2, 15; --bg-side-rgb: 15, 0, 10;
+            --theme-glow: 0 0 25px rgba(255, 0, 127, 0.8);
+            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><path d="M0 100 L100 0 M0 0 L100 100" stroke="%23ff007f" stroke-width="2" fill="none"/></svg>');
+            background-color: var(--bg-base); color: var(--theme-main); text-shadow: 0 0 8px var(--theme-main);
+        }
+        body.theme-pop .cyber-border { 
+            border: 2px solid var(--theme-main); 
+            background: rgba(var(--bg-box-rgb), 0.5); 
+            border-radius: 25px; /* 완전한 캡슐 형태의 둥근 모서리 */
+            backdrop-filter: blur(12px); box-shadow: inset 0 0 10px rgba(255,0,127,0.2);
+        }
+        body.theme-pop .cyber-border:hover { border-color: var(--theme-bright); box-shadow: var(--theme-glow); background: rgba(var(--bg-box-rgb), 0.9); transform: scale(1.02);}
+        body.theme-pop .decor-corners::before, body.theme-pop .decor-corners::after { display: none; }
+        body.theme-pop .view-title-decor { border-radius: 10px; height: 3px; background: var(--theme-main);}
+
+
+        /* =========================================
+           [ 공통 배경 및 UI ]
+           ========================================= */
+        body::before {
+            content:''; position: fixed; top:0; left:0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+            background-image: radial-gradient(var(--bg-base) 0%, transparent 85%), var(--bg-svg);
+            background-size: cover, 120px 120px; opacity: 0.35; transition: 0.5s;
+        }
+
         #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 2.5s; }
         .glitch-text { font-size: 3.5rem; font-weight: 900; color: var(--theme-bright); text-shadow: var(--theme-glow); animation: textPulse 1s infinite alternate; }
         .loading-wrap { width: 250px; margin-top: 20px; }
         .loading-text { font-size: 0.75rem; color: var(--theme-main); margin-bottom: 5px; animation: blink 0.5s infinite; letter-spacing: 1px;}
-        .loading-bar { width: 100%; height: 3px; background: var(--theme-dim); position: relative; overflow: hidden; }
+        .loading-bar { width: 100%; height: 3px; background: var(--theme-dim); position: relative; overflow: hidden; border-radius: 5px;}
         .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--theme-bright); box-shadow: 0 0 10px var(--theme-bright); animation: fillBar 2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
         
         .sys-frame-info { position: fixed; font-size: 0.75rem; color: var(--theme-dim); z-index: 80; pointer-events: none; text-shadow: none; font-weight: bold;}
         .top-left-info { top: 10px; left: 15px; }
-        .bottom-right-info { bottom: 35px; right: 15px; text-align: right; } /* 뉴스 티커 위로 이동 */
+        .bottom-right-info { bottom: 35px; right: 15px; text-align: right; } 
         .blink-dot { display: inline-block; width: 6px; height: 6px; background: var(--theme-main); border-radius: 50%; margin-left: 6px; animation: blink 1s infinite; box-shadow: 0 0 5px var(--theme-main);}
 
-        /* --- [ 헤더 & 사이드바 ] --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--theme-dim); background: rgba(var(--bg-nav-rgb), 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
-        header h1 { font-size: 1.6rem; color: var(--theme-bright); letter-spacing: 4px; cursor: pointer; text-shadow: var(--theme-glow); transition: text-shadow 0.3s;}
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--theme-dim); background: rgba(var(--bg-nav-rgb), 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;}
+        header h1 { font-size: 1.6rem; color: var(--theme-bright); letter-spacing: 4px; cursor: pointer; text-shadow: var(--theme-glow); }
         .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
         .hamburger div { width: 26px; height: 2px; background-color: var(--theme-main); box-shadow: var(--theme-glow); transition: 0.3s;}
         
@@ -108,15 +124,14 @@
         .menu-item.active-menu { color: var(--theme-bright); text-shadow: var(--theme-glow); font-weight: bold; }
         .menu-item:hover { color: var(--theme-main); }
 
-        /* --- [ 메인 뷰 공통 ] --- */
         #main-content > div { display: none; padding: 20px; padding-bottom: 90px; min-height: calc(100vh - 80px); box-sizing: border-box; }
         .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
         .view-title { font-size: 1.4rem; color: var(--theme-bright); margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--theme-glow); letter-spacing: 1px;}
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--theme-dim); margin-left: 15px; position: relative;}
 
-        /* --- [ 1. 로비 뷰 ] --- */
+        /* 로비 뷰 */
         #lobby-view { flex-direction: column; gap: 18px; align-items: center; justify-content: center; }
-        .lobby-main-title { font-size: 4.2rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main), 0 0 45px var(--theme-main); font-family: var(--font-title); letter-spacing: 6px; margin-bottom: 5px; font-style: italic; }
+        .lobby-main-title { font-size: 4.2rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main), 0 0 45px var(--theme-main); font-family: var(--font-title); letter-spacing: 6px; margin-bottom: 5px; font-style: italic; transition: 0.5s;}
         .lobby-sub-title { font-size: 1rem; color: var(--theme-bright); letter-spacing: 10px; margin-bottom: 40px; opacity: 0.9; font-weight: bold;}
         .lobby-btn { width: 100%; max-width: 340px; padding: 22px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.25rem; cursor: pointer; opacity: 0; transform: translateY(20px); letter-spacing: 1px;}
         #lobby-view.view-fade-in .lobby-btn { animation: slideUpFade 0.5s forwards; }
@@ -126,44 +141,47 @@
         #lobby-view.view-fade-in .lobby-btn:nth-child(6) { animation-delay: 0.4s; } 
         .lobby-btn:active { transform: scale(0.96) !important; background: rgba(var(--theme-main-rgb), 0.25); border-color: var(--theme-bright); box-shadow: var(--theme-glow); }
 
-        /* 💡 뉴스 속보 티커 (속도 늦추고 디자인 강화) */
+        /* 설정 뷰 (테마 버튼) */
+        .settings-btn { margin-bottom: 15px; width: 100%; text-align: left; justify-content: flex-start; padding-left: 25px; font-size: 1.1rem;}
+        .settings-btn.active-theme { border-color: var(--theme-bright); color: var(--theme-bright); font-weight: bold; background: rgba(var(--theme-main-rgb), 0.3); box-shadow: var(--theme-glow);}
+
+        /* 뉴스 티커 */
         .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); border-top: 1px solid var(--theme-main); padding: 8px 0; overflow: hidden; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);}
-        /* 애니메이션 속도 20s -> 50s */
         .news-content { display: inline-block; white-space: nowrap; font-size: 0.9rem; color: var(--theme-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 50s linear infinite; }
         .news-content span { margin-right: 60px; text-shadow: none; letter-spacing: 0.5px;}
         .news-tag { background: var(--theme-dim); color: #fff; padding: 3px 7px; border-radius: 3px; font-weight: bold; margin-right: 10px; font-family: var(--font-title); box-shadow: 0 0 5px var(--theme-dim);}
 
-        /* --- [ 2. 인물 데이터 뷰 ] --- */
+        /* 인물 뷰 */
         .filter-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-        .filter-btn { flex: 1 1 calc(33% - 8px); background: rgba(var(--bg-box-rgb), 0.5); border: 1px solid var(--theme-dim); color: var(--theme-main); padding: 10px 0; font-family: var(--font-title); font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px);}
-        .filter-btn.active { background: rgba(var(--theme-main-rgb), 0.25); border-color: var(--theme-bright); color: var(--theme-bright); text-shadow: var(--theme-glow); box-shadow: inset 0 0 12px rgba(var(--theme-main-rgb), 0.3); }
+        .filter-btn { flex: 1 1 calc(33% - 8px); background: rgba(var(--bg-box-rgb), 0.5); border: 1px solid var(--theme-dim); color: var(--theme-main); padding: 10px 0; font-family: var(--font-title); font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px); border-radius: inherit;}
+        .filter-btn.active { background: rgba(var(--theme-main-rgb), 0.3); border-color: var(--theme-bright); color: var(--theme-bright); text-shadow: var(--theme-glow); box-shadow: inset 0 0 12px rgba(var(--theme-main-rgb), 0.3); }
         
         .char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .char-card { padding: 12px; font-size: 0.8rem; border-color: rgba(var(--theme-main-rgb), 0.4); cursor: pointer; display: flex; align-items: center; gap: 12px;}
+        .char-card { padding: 12px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 12px;}
         .char-card:active { transform: scale(0.95); border-color: var(--theme-bright); background: rgba(var(--theme-main-rgb), 0.2); box-shadow: var(--theme-glow); }
         .char-fade-in { animation: smoothFadeIn 0.3s forwards; opacity: 0; }
-        .mini-profile-img { width: 50px; height: 60px; border: 1px solid var(--theme-dim); flex-shrink: 0; overflow: hidden; background: #000; box-shadow: 0 0 5px #000;}
+        .mini-profile-img { width: 50px; height: 60px; border: 1px solid var(--theme-dim); flex-shrink: 0; overflow: hidden; background: #000; border-radius: inherit;}
         .mini-profile-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.3s;}
         .char-card:hover .mini-profile-img img { opacity: 1; transform: scale(1.1); }
         .char-info-wrap { flex: 1; overflow: hidden; }
         .card-header { display: flex; justify-content: space-between; color: var(--theme-main); opacity: 0.8; font-size: 0.65rem; margin-bottom: 4px; font-family: var(--font-data);}
         .char-name { font-size: 1.1rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 4px; text-shadow: 0 0 4px #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-        .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(var(--theme-main-rgb), 0.3); padding-bottom: 3px; font-weight: bold; font-size: 0.7rem;}
+        .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 3px; font-weight: bold; font-size: 0.7rem;}
 
-        /* --- [ 3. 지도 뷰 ] --- */
-        .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--theme-main); box-shadow: var(--theme-glow); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(var(--bg-box-rgb),0.8) 0%, rgba(var(--bg-nav-rgb),1) 100%); }
+        /* 지도 뷰 */
+        .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--theme-main); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(30,30,30,0.8) 0%, rgba(0,0,0,1) 100%); }
         .map-overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
-        .map-grid { background-image: linear-gradient(rgba(var(--theme-main-rgb), 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--theme-main-rgb), 0.12) 1px, transparent 1px); background-size: 20px 20px; }
-        .map-scanlines { height: 15px; background: rgba(var(--theme-main-rgb), 0.15); animation: mapScan 6s linear infinite; }
+        .map-grid { background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px; }
+        .map-scanlines { height: 15px; background: rgba(255, 255, 255, 0.1); animation: mapScan 6s linear infinite; }
         
-        .tower-mark { position: absolute; top: 48%; left: 55%; width: 16px; height: 16px; background: #fff; box-shadow: 0 0 20px #fff, var(--theme-glow); transform: translate(-50%, -50%) rotate(45deg); z-index: 20; cursor: pointer; transition: 0.3s; }
+        .tower-mark { position: absolute; top: 48%; left: 55%; width: 16px; height: 16px; background: #fff; box-shadow: 0 0 20px #fff; transform: translate(-50%, -50%) rotate(45deg); z-index: 20; cursor: pointer; transition: 0.3s; }
         .tower-mark:hover { transform: translate(-50%, -50%) rotate(45deg) scale(1.5); }
         
-        .map-zone { position: absolute; border: 2px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.7rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px #000; transition: all 0.3s ease; backdrop-filter: blur(2px); cursor: pointer; }
+        .map-zone { position: absolute; border: 2px solid; display: flex; justify-content: center; align-items: center; font-family: var(--font-title); font-size: 0.7rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px #000; transition: all 0.3s ease; backdrop-filter: blur(2px); cursor: pointer; border-radius: inherit; }
         .map-zone:active { transform: scale(1.08); background: rgba(255,255,255,0.25); z-index: 21; }
-        .zone-pol-aster { width: 140px; height: 120px; top: 20%; left: 5%; background: rgba(255, 215, 0, 0.2); border-color: var(--color-aster); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); }
-        .zone-pol-dela { width: 100px; height: 90px; bottom: 15%; left: 65%; background: rgba(255, 140, 0, 0.2); border-color: var(--color-dela); box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); }
-        .zone-pol-star { width: 75px; height: 70px; top: 15%; left: 75%; background: rgba(255, 102, 204, 0.2); border-color: var(--color-star); box-shadow: 0 0 20px rgba(255, 102, 204, 0.4); clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
+        .zone-pol-aster { width: 140px; height: 120px; top: 20%; left: 5%; background: rgba(255, 215, 0, 0.2); border-color: var(--color-aster); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); clip-path: polygon(10% 0%, 100% 15%, 90% 90%, 0% 100%); border-radius: 0 !important;}
+        .zone-pol-dela { width: 100px; height: 90px; bottom: 15%; left: 65%; background: rgba(255, 140, 0, 0.2); border-color: var(--color-dela); box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); clip-path: polygon(0% 20%, 80% 0%, 100% 80%, 30% 100%); border-radius: 0 !important;}
+        .zone-pol-star { width: 75px; height: 70px; top: 15%; left: 75%; background: rgba(255, 102, 204, 0.2); border-color: var(--color-star); box-shadow: 0 0 20px rgba(255, 102, 204, 0.4); clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); border-radius: 0 !important;}
         
         .landmark { position: absolute; color: var(--neon-red); font-family: var(--font-title); font-size: 1.5rem; font-weight: 900; text-shadow: 0 0 10px var(--neon-red), 0 0 20px #ff0000; cursor: pointer; z-index: 25; transition: transform 0.2s; }
         .landmark:hover { transform: scale(1.5); }
@@ -172,63 +190,55 @@
         .lm-star { top: 22%; left: 82%; }
         .lm-center { top: 43%; left: 55%; transform: translate(-50%, 0); }
 
-        .map-data-panel { font-size: 0.8rem; color: var(--theme-main); margin-top: 15px; border-top: 1px solid rgba(var(--theme-main-rgb), 0.3); padding-top: 12px; cursor: default; }
+        .map-data-panel { font-size: 0.8rem; color: var(--theme-main); margin-top: 15px; border-top: 1px solid var(--theme-dim); padding-top: 12px; cursor: default; }
 
-        /* --- [ 4. 시스템 DB 뷰 ] --- */
+        /* 시스템 DB 뷰 */
         .db-container { display: flex; flex-direction: column; gap: 15px; }
-        .db-folder { background: rgba(var(--bg-nav-rgb), 0.85); border: 1px solid var(--theme-main); padding: 16px 20px; font-family: var(--font-title); font-size: 1.15rem; color: var(--theme-bright); cursor: pointer; transition: background 0.3s, box-shadow 0.3s; text-shadow: var(--theme-glow); backdrop-filter: blur(5px);}
-        .db-folder.open { background: rgba(var(--bg-box-rgb), 0.95); box-shadow: inset 0 0 10px rgba(var(--theme-main-rgb), 0.2);}
+        .db-folder { padding: 16px 20px; font-family: var(--font-title); font-size: 1.15rem; color: var(--theme-bright); cursor: pointer; }
         .db-folder::before { content: '[+] '; color: var(--theme-main); margin-right: 8px; }
-        .db-folder.open::before { content: '[-] '; color: var(--theme-bright); }
+        .db-folder.open::before { content: '[-] '; }
         .db-folder-content { display: none; flex-direction: column; gap: 8px; padding-left: 20px; margin-top: -8px; margin-bottom: 15px; border-left: 2px dashed var(--theme-dim); }
         .db-folder-content.show { display: flex; animation: smoothFadeIn 0.3s ease forwards; }
-        .db-file { padding: 14px; background: rgba(var(--bg-box-rgb), 0.7); border: 1px solid rgba(var(--theme-main-rgb), 0.3); font-size: 1.05rem; color: #fff; cursor: pointer; text-shadow: 0 0 3px #fff; }
-        .db-file.active { border-color: var(--theme-bright); background: rgba(var(--theme-main-rgb), 0.15); padding-left: 25px; box-shadow: var(--theme-glow); }
-        .db-data-box { display: none; padding: 18px; background: rgba(var(--bg-side-rgb), 0.95); border: 1px solid var(--theme-bright); color: var(--theme-bright); font-size: 0.95rem; line-height: 1.8; margin-top: -8px; margin-bottom: 15px; box-shadow: 0 0 20px rgba(var(--theme-main-rgb), 0.2); }
+        .db-file { padding: 14px; font-size: 1.05rem; color: #fff; cursor: pointer; }
+        .db-file.active { border-color: var(--theme-bright); padding-left: 25px; }
+        .db-data-box { display: none; padding: 18px; font-size: 0.95rem; line-height: 1.8; margin-top: -8px; margin-bottom: 15px; color: var(--theme-bright); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
-        .highlight { color: #fff; background: rgba(var(--theme-main-rgb), 0.35); padding: 2px 5px; font-family: var(--font-title); text-shadow: var(--theme-glow); border-radius: 2px;}
-        .warning { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 6px var(--neon-red); }
+        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2); border-radius: inherit;}
 
-        /* --- [ 5. 설정 뷰 (테마 변경) ] --- */
-        .settings-btn { margin-bottom: 15px; width: 100%; text-align: left; justify-content: flex-start; padding-left: 25px;}
-        .settings-btn.active-theme { border-color: var(--theme-main); box-shadow: var(--theme-glow); background: rgba(var(--theme-main-rgb), 0.25); }
-
-        /* --- [ 범용 팝업 모달창 ] --- */
-        .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(var(--bg-base), 0.85); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
+        /* 모달 팝업 */
+        .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
         .generic-modal.show { display: flex; opacity: 1; }
-        .modal-box { width: 100%; max-width: 440px; max-height: 85vh; background: rgba(var(--bg-box-rgb), 0.95); border: 2px solid var(--theme-main); box-shadow: 0 0 30px rgba(var(--theme-main-rgb), 0.3); position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column;}
+        .modal-box { width: 100%; max-width: 440px; max-height: 85vh; position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; background: #0a0a0a;}
         .generic-modal.show .modal-box { transform: translateY(0) scale(1); }
-        .modal-close { position: absolute; top: 15px; right: 20px; color: var(--theme-bright); font-size: 2rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; text-shadow: var(--theme-glow); z-index: 10;}
+        .modal-close { position: absolute; top: 15px; right: 20px; color: var(--theme-bright); font-size: 2rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; z-index: 10;}
         .modal-scroll-area { flex: 1; overflow-y: auto; padding: 25px; }
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--theme-dim); border-radius: 3px;}
         
         .m-header { border-bottom: 2px dashed var(--theme-dim); padding-bottom: 15px; margin-bottom: 20px; }
-        .m-name { font-size: 1.8rem; color: #fff; font-weight: bold; font-family: var(--font-title); text-shadow: 0 0 6px #fff; }
-        .m-profile-img-wrap { width: 100%; height: 240px; border: 1px solid var(--theme-dim); margin-bottom: 18px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 20px #000;}
+        .m-name { font-size: 1.8rem; color: #fff; font-weight: bold; font-family: var(--font-title); }
+        .m-profile-img-wrap { width: 100%; height: 240px; border: 1px solid var(--theme-dim); margin-bottom: 18px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center; border-radius: inherit;}
         .m-profile-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; opacity: 0.95; }
         .m-profile-img-wrap:hover img { transform: scale(1.05); opacity: 1; }
         .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .m-stat-box { border: 1px solid rgba(var(--theme-main-rgb), 0.4); padding: 12px; background: rgba(var(--bg-side-rgb), 0.7); }
+        .m-stat-box { border: 1px solid var(--theme-dim); padding: 12px; }
         .m-label { font-size: 0.75rem; color: var(--theme-main); opacity: 0.9; display: block; margin-bottom: 4px; font-weight: bold;}
-        .m-val { font-size: 1rem; color: var(--theme-bright); font-weight: bold; text-shadow: var(--theme-glow); }
-        .m-section-title { font-size: 1rem; color: var(--theme-main); border-left: 4px solid var(--theme-bright); padding-left: 8px; margin-bottom: 8px; text-shadow: var(--theme-glow); font-family: var(--font-title);}
-        .m-desc { font-size: 0.9rem; color: #eee; line-height: 1.7; background: rgba(var(--bg-side-rgb), 0.7); padding: 15px; border: 1px dotted var(--theme-dim); }
-        .tag { display: inline-block; padding: 4px 10px; background: rgba(var(--theme-main-rgb), 0.2); border: 1px solid rgba(var(--theme-main-rgb), 0.4); color: var(--theme-bright); font-size: 0.75rem; border-radius: 4px; margin-right: 6px; margin-bottom: 6px; font-weight: bold; text-shadow: var(--theme-glow);}
-        .tag-warning { background: rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.5); color: #fff; text-shadow: 0 0 5px var(--neon-red); }
+        .m-val { font-size: 1rem; color: var(--theme-bright); font-weight: bold; }
+        .m-section-title { font-size: 1rem; color: var(--theme-main); border-left: 4px solid var(--theme-bright); padding-left: 8px; margin-bottom: 8px; font-family: var(--font-title);}
+        .m-desc { font-size: 0.9rem; color: #eee; line-height: 1.7; padding: 15px; border: 1px dotted var(--theme-dim); }
+        .tag { display: inline-block; padding: 4px 10px; border: 1px solid var(--theme-dim); color: var(--theme-bright); font-size: 0.75rem; border-radius: 4px; margin-right: 6px; margin-bottom: 6px; font-weight: bold;}
+        .tag-warning { background: rgba(255, 51, 51, 0.2); border-color: rgba(255, 51, 51, 0.5); color: #fff; }
         .text-glitch { position: relative; color: var(--color-gord); font-weight: 900; animation: textGlitch 0.3s infinite; text-shadow: 2px 0 red, -2px 0 var(--theme-main); }
         .tag-glitch { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.5); color: #fff; text-shadow: 1px 0 red, -1px 0 blue; }
 
-        #map-modal-title { font-family: var(--font-title); font-size: 1.5rem; color: var(--theme-bright); text-shadow: var(--theme-glow); margin-bottom: 12px; }
+        #map-modal-title { font-family: var(--font-title); font-size: 1.5rem; color: var(--theme-bright); margin-bottom: 12px; }
         #map-modal-desc { font-size: 0.95rem; color: #eee; line-height: 1.8; }
 
-        /* --- [ 전체 화면 이미지 뷰어 ] --- */
         #img-viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.95); z-index: 3000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; cursor: zoom-out; backdrop-filter: blur(5px);}
         #img-viewer.show { display: flex; opacity: 1; }
-        #img-viewer img { max-width: 95%; max-height: 95%; border: 2px solid var(--theme-main); box-shadow: 0 0 40px rgba(var(--theme-main-rgb), 0.5); object-fit: contain; }
-        .viewer-close { position: absolute; top: 20px; right: 30px; color: var(--theme-bright); font-size: 3.5rem; cursor: pointer; text-shadow: var(--theme-glow); font-family: var(--font-title); z-index: 3010; }
+        #img-viewer img { max-width: 95%; max-height: 95%; border: 2px solid var(--theme-main); object-fit: contain; border-radius: inherit;}
+        .viewer-close { position: absolute; top: 20px; right: 30px; color: var(--theme-bright); font-size: 3.5rem; cursor: pointer; font-family: var(--font-title); z-index: 3010; }
 
-        /* --- 애니메이션 키프레임 --- */
         @keyframes introEnd { to { opacity: 0; visibility: hidden; display: none;} }
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes fillBar { 0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; } }
@@ -240,9 +250,7 @@
         @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
     </style>
 </head>
-<body class="theme-cyan">
-
-    <div id="intro">
+<body class="theme-classic"> <div id="intro">
         <div class="glitch-text">OVER SOUL</div>
         <div class="loading-wrap">
             <div class="loading-text">CONNECTING TO AETERNA NET...</div>
@@ -262,36 +270,36 @@
         <div class="menu-item" id="nav-character" onclick="navTo('character')">> DB_CHARACTERS</div>
         <div class="menu-item" id="nav-map" onclick="navTo('map')">> TACTICAL_MAP</div>
         <div class="menu-item" id="nav-system" onclick="navTo('system')">> SYSTEM_CONFIG</div>
-        <div class="menu-item" id="nav-settings" onclick="navTo('settings')">> SETTINGS</div>
+        <div class="menu-item" id="nav-settings" onclick="navTo('settings')">> SETTINGS (THEME)</div>
     </div>
 
     <div id="main-content">
-        
         <div id="lobby-view" class="view-fade-in" style="display: flex;">
             <h2 class="lobby-main-title">OVER SOUL</h2>
             <div class="lobby-sub-title">AETERNA NETWORK TERMINAL</div>
+            
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('character')">
-                CHARACTER_DATA <span style="font-size:0.7rem; color:var(--theme-bright)">ACCESS ></span>
+                CHARACTER_DATA <span>ACCESS ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('map')">
-                TACTICAL_MAP <span style="font-size:0.7rem">VIEW ></span>
+                TACTICAL_MAP <span>VIEW ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('system')">
-                SYSTEM_CONFIG <span style="font-size:0.7rem">VIEW ></span>
+                SYSTEM_CONFIG <span>VIEW ></span>
             </div>
             <div class="cyber-border decor-corners lobby-btn" onclick="navTo('settings')">
-                TERMINAL_SETTINGS <span style="font-size:0.7rem">VIEW ></span>
+                TERMINAL_SETTINGS <span>CONFIG ></span>
             </div>
         </div>
 
         <div id="character-view">
             <div class="view-title">DB_ENTITIES <div class="view-title-decor"></div></div>
             <div class="filter-container">
-                <button class="filter-btn active" onclick="filterData('ALL', this)">ALL</button>
-                <button class="filter-btn" onclick="filterData('애스터', this)">ASTER</button>
-                <button class="filter-btn" onclick="filterData('델라쿠르아', this)">DELACRUA</button>
-                <button class="filter-btn" onclick="filterData('스타 더스트', this)">STARDUST</button>
-                <button class="filter-btn" onclick="filterData('무소속', this)">NONE</button>
+                <button class="filter-btn active cyber-border" onclick="filterData('ALL', this)">ALL</button>
+                <button class="filter-btn cyber-border" onclick="filterData('애스터', this)">ASTER</button>
+                <button class="filter-btn cyber-border" onclick="filterData('델라쿠르아', this)">DELACRUA</button>
+                <button class="filter-btn cyber-border" onclick="filterData('스타 더스트', this)">STARDUST</button>
+                <button class="filter-btn cyber-border" onclick="filterData('무소속', this)">NONE</button>
             </div>
             <div class="char-grid" id="char-container"></div>
         </div>
@@ -314,7 +322,7 @@
                 <div class="tower-mark" onclick="openMapModal('faction', 'center')"></div>
             </div>
             <div class="map-data-panel">
-                <div style="font-weight:bold; color:var(--theme-bright); margin-bottom:6px; font-family: var(--font-title);">[ TERMINAL HELP ]</div>
+                <div style="font-weight:bold; margin-bottom:6px; font-family: var(--font-title);">[ TERMINAL HELP ]</div>
                 <div style="margin-bottom: 4px;">> 지도 내 <span style="color:var(--neon-red); font-weight:bold; font-size: 0.9rem;">[ X ]</span> 마크를 터치하여 랜드마크 정보를 확인하십시오.</div>
                 <div>> 각 세력 <span style="color:#fff; font-weight:bold;">[ 영역 ]</span>을 터치하여 가문 상세 정보를 확인하십시오.</div>
             </div>
@@ -328,16 +336,16 @@
         <div id="settings-view">
             <div class="view-title">TERMINAL_SETTINGS <div class="view-title-decor"></div></div>
             
-            <div class="m-section-title" style="margin-top: 25px; font-size: 1.1rem;">[ UI THEME CONFIG ]</div>
+            <div class="m-section-title" style="margin-top: 25px; font-size: 1.1rem;">[ UI MUSIC THEME ]</div>
             <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
-                <div class="lobby-btn settings-btn cyber-border active-theme decor-corners" id="btn-theme-cyan" onclick="setTheme('theme-cyan', this)">
-                    <span>[01] AETERNA CYAN (기본 홀로그램)</span>
+                <div class="lobby-btn settings-btn cyber-border decor-corners active-theme" id="btn-theme-classic" onclick="setTheme('theme-classic', this)">
+                    <span>[01] CLASSIC (클래식 - 장엄한 관현악)</span>
                 </div>
-                <div class="lobby-btn settings-btn cyber-border decor-corners" id="btn-theme-gold" onclick="setTheme('theme-gold', this)">
-                    <span>[02] CLASSIC GOLD (관리자 골드)</span>
+                <div class="lobby-btn settings-btn cyber-border decor-corners" id="btn-theme-jazz" onclick="setTheme('theme-jazz', this)">
+                    <span>[02] JAZZ (재즈 - 심야의 즉흥곡)</span>
                 </div>
-                <div class="lobby-btn settings-btn cyber-border decor-corners" id="btn-theme-crimson" onclick="setTheme('theme-crimson', this)">
-                    <span>[03] CRIMSON ALERT (적색 경고망)</span>
+                <div class="lobby-btn settings-btn cyber-border decor-corners" id="btn-theme-pop" onclick="setTheme('theme-pop', this)">
+                    <span>[03] POP (팝 - 화려한 네온 비트)</span>
                 </div>
             </div>
         </div>
@@ -362,7 +370,7 @@
         <div class="modal-box cyber-border decor-corners">
             <div class="modal-close" onclick="closeCharModal()">×</div>
             <div class="modal-scroll-area">
-                <div class="m-profile-img-wrap" onclick="openImageViewer()">
+                <div class="m-profile-img-wrap cyber-border" onclick="openImageViewer()">
                     <img id="md-img" src="" alt="Profile Image">
                 </div>
                 <div class="m-header">
@@ -399,7 +407,7 @@
     </div>
 
     <script>
-        // --- 1. 캐릭터 데이터베이스 ---
+        // --- 캐릭터 데이터 ---
         const charDB = [
             { img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
             { img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
@@ -421,13 +429,11 @@
         const preloadedImages = [];
         charDB.forEach(char => {
             if(char.img) {
-                const img = new Image();
-                img.src = char.img;
-                preloadedImages.push(img);
+                const img = new Image(); img.src = char.img; preloadedImages.push(img);
             }
         });
 
-        // --- 네비게이션 ---
+        // --- 네비게이션 및 테마 변경 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
             document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
@@ -440,14 +446,15 @@
             window.scrollTo(0, 0);
         }
 
-        // --- 테마 변경 ---
+        // 💡 테마 설정 시스템 (클래식, 재즈, 팝)
         function setTheme(themeClass, btn) {
-            document.body.className = ''; document.body.classList.add(themeClass);
+            document.body.className = ''; 
+            document.body.classList.add(themeClass);
             document.querySelectorAll('.settings-btn').forEach(b => b.classList.remove('active-theme'));
             btn.classList.add('active-theme');
         }
 
-        // --- 랜덤 뉴스 티커 (대폭 추가 & 속도 감소) ---
+        // --- 랜덤 뉴스 티커 ---
         const newsItems = [
             "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
             "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
@@ -471,12 +478,11 @@
             "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 가격 급등"
         ];
         function updateNews() {
-            // 한 번에 8개 정도 길게 뽑아서 여유롭게 회전하도록 설정
             let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 8);
             let newsHTML = ""; shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
             document.getElementById('news-ticker').innerHTML = newsHTML;
         }
-        updateNews(); setInterval(updateNews, 50000); // 50초마다 내용 교체 (애니메이션 시간과 일치)
+        updateNews(); setInterval(updateNews, 50000); 
 
         // --- 캐릭터 카드 렌더링 ---
         function getFactionColor(faction) {
@@ -587,7 +593,7 @@
                 "aster": { title: "세력 정보: 애스터 (ASTER)", desc: "서부를 장악한 최대 세력. 보수파가 중심이며, 가주 엘라라의 통치 하에 압도적인 레조넌스 무력을 자랑한다. 귀족적이고 통제된 질서를 중시한다." },
                 "dela": { title: "세력 정보: 델라쿠르아 (DELACRUA)", desc: "동남부에 주둔 중인 중간 세력. 가주 시몬의 지휘 아래 기사단과 같은 엄격한 규율과 질서를 유지하고 있으며, 정밀하고 묵직한 전투 방식을 선호한다." },
                 "star": { title: "세력 정보: 스타 더스트 (STARDUST)", desc: "동북부에 고립된 소규모 연구 구역. 진보파가 중심이며 K-Pop, Pop 등 트렌디한 대중음악을 레조넌스로 승화시키는 파격적인 실험과 연구를 진행 중이다." },
-                "center": { title: "구역 정보: 절대중립지역", desc: "<span class='highlight'>[접근 주의]</span> 중앙탑을 중심으로 형성된 반경 10km의 절대중립지역. 어떠한 가문이나 세력의 무력 행사 및 레조넌스 사용도 엄격히 금지된 성역이다." }
+                "center": { title: "구역 정보: 절대중립지역", desc: "<span class='warning'>[접근 주의]</span> 중앙탑을 중심으로 형성된 반경 10km의 절대중립지역. 어떠한 가문이나 세력의 무력 행사 및 레조넌스 사용도 엄격히 금지된 성역이다." }
             },
             landmark: {
                 "aster": { title: "랜드마크: 그랜드 오페라 하우스", desc: "애스터 가문의 본거지. 엘라라가 직접 지휘를 펼치는 거대한 원형 극장 형태의 요새로, 평소엔 호화로운 연회장으로 쓰인다." },
@@ -600,7 +606,7 @@
         function openMapModal(type, key) {
             if (!mapData[type] || !mapData[type][key]) return;
             const data = mapData[type][key];
-            document.getElementById('map-modal-title').innerText = data.title;
+            document.getElementById('map-modal-title').innerHTML = data.title;
             document.getElementById('map-modal-desc').innerHTML = data.desc;
             
             const modal = document.getElementById('map-modal');
@@ -614,29 +620,25 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
-        // --- 시스템 DB 복구 ---
+        // --- 시스템 DB 생성 ---
         const systemDB = [
             { category: "등급제도 (THREAT_LEVEL)", items: [
-                { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span><br>단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급." }, 
-                { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span><br>대도시 하나를 완전히 지도에서 지워버릴 수 있는 파괴력을 지님." }, 
+                { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span> 단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급." }, 
+                { name: "S Rank", desc: "<span class='warning'>[도시 멸망 급]</span> 대도시 하나를 완전히 지도에서 지워버릴 수 있는 파괴력을 지님." }, 
                 { name: "A Rank", desc: "<span class='highlight'>[소도시 멸망 급]</span> 국지적 범위의 도시 기능을 마비시키고 파괴할 수 있는 등급." }, 
                 { name: "B Rank", desc: "<span class='highlight'>[군대 급]</span> 정규 군대와 맞먹는 전투력을 보유한 수준." }, 
                 { name: "C, D, E Rank", desc: "일반인 무장 단체 및 표준적인 성인 이하 등급." }, 
-                { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span><br>현존하는 레조넌스 측정망을 벗어난 초월적 개체. 데이터 수집 및 분석 불가." }] 
+                { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span> 현존하는 레조넌스 측정망을 벗어난 초월적 개체. 데이터 수집 및 분석 불가." }] 
             },
             { category: "연주자 (PERFORMERS)", items: [
                 { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>. 각성자는 이를 통해 신체강화 및 능력을 발동한다." }, 
-                { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span><br>출력이 2배 강화되며 자신만의 영역인 <b>'커튼콜'</b> 전개가 가능해진다. 커튼콜 시전자의 허락 없이는 탈출이 불가능하며, 종료 시 1분간 모든 능력이 봉쇄된다." }, 
-                { name: "백스테이지", desc: "커튼콜의 필중 주파수와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>. 유지 중에는 시전자 역시 고유 능력 사용이 봉쇄된다." }, 
-                { name: "조율 / 노이즈 / 글리치", desc: "<span class='highlight'>[노이즈]</span>: 레조넌스 과용 부작용으로 인한 신체 악기화 현상. (완화 조건: 성적 교감 또는 휴식)<br><span class='highlight'>[글리치]</span>: 노이즈 잠식으로 인간성을 잃은 괴물. 80% 이상 잠식 시 기계음 발생.<br><span class='highlight'>[조율]</span>: 노이즈 수치를 낮추는 고난도 치료 기술." }] 
+                { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 출력이 2배 강화되며 자신만의 영역인 <b>'커튼콜'</b> 전개가 가능해진다. 종료 시 1분간 능력이 봉쇄된다." }, 
+                { name: "백스테이지", desc: "커튼콜의 필중 주파수와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>. 유지 중에는 시전자 역시 고유 능력이 봉쇄된다." }, 
+                { name: "조율 / 노이즈 / 글리치", desc: "<b>[노이즈]</b>: 레조넌스 과용 부작용으로 인한 신체 악기화 현상. (완화 조건: 성적 교감 또는 휴식)<br><b>[글리치]</b>: 노이즈 잠식으로 인간성을 잃은 괴물.<br><b>[조율]</b>: 노이즈 수치를 낮추는 고난도 치료 기술." }] 
             },
             { category: "특수현상 (ANOMALIES)", items: [
                 { name: "더 뮤트 (The Mute)", desc: "<span class='warning'>[미스터리 공백 현상]</span> 지정된 공간 내의 모든 레조넌스와 존재가 영구적으로 소거되는 현상." },
                 { name: "lo-fi (로파이)", desc: "<span class='warning'>[마약성 주파수]</span> 대상에게 몽롱한 쾌락을 주지만 체내 노이즈 수치를 폭등시키는 위험 물질." }] 
-            },
-            { category: "명령어 (TERMINAL_CMDS)", items: [
-                { name: "/scan_resonance", desc: "반경 10km 내의 파동 밀도를 스캔합니다. (대기 중)" }, 
-                { name: "/auth_override", desc: "<span class='warning'>[접근 거부]</span> 관리자 권한이 필요합니다." }] 
             }
         ];
 
@@ -671,6 +673,7 @@
             dbContainer.appendChild(folder); dbContainer.appendChild(folderContent);
         });
 
+        // 초기 실행
         renderCharacters('ALL');
     </script>
 </body>
