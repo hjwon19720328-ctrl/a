@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v10.6</title>
+    <title>OVER SOUL - OS Terminal v10.7</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -85,7 +85,6 @@
         body.theme-pop .decor-corners::before, body.theme-pop .decor-corners::after { display: none; }
         body.theme-pop .view-title-decor { border-radius: 10px; height: 3px; background: var(--theme-main);}
 
-
         /* =========================================
            [ 공통 배경 및 UI ]
            ========================================= */
@@ -95,13 +94,17 @@
             background-size: cover, 120px 120px; opacity: 0.35; transition: 0.5s;
         }
 
-        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: introEnd 0.6s ease-in-out forwards; animation-delay: 2.5s; }
+        /* 💡 인트로: 들어가기 버튼 추가 */
+        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--bg-base); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .glitch-text { font-size: 3.5rem; font-weight: 900; color: var(--theme-bright); text-shadow: var(--theme-glow); animation: textPulse 1s infinite alternate; }
-        .loading-wrap { width: 250px; margin-top: 20px; }
+        .loading-wrap { width: 250px; margin-top: 20px; transition: opacity 0.5s; }
         .loading-text { font-size: 0.75rem; color: var(--theme-main); margin-bottom: 5px; animation: blink 0.5s infinite; letter-spacing: 1px;}
         .loading-bar { width: 100%; height: 3px; background: var(--theme-dim); position: relative; overflow: hidden; border-radius: 5px;}
-        .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--theme-bright); box-shadow: 0 0 10px var(--theme-bright); animation: fillBar 2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
+        .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--theme-bright); box-shadow: 0 0 10px var(--theme-bright); animation: fillBar 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
         
+        .enter-btn { display: none; margin-top: 30px; padding: 15px 30px; font-family: var(--font-title); font-size: 1.3rem; font-weight: bold; color: var(--theme-main); cursor: pointer; text-shadow: var(--theme-glow); letter-spacing: 2px; }
+        .enter-btn:hover { background: var(--theme-main); color: #000; text-shadow: none; box-shadow: var(--theme-glow);}
+
         .sys-frame-info { position: fixed; font-size: 0.75rem; color: var(--theme-dim); z-index: 80; pointer-events: none; text-shadow: none; font-weight: bold;}
         .top-left-info { top: 10px; left: 15px; }
         .bottom-right-info { bottom: 35px; right: 15px; text-align: right; } 
@@ -204,15 +207,16 @@
         .db-file.active { border-color: var(--theme-bright); padding-left: 25px; }
         .db-data-box { display: none; padding: 18px; font-size: 0.95rem; line-height: 1.8; margin-top: -8px; margin-bottom: 15px; color: var(--theme-bright); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
-        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2); border-radius: 3px;}
+        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2);}
 
-        /* 모달 팝업 */
+        /* 💡 모달 팝업 (스크롤 짤림 버그 수정 완벽판) */
         .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
         .generic-modal.show { display: flex; opacity: 1; }
         .modal-box { width: 100%; max-width: 440px; max-height: 85vh; position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; background: #0a0a0a;}
         .generic-modal.show .modal-box { transform: translateY(0) scale(1); }
         .modal-close { position: absolute; top: 15px; right: 20px; color: var(--theme-bright); font-size: 2rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; z-index: 10;}
-        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 25px; }
+        
+        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 45px; } /* 하단 여백 추가로 잘림 방지 */
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--theme-dim); border-radius: 3px;}
         
@@ -240,6 +244,7 @@
         #img-viewer img { max-width: 95%; max-height: 95%; border: 2px solid var(--theme-main); object-fit: contain; border-radius: inherit;}
         .viewer-close { position: absolute; top: 20px; right: 30px; color: var(--theme-bright); font-size: 3.5rem; cursor: pointer; font-family: var(--font-title); z-index: 3010; }
 
+        /* --- 애니메이션 키프레임 --- */
         @keyframes introEnd { to { opacity: 0; visibility: hidden; display: none;} }
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes fillBar { 0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; } }
@@ -251,13 +256,18 @@
         @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
     </style>
 </head>
-<body class="theme-classic"> <audio id="bgm-player" loop></audio>
+<body class="theme-classic">
+
+    <audio id="bgm-player" loop></audio>
 
     <div id="intro">
         <div class="glitch-text">OVER SOUL</div>
-        <div class="loading-wrap">
-            <div class="loading-text">CONNECTING TO O.S CORE NETWORK...</div>
+        <div class="loading-wrap" id="loading-wrap">
+            <div class="loading-text" id="intro-loading-text">CONNECTING TO O.S CORE NETWORK...</div>
             <div class="loading-bar"><div class="loading-fill"></div></div>
+        </div>
+        <div class="enter-btn cyber-border decor-corners" id="btn-enter" onclick="startSystem()">
+            [ SYSTEM ENTER / 들어가기 ]
         </div>
     </div>
 
@@ -367,6 +377,7 @@
                 <h2 id="map-modal-title"></h2>
                 <hr style="border-color: var(--theme-dim); margin-bottom: 20px; border-style: dashed;">
                 <div id="map-modal-desc"></div>
+                <div style="height: 20px;"></div>
             </div>
         </div>
     </div>
@@ -402,6 +413,7 @@
                     <div class="m-section-title" id="lbl-record">PERSONAL_RECORD</div>
                     <div class="m-desc cyber-border" id="md-detail" style="color:#e0e0e0;"></div>
                 </div>
+                <div style="height: 30px;"></div>
             </div>
         </div>
     </div>
@@ -412,8 +424,29 @@
     </div>
 
     <script>
-        // --- 1. 전역 변수 및 데이터 ---
+        // --- 1. 전역 변수 및 인트로 처리 ---
         let currentTheme = 'theme-classic';
+        
+        // 로딩 바 차오른 후 들어가기 버튼 표시
+        setTimeout(() => {
+            document.getElementById('loading-wrap').style.display = 'none';
+            const btnEnter = document.getElementById('btn-enter');
+            btnEnter.style.display = 'block';
+            btnEnter.classList.add('view-fade-in');
+        }, 1600);
+
+        function startSystem() {
+            // 들어가기 클릭 시 음악 재생 및 인트로 숨김
+            const player = document.getElementById('bgm-player');
+            if(player.src.indexOf('1.mp3') === -1) {
+                player.src = '1.mp3'; // 기본 시작은 클래식
+            }
+            player.play().catch(e => console.log("BGM 재생 오류:", e));
+
+            const intro = document.getElementById('intro');
+            intro.style.animation = 'introEnd 0.6s ease-in-out forwards';
+            setTimeout(() => { intro.style.display = 'none'; }, 600);
+        }
         
         // 💡 동적 텍스트 시스템 (3가지 문체 완벽 분리)
         const themeTexts = {
@@ -599,39 +632,34 @@
             document.body.className = ''; 
             document.body.classList.add(themeClass);
             document.querySelectorAll('.settings-btn').forEach(b => b.classList.remove('active-theme'));
-            btn.classList.add('active-theme');
+            if(btn) btn.classList.add('active-theme');
             currentTheme = themeClass;
 
             // 2. 동적 텍스트 교체
             const tData = themeTexts[themeClass];
             
-            // 사이드바
             document.getElementById('nav-lobby').innerText = tData.sidebar[0];
             document.getElementById('nav-character').innerText = tData.sidebar[1];
             document.getElementById('nav-map').innerText = tData.sidebar[2];
             document.getElementById('nav-system').innerText = tData.sidebar[3];
             document.getElementById('nav-settings').innerText = tData.sidebar[4];
 
-            // 타이틀
             document.getElementById('title-char').innerHTML = tData.titles[0] + ' <div class="view-title-decor"></div>';
             document.getElementById('title-map').innerHTML = tData.titles[1] + ' <div class="view-title-decor"></div>';
             document.getElementById('title-sys').innerHTML = tData.titles[2] + ' <div class="view-title-decor"></div>';
             document.getElementById('title-set').innerHTML = tData.titles[3] + ' <div class="view-title-decor"></div>';
 
-            // 로비
             document.getElementById('lobby-sub-title').innerText = tData.lobbySub;
             document.getElementById('btn-txt-char').innerText = tData.lobbyBtns[0];
             document.getElementById('btn-txt-map').innerText = tData.lobbyBtns[1];
             document.getElementById('btn-txt-sys').innerText = tData.lobbyBtns[2];
             document.getElementById('btn-txt-set').innerText = tData.lobbyBtns[3];
 
-            // 맵 헬프 및 셋팅 헬프
             document.getElementById('map-help-1').innerHTML = tData.mapHelp[0];
             document.getElementById('map-help-2').innerHTML = tData.mapHelp[1];
             document.getElementById('set-subtitle').innerText = tData.setSubtitle;
             document.getElementById('setting-desc').innerText = tData.setDesc;
 
-            // 모달 라벨 업데이트
             document.getElementById('lbl-threat').innerText = tData.modalLabels[0];
             document.getElementById('lbl-age').innerText = tData.modalLabels[1];
             document.getElementById('lbl-mbti').innerText = tData.modalLabels[2];
@@ -647,19 +675,20 @@
             renderSystemDB(tData.systemDB);
 
             // 4. 오디오 BGM 재생
-            const player = document.getElementById('bgm-player');
-            // src 파일 이름만 비교하여 불필요한 재로딩 방지
-            const currentSrcFile = player.src.split('/').pop();
-            if(currentSrcFile !== audioSrc) {
-                player.src = audioSrc;
-                player.play().catch(e => console.log("BGM 재생 대기 (사용자 클릭 필요):", e));
+            if(audioSrc) {
+                const player = document.getElementById('bgm-player');
+                const currentSrcFile = player.src.split('/').pop();
+                if(currentSrcFile !== audioSrc) {
+                    player.src = audioSrc;
+                    player.play().catch(e => console.log("BGM 재생 대기 (사용자 클릭 필요):", e));
+                }
             }
         }
 
         // --- 시스템 DB 렌더링 함수 ---
         function renderSystemDB(dbData) {
             const dbContainer = document.getElementById('db-container');
-            dbContainer.innerHTML = ''; // 초기화
+            dbContainer.innerHTML = ''; 
 
             dbData.forEach(folderData => {
                 const folder = document.createElement('div');
@@ -692,28 +721,27 @@
             });
         }
 
-        // --- 랜덤 뉴스 티커 (에테르나 삭제 완료) ---
+        // --- 랜덤 뉴스 티커 ---
         const newsItems = [
-            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
-            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
-            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 K-Pop 앨범 발표, '이번 비트는 당신의 심장을 찢어놓을 것'",
-            "<span class='news-tag'>[사회]</span> 최근 불법 '조율' 시술 받던 민간인 3명 글리치화... 당국 수사 착수",
-            "<span class='news-tag'>[속보]</span> 서부 빈민가에서 신원 미상의 인물이 대량의 'lo-fi' 유통 중인 것으로 밝혀져",
-            "<span class='news-tag'>[기상]</span> 내일 오전 동북부 지역 미세한 '더 뮤트' 현상 발생 가능성... 외출 자제 요망",
-            "<span class='news-tag'>[종교]</span> 신흥 종교 신도 수 급증... 교황 크리스 '고드의 이름으로 모두를 사랑하라'",
-            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각적인 경계 태세 돌입",
-            "<span class='news-tag'>[사회]</span> 하층민 구역에서 불법 레조넌스 증폭기 거래 적발",
-            "<span class='news-tag'>[사건]</span> 무소속 연주자, 애스터 가문 소유 물류창고 습격",
-            "<span class='news-tag'>[경제]</span> 조율 비용 전년 대비 300% 폭등... 서민층 절망",
-            "<span class='news-tag'>[가십]</span> 델라쿠르아 가문 메이드, 사실 남성으로 밝혀져... 진실은?",
+            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역 레조넌스 폭주 발생... 사상자 파악 중",
+            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영 병력 전진 배치... 국경 긴장감 고조",
+            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 발표, 'BPM 동기화 시스템 탑재'",
+            "<span class='news-tag'>[사회]</span> 불법 '조율' 시술 받던 민간인 또다시 글리치화",
+            "<span class='news-tag'>[속보]</span> 서부 빈민가 대량의 'lo-fi' 유통 포착",
+            "<span class='news-tag'>[기상]</span> 동북부 지역 미세 '더 뮤트' 주의보",
+            "<span class='news-tag'>[종교]</span> 신흥 교단 급성장... 교황 크리스 박애주의 전파",
+            "<span class='news-tag'>[속보]</span> 중앙탑 부근 소속 불명 S급 파동 감지... 경계 태세",
+            "<span class='news-tag'>[사회]</span> 하층민 구역 불법 레조넌스 증폭기 암시장 적발",
+            "<span class='news-tag'>[사건]</span> 무소속 연주자, 애스터 가문 물류창고 기습 타격",
+            "<span class='news-tag'>[경제]</span> 조율 시술 비용 전년 대비 300% 폭등... 서민 절망",
+            "<span class='news-tag'>[가십]</span> 델라쿠르아 가문 유명 메이드, 사실 남성으로 밝혀져 논란",
             "<span class='news-tag'>[기상]</span> 중부 사막 지대 대규모 노이즈 폭풍 발생 경고",
-            "<span class='news-tag'>[사건]</span> 델라쿠르아 기사단, 국경 침범한 글리치 무리 토벌 완료",
-            "<span class='news-tag'>[사회]</span> 뒷골목 마약 'lo-fi' 중독자 급증... 치안 붕괴 우려",
-            "<span class='news-tag'>[속보]</span> 애리나 가문 루시, 또 다시 폭주... 주변 일대 폐허로",
-            "<span class='news-tag'>[뉴스]</span> 정체불명의 휘파람 소리 들은 후 기적적으로 병 완치된 사례 보고",
-            "<span class='news-tag'>[사회]</span> 정체불명의 차원 균열, 중앙탑 인근에서 지속 관측",
-            "<span class='news-tag'>[사건]</span> 하프 연주하는 수녀 목격담 SNS서 화제... '천사가 내려왔다'",
-            "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 가격 급등"
+            "<span class='news-tag'>[사회]</span> 정체불명의 차원 균열 관측... 'CORE NET'의 불안정성 대두",
+            "<span class='news-tag'>[사회]</span> 뒷골목 마약 'lo-fi' 중독자 급증... 심각한 치안 붕괴 우려",
+            "<span class='news-tag'>[속보]</span> 애리나 가문 루시, 연주회 도중 폭주... 주변 일대 폐허",
+            "<span class='news-tag'>[뉴스]</span> 정체불명 휘파람 소리 후 기적 완치 사례 잇달아 보고",
+            "<span class='news-tag'>[사건]</span> 하프 연주하는 수녀 목격담 SNS서 화제... '천사 강림'",
+            "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 광석 가격 급상승"
         ];
         function updateNews() {
             let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 8);
@@ -844,8 +872,8 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
-        // 초기 실행 (클래식 세팅 강제 트리거)
-        setTheme('theme-classic', document.querySelector('.settings-btn'), '1.mp3');
+        // 초기 실행 (클래식 세팅 텍스트만 바인딩, 오디오는 대기)
+        setTheme('theme-classic', null, null);
         renderCharacters('ALL');
     </script>
 </body>
