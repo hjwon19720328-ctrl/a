@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v10.5</title>
+    <title>OVER SOUL - OS Terminal v10.6</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -137,7 +137,7 @@
         .btn-text { transition: 0.3s; }
         .btn-arrow { font-size:0.6rem; color:var(--theme-bright); transition: 0.3s;}
 
-        /* 💡 설정 뷰 (설정 상자 사라짐 버그 수정) */
+        /* 설정 뷰 */
         .settings-btn-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .settings-btn { width: 100%; max-width: 400px; padding: 20px 25px; display: flex; justify-content: flex-start; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; opacity: 0; transform: translateY(20px); box-sizing: border-box; }
         .settings-btn.active-theme { border-color: var(--theme-bright); color: var(--theme-bright); font-weight: bold; background: rgba(var(--theme-main-rgb), 0.3); box-shadow: var(--theme-glow);}
@@ -204,7 +204,7 @@
         .db-file.active { border-color: var(--theme-bright); padding-left: 25px; }
         .db-data-box { display: none; padding: 18px; font-size: 0.95rem; line-height: 1.8; margin-top: -8px; margin-bottom: 15px; color: var(--theme-bright); }
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
-        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2);}
+        .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2); border-radius: 3px;}
 
         /* 모달 팝업 */
         .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
@@ -453,13 +453,13 @@
                         "aster": { title: "세력 정보: 애스터 (ASTER)", desc: "서부를 장악한 최대 세력입니다. 보수파가 중심이며, 가주 엘라라의 통치 하에 압도적인 레조넌스 무력을 자랑합니다. 귀족적이고 통제된 질서를 중시합니다." },
                         "dela": { title: "세력 정보: 델라쿠르아 (DELACRUA)", desc: "동남부에 주둔 중인 중간 세력입니다. 가주 시몬의 지휘 아래 기사단과 같은 엄격한 규율과 질서를 유지하고 있으며, 정밀하고 묵직한 전투 방식을 선호합니다." },
                         "star": { title: "세력 정보: 스타 더스트 (STARDUST)", desc: "동북부에 고립된 소규모 연구 구역입니다. 진보파가 중심이며 K-Pop, Pop 등 트렌디한 대중음악을 레조넌스로 승화시키는 파격적인 실험과 연구를 진행 중입니다." },
-                        "center": { title: "구역 정보: 절대중립지역", desc: "<span class='warning'>[접근 주의]</span> 중앙탑을 중심으로 형성된 반경 10km의 절대중립지역입니다. 어떠한 가문이나 세력의 무력 행사 및 레조넌스 사용도 엄격히 금지된 성역입니다." }
+                        "center": { title: "구역 정보: 절대중립지역", desc: "<span class='highlight'>[절대중립지역]</span> 중앙탑을 중심으로 형성된 반경 10km의 절대중립지역입니다. 무력 행사가 엄격히 금지되며, 각 가문의 연주자들이 모여 순수하게 교류하고 친목을 다지는 평화의 성역입니다." }
                     },
                     landmark: {
                         "aster": { title: "랜드마크: 그랜드 오페라 하우스", desc: "애스터 가문의 본거지입니다. 엘라라가 직접 지휘를 펼치는 거대한 원형 극장 형태의 요새로, 평소엔 호화로운 연회장으로 쓰입니다." },
                         "dela": { title: "랜드마크: 침묵의 성채", desc: "델라쿠르아 가문의 핵심 방어선입니다. 가주 시몬의 첼로 선율에 의해 주변의 중력이 항상 무겁게 짓눌려 있어 외부인의 침입을 불허합니다." },
                         "star": { title: "랜드마크: 일루전 돔", desc: "스타 더스트의 거대 콘서트장이자 메인 연구 시설입니다. 밤낮없이 화려한 네온 불빛과 기계적인 비트가 뿜어져 나오는 향락과 연구의 중심지입니다." },
-                        "center": { title: "랜드마크: 중앙탑 코어 넥서스", desc: "절대중립지역 중앙탑 내부의 최고 회담장입니다. 모든 네트워크망이 모이는 중심지이며, 차원 너머의 무언가와 모종의 연결이 되어 있다는 소문이 있습니다." }
+                        "center": { title: "랜드마크: 중앙탑 코어 넥서스", desc: "모든 네트워크망이 모이는 중심지이자, 세력 간의 갈등을 내려놓고 화합을 도모하는 거대한 사교의 장입니다." }
                     }
                 }
             },
@@ -499,13 +499,13 @@
                         "aster": { title: "세력 정보: 애스터 (ASTER)", desc: "서부를 꽉 쥐고 있는 최대 카르텔. 엘라라라는 꼬맹이 가주가 꽉 잡고 있는데, 그 무력이 장난이 아니지. 철저한 질서로 통제되고 있어." },
                         "dela": { title: "세력 정보: 델라쿠르아 (DELACRUA)", desc: "동남부의 묵직한 녀석들. 가주 시몬을 필두로 기사단 뺨치는 엄격한 룰을 따르고 있어. 한 방 한 방이 아주 묵직한 곳이지." },
                         "star": { title: "세력 정보: 스타 더스트 (STARDUST)", desc: "동북부에 처박혀 있는 별종들. 팝, K팝 같은 시끄러운 음악을 무기로 기괴한 실험을 밥 먹듯이 하는 구역이야." },
-                        "center": { title: "구역 정보: 절대중립지역", desc: "<span class='warning'>[접근 주의]</span> 중앙탑 반경 10km의 노 터치 구역. 여기서 힘자랑을 했다간 어느 가문이든 박살 날 각오를 해야 하는 성역이야." }
+                        "center": { title: "구역 정보: 절대중립지역", desc: "<span class='highlight'>[절대중립지역]</span> 중앙탑 반경 10km의 평화 구역이야. 무기 내려놓고 한잔하면서 노는 곳이지. 여기서 싸움박질하는 촌스러운 녀석은 아무도 없어." }
                     },
                     landmark: {
                         "aster": { title: "랜드마크: 그랜드 오페라 하우스", desc: "애스터 녀석들의 본진. 엘라라가 지휘봉을 흔드는 거대한 요새지. 평소엔 귀족 놀음이나 하는 연회장이야." },
                         "dela": { title: "랜드마크: 침묵의 성채", desc: "델라쿠르아의 뚫리지 않는 방어벽. 시몬의 첼로 소리 때문에 중력이 엉망이라 웬만한 녀석들은 서 있지도 못해." },
                         "star": { title: "랜드마크: 일루전 돔", desc: "스타 더스트의 본거지. 밤낮없이 네온사인 켜놓고 시끄러운 비트가 터져 나오는 마경이야." },
-                        "center": { title: "랜드마크: 중앙탑 코어 넥서스", desc: "모든 정보가 모이는 가장 은밀한 회담장. 다른 차원 너머랑 몰래 연결되어 있다는 뒷소문이 파다해." }
+                        "center": { title: "랜드마크: 중앙탑 코어 넥서스", desc: "온갖 녀석들이 모여서 정보도 교환하고 친목질도 하는 동네 최대의 아지트야." }
                     }
                 }
             },
@@ -545,13 +545,13 @@
                         "aster": { title: "크루 정보: 애스터 (ASTER)", desc: "서부를 장악한 원탑 소속사! 🌟 보수적인 룰 속에서도 엘라라 가주님의 카리스마가 빛나는 럭셔리한 곳이랍니다." },
                         "dela": { title: "크루 정보: 델라쿠르아 (DELACRUA)", desc: "동남부의 군기 바짝 든 크루! 시몬 가주님의 지휘 아래 각 잡힌 묵직한 퍼포먼스를 선보여요. 🎻" },
                         "star": { title: "크루 정보: 스타 더스트 (STARDUST)", desc: "동북부의 핫플 연구 구역! K-Pop과 Pop 비트로 세상을 뒤집어놓는 가장 트렌디하고 톡톡 튀는 크루예요! 🎤💖" },
-                        "center": { title: "구역 정보: 절대중립지역", desc: "<span class='warning'>[접근 주의]</span> 중앙탑 반경 10km의 노터치 성역! 이곳에선 다툼 금지, 오직 평화만이 존재해요. 🕊️" }
+                        "center": { title: "구역 정보: 절대중립지역", desc: "<span class='highlight'>[절대중립지역]</span> 중앙탑 반경 10km의 힐링 존! 💖 다툼은 절대 금지, 모두가 친구가 되어 신나게 수다 떨고 노는 평화로운 구역이랍니다~!" }
                     },
                     landmark: {
                         "aster": { title: "핫플: 그랜드 오페라 하우스", desc: "애스터 크루의 본진! 평소엔 파티가 열리는 화려하고 럭셔리한 대형 오페라 극장이에요. 🥂" },
                         "dela": { title: "핫플: 침묵의 성채", desc: "델라쿠르아의 철통 방어 요새! 시몬님의 첼로 선율 때문에 몸이 엄청 무거워지는 무시무시한 곳이에요. 🏰" },
                         "star": { title: "핫플: 일루전 돔", desc: "스타 더스트의 메인 돔구장! 화려한 네온사인과 신나는 비트가 끊이지 않는 최고의 파티 룸이랍니다! 🎉" },
-                        "center": { title: "핫플: 중앙탑 코어 넥서스", desc: "모든 썰이 모이는 비밀스러운 중앙 회담장! 저 너머의 차원과 연결되어 있다는 찌라시가 돌고 있어요. 🌌" }
+                        "center": { title: "핫플: 중앙탑 코어 넥서스", desc: "핫한 크루들이 다 모이는 우주 최고 스케일의 파티장! 여기서 다 같이 친목도 다지고 재밌게 놀아요! 🎉" }
                     }
                 }
             }
@@ -595,18 +595,12 @@
 
         // 💡 테마 설정 & 오디오 & 동적 텍스트 적용 시스템
         function setTheme(themeClass, btn, audioSrc) {
+            // 1. 테마 CSS 클래스 변경
             document.body.className = ''; 
             document.body.classList.add(themeClass);
             document.querySelectorAll('.settings-btn').forEach(b => b.classList.remove('active-theme'));
             btn.classList.add('active-theme');
             currentTheme = themeClass;
-
-            // 1. 오디오 플레이 (브라우저 정책상 클릭 이벤트가 있어야 재생됨)
-            const player = document.getElementById('bgm-player');
-            if(player.src.indexOf(audioSrc) === -1) {
-                player.src = audioSrc;
-                player.play().catch(e => console.log("오디오 재생 오류:", e));
-            }
 
             // 2. 동적 텍스트 교체
             const tData = themeTexts[themeClass];
@@ -651,6 +645,15 @@
 
             // 3. 시스템 DB 재렌더링
             renderSystemDB(tData.systemDB);
+
+            // 4. 오디오 BGM 재생
+            const player = document.getElementById('bgm-player');
+            // src 파일 이름만 비교하여 불필요한 재로딩 방지
+            const currentSrcFile = player.src.split('/').pop();
+            if(currentSrcFile !== audioSrc) {
+                player.src = audioSrc;
+                player.play().catch(e => console.log("BGM 재생 대기 (사용자 클릭 필요):", e));
+            }
         }
 
         // --- 시스템 DB 렌더링 함수 ---
@@ -689,34 +692,35 @@
             });
         }
 
-        // --- 랜덤 뉴스 티커 ---
+        // --- 랜덤 뉴스 티커 (에테르나 삭제 완료) ---
         const newsItems = [
-            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역 레조넌스 폭주 발생... 사상자 파악 중",
-            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영 병력 전진 배치... 국경 긴장감 고조",
-            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 발표, 'BPM 동기화 시스템 탑재'",
-            "<span class='news-tag'>[사회]</span> 불법 '조율' 시술 받던 민간인 또다시 글리치화",
-            "<span class='news-tag'>[속보]</span> 서부 빈민가 대량의 'lo-fi' 유통 포착",
-            "<span class='news-tag'>[기상]</span> 동북부 지역 미세 '더 뮤트' 주의보",
-            "<span class='news-tag'>[종교]</span> 신흥 교단 급성장... 교황 크리스 박애주의 전파",
-            "<span class='news-tag'>[속보]</span> 중앙탑 부근 소속 불명 S급 파동 감지... 경계 태세",
-            "<span class='news-tag'>[사회]</span> 하층민 구역 불법 레조넌스 증폭기 암시장 적발",
-            "<span class='news-tag'>[사건]</span> 무소속 연주자, 애스터 가문 물류창고 기습 타격",
-            "<span class='news-tag'>[경제]</span> 조율 시술 비용 전년 대비 300% 폭등... 서민 절망",
-            "<span class='news-tag'>[가십]</span> 델라쿠르아 가문 유명 메이드, 사실 남성으로 밝혀져 논란",
+            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역에서 원인 불명의 레조넌스 폭주 발생... 사상자 파악 중",
+            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영, 국경선 인근 병력 전진 배치... 긴장감 고조",
+            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 K-Pop 앨범 발표, '이번 비트는 당신의 심장을 찢어놓을 것'",
+            "<span class='news-tag'>[사회]</span> 최근 불법 '조율' 시술 받던 민간인 3명 글리치화... 당국 수사 착수",
+            "<span class='news-tag'>[속보]</span> 서부 빈민가에서 신원 미상의 인물이 대량의 'lo-fi' 유통 중인 것으로 밝혀져",
+            "<span class='news-tag'>[기상]</span> 내일 오전 동북부 지역 미세한 '더 뮤트' 현상 발생 가능성... 외출 자제 요망",
+            "<span class='news-tag'>[종교]</span> 신흥 종교 신도 수 급증... 교황 크리스 '고드의 이름으로 모두를 사랑하라'",
+            "<span class='news-tag'>[속보]</span> 중앙탑 인근에서 소속 불명의 S급 파동 감지... 즉각적인 경계 태세 돌입",
+            "<span class='news-tag'>[사회]</span> 하층민 구역에서 불법 레조넌스 증폭기 거래 적발",
+            "<span class='news-tag'>[사건]</span> 무소속 연주자, 애스터 가문 소유 물류창고 습격",
+            "<span class='news-tag'>[경제]</span> 조율 비용 전년 대비 300% 폭등... 서민층 절망",
+            "<span class='news-tag'>[가십]</span> 델라쿠르아 가문 메이드, 사실 남성으로 밝혀져... 진실은?",
             "<span class='news-tag'>[기상]</span> 중부 사막 지대 대규모 노이즈 폭풍 발생 경고",
-            "<span class='news-tag'>[사회]</span> 정체불명의 차원 균열 관측... 'CORE NET'의 불안정성 대두",
-            "<span class='news-tag'>[사회]</span> 뒷골목 마약 'lo-fi' 중독자 급증... 심각한 치안 붕괴 우려",
-            "<span class='news-tag'>[속보]</span> 애리나 가문 루시, 연주회 도중 폭주... 주변 일대 폐허",
-            "<span class='news-tag'>[뉴스]</span> 정체불명 휘파람 소리 후 기적 완치 사례 잇달아 보고",
-            "<span class='news-tag'>[사건]</span> 하프 연주하는 수녀 목격담 SNS서 화제... '천사 강림'",
-            "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 광석 가격 급상승"
+            "<span class='news-tag'>[사건]</span> 델라쿠르아 기사단, 국경 침범한 글리치 무리 토벌 완료",
+            "<span class='news-tag'>[사회]</span> 뒷골목 마약 'lo-fi' 중독자 급증... 치안 붕괴 우려",
+            "<span class='news-tag'>[속보]</span> 애리나 가문 루시, 또 다시 폭주... 주변 일대 폐허로",
+            "<span class='news-tag'>[뉴스]</span> 정체불명의 휘파람 소리 들은 후 기적적으로 병 완치된 사례 보고",
+            "<span class='news-tag'>[사회]</span> 정체불명의 차원 균열, 중앙탑 인근에서 지속 관측",
+            "<span class='news-tag'>[사건]</span> 하프 연주하는 수녀 목격담 SNS서 화제... '천사가 내려왔다'",
+            "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 가격 급등"
         ];
         function updateNews() {
             let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 8);
             let newsHTML = ""; shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
             document.getElementById('news-ticker').innerHTML = newsHTML;
         }
-        updateNews(); setInterval(updateNews, 50000);
+        updateNews(); setInterval(updateNews, 50000); 
 
         // --- 캐릭터 카드 렌더링 ---
         function getFactionColor(faction) {
@@ -840,7 +844,7 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
-        // 초기 실행 (클래식 텍스트로 기본 설정)
+        // 초기 실행 (클래식 세팅 강제 트리거)
         setTheme('theme-classic', document.querySelector('.settings-btn'), '1.mp3');
         renderCharacters('ALL');
     </script>
