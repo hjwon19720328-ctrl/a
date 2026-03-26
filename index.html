@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v10.8</title>
+    <title>OVER SOUL - OS Terminal v10.9</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -85,7 +85,6 @@
         body.theme-pop .decor-corners::before, body.theme-pop .decor-corners::after { display: none; }
         body.theme-pop .view-title-decor { border-radius: 10px; height: 3px; background: var(--theme-main);}
 
-
         /* =========================================
            [ 공통 배경 및 UI ]
            ========================================= */
@@ -102,12 +101,13 @@
         .loading-bar { width: 100%; height: 3px; background: var(--theme-dim); position: relative; overflow: hidden; border-radius: 5px;}
         .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--theme-bright); box-shadow: 0 0 10px var(--theme-bright); animation: fillBar 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
         
-        .enter-btn { display: none; margin-top: 30px; padding: 15px 30px; font-family: var(--font-title); font-size: 1.3rem; font-weight: bold; color: var(--theme-main); cursor: pointer; text-shadow: var(--theme-glow); letter-spacing: 2px; }
+        /* 💡 들어가기 버튼 사이즈 대폭 축소 */
+        .enter-btn { display: none; margin-top: 25px; padding: 8px 18px; font-family: var(--font-title); font-size: 0.95rem; font-weight: bold; color: var(--theme-main); cursor: pointer; text-shadow: var(--theme-glow); letter-spacing: 1px; border-width: 1px; }
         .enter-btn:hover { background: var(--theme-main); color: #000; text-shadow: none; box-shadow: var(--theme-glow);}
 
         .sys-frame-info { position: fixed; font-size: 0.75rem; color: var(--theme-dim); z-index: 80; pointer-events: none; text-shadow: none; font-weight: bold;}
         .top-left-info { top: 10px; left: 15px; }
-        .bottom-right-info { bottom: 35px; right: 15px; text-align: right; } 
+        .bottom-right-info { bottom: 40px; right: 15px; text-align: right; } 
         .blink-dot { display: inline-block; width: 6px; height: 6px; background: var(--theme-main); border-radius: 50%; margin-left: 6px; animation: blink 1s infinite; box-shadow: 0 0 5px var(--theme-main);}
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--theme-dim); background: rgba(var(--bg-nav-rgb), 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;}
@@ -149,11 +149,12 @@
         #settings-view.view-fade-in .settings-btn-wrap .settings-btn:nth-child(2) { animation-delay: 0.2s; }
         #settings-view.view-fade-in .settings-btn-wrap .settings-btn:nth-child(3) { animation-delay: 0.3s; }
 
-        /* 뉴스 티커 */
-        .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); border-top: 1px solid var(--theme-main); padding: 8px 0; overflow: hidden; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);}
-        .news-content { display: inline-block; white-space: nowrap; font-size: 0.9rem; color: var(--theme-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 50s linear infinite; }
-        .news-content span { margin-right: 60px; text-shadow: none; letter-spacing: 0.5px;}
-        .news-tag { background: var(--theme-dim); color: #fff; padding: 3px 7px; border-radius: 3px; font-weight: bold; margin-right: 10px; font-family: var(--font-title); box-shadow: 0 0 5px var(--theme-dim);}
+        /* 💡 뉴스 티커 (왼쪽 고정 라벨 추가 & 텍스트만 스크롤) */
+        .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; height: 32px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); border-top: 1px solid var(--theme-main); display: flex; align-items: stretch; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);}
+        .news-static-label { background: var(--theme-main); color: #000; padding: 0 15px; font-weight: bold; font-family: var(--font-title); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; z-index: 51; flex-shrink: 0; letter-spacing: 2px; box-shadow: 2px 0 5px rgba(0,0,0,0.5); transition: background 0.3s;}
+        .news-scroll-area { flex: 1; overflow: hidden; display: flex; align-items: center; position: relative; }
+        .news-content { display: inline-block; white-space: nowrap; font-size: 0.85rem; color: var(--theme-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 40s linear infinite; padding-left: 100%;}
+        .news-content span { margin-right: 80px; text-shadow: none; letter-spacing: 0.5px;}
 
         /* 인물 뷰 */
         .filter-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
@@ -216,7 +217,7 @@
         .generic-modal.show .modal-box { transform: translateY(0) scale(1); }
         .modal-close { position: absolute; top: 15px; right: 20px; color: var(--theme-bright); font-size: 2rem; cursor: pointer; font-family: var(--font-title); transition: transform 0.3s; z-index: 10;}
         
-        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 45px; } /* 하단 여백 추가로 잘림 방지 */
+        .modal-scroll-area { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 45px; } 
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--theme-dim); border-radius: 3px;}
         
@@ -244,7 +245,7 @@
         #img-viewer img { max-width: 95%; max-height: 95%; border: 2px solid var(--theme-main); object-fit: contain; border-radius: inherit;}
         .viewer-close { position: absolute; top: 20px; right: 30px; color: var(--theme-bright); font-size: 3.5rem; cursor: pointer; font-family: var(--font-title); z-index: 3010; }
 
-        @keyframes introEnd { to { opacity: 0; visibility: hidden; } } /* 버그 방지를 위해 display:none 제거, js로 처리 */
+        @keyframes introEnd { to { opacity: 0; visibility: hidden; display: none;} }
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes fillBar { 0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; } }
         @keyframes mapScan { 0% { top: -15px; } 100% { top: 100%; } }
@@ -366,7 +367,10 @@
     </div>
 
     <div class="news-ticker-wrap">
-        <div class="news-content" id="news-ticker"></div>
+        <div class="news-static-label" id="news-label">[ 속 보 ]</div>
+        <div class="news-scroll-area">
+            <div class="news-content" id="news-ticker"></div>
+        </div>
     </div>
 
     <div id="map-modal" class="generic-modal">
@@ -425,7 +429,6 @@
     <script>
         let currentTheme = 'theme-classic';
         
-        // 💡 로딩 화면 -> 들어가기 버튼 표시
         setTimeout(() => {
             document.getElementById('loading-wrap').style.display = 'none';
             const btnEnter = document.getElementById('btn-enter');
@@ -433,15 +436,12 @@
             btnEnter.classList.add('view-fade-in');
         }, 1600);
 
-        // 💡 들어가기 버튼 클릭 시 무조건 화면 넘김 + 오디오 예외처리 완벽 적용
         function startSystem() {
-            // 1. 무조건 화면 전환 (애니메이션 적용 및 클릭 방지 처리)
             const intro = document.getElementById('intro');
             intro.style.animation = 'introEnd 0.6s ease-in-out forwards';
             intro.style.pointerEvents = 'none'; 
             setTimeout(() => { intro.style.display = 'none'; }, 600);
 
-            // 2. 오디오 실행 시도 (파일이 없거나 브라우저에서 막아도 정상 작동)
             try {
                 const player = document.getElementById('bgm-player');
                 if(!player.src || player.src.indexOf('1.mp3') === -1) {
@@ -449,16 +449,11 @@
                 }
                 let playPromise = player.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.log("BGM 재생 대기/오류 (파일이 없거나 브라우저 차단):", error);
-                    });
+                    playPromise.catch(error => { console.log("BGM 재생 대기/오류:", error); });
                 }
-            } catch(err) {
-                console.log("오디오 시스템 오류:", err);
-            }
+            } catch(err) { console.log("오디오 오류:", err); }
         }
         
-        // 동적 텍스트 시스템
         const themeTexts = {
             'theme-classic': {
                 sidebar: ["> 로비 터미널", "> 인물 데이터베이스", "> 전술 상황도", "> 시스템 규정", "> 단말기 설정"],
@@ -481,7 +476,7 @@
                         { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span> 현존하는 레조넌스 측정망을 벗어난 초월적 개체입니다. 데이터 수집 및 분석이 불가합니다." }
                     ]},
                     { category: "연주자 (PERFORMERS)", items: [
-                        { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자입니다.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해집니다.<br><span class='warning'>[주의]</span> 신체에 능력이 각인되더라도, 뇌 구조가 일반인 수준에 머물러 있다면 능력을 일절 사용할 수 없습니다." },
+                        { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자입니다.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해집니다." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>입니다. 각성자는 이를 통해 신체강화 및 능력을 발동합니다." },
                         { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 출력이 2배 강화되며 자신만의 영역인 <b>'커튼콜'</b> 전개가 가능해집니다. 종료 시 1분간 능력이 봉쇄됩니다." },
                         { name: "백스테이지", desc: "커튼콜의 필중 주파수와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>입니다. 유지 중에는 시전자 역시 고유 능력이 봉쇄됩니다." },
@@ -528,7 +523,7 @@
                         { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span> 우리 정보망을 완전히 벗어난 규격 외의 존재야. 건드리지 않는 게 상책이지." }
                     ]},
                     { category: "연주자 (PERFORMERS)", items: [
-                        { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야.<br>> 각성하면 뇌리에 능력이 꽂히면서 초인적인 힘을 쓸 수 있지. <br><span class='warning'>[참고]</span> 몸에 능력이 새겨져 봤자, 뇌가 일반인 수준이면 단 한 번도 쓸 수 없어. 하드웨어만 좋고 소프트웨어가 없는 셈이지." },
+                        { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야.<br>> 각성하면 뇌리에 능력이 꽂히면서 초인적인 힘을 쓸 수 있지." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야." },
                         { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 출력이 2배로 뛰고 자기만의 <b>'무대(커튼콜)'</b>를 펼칠 수 있어. 끝나면 1분간 골골대는 페널티가 있지." },
                         { name: "백스테이지", desc: "모든 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>. 시전자 본인도 능력을 못 쓰니까 완전 개싸움이 되는 거지." },
@@ -575,7 +570,7 @@
                         { name: "UNKNOWN", desc: "<span class='text-glitch'>[측정 불가 개체]</span> 측정망을 완전히 벗어난 베일에 싸인 초월적 존재예요! ✨" }
                     ]},
                     { category: "연주자 (PERFORMERS)", items: [
-                        { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵<br>> 각성하면 머릿속에 능력이 촥! 새겨지면서 엄청난 파워를 쓸 수 있어요.<br><span class='warning'>[앗!]</span> 몸에 멋진 능력이 새겨져도 뇌가 일반인이면 절대 사용할 수 없답니다! 소프트웨어 업데이트가 필수예요! 💻" },
+                        { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵<br>> 각성하면 머릿속에 능력이 촥! 새겨지면서 엄청난 파워를 쓸 수 있어요." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵" },
                         { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 파워가 2배로 업! 나만의 <b>'단독 무대(커튼콜)'</b>를 열 수 있어요. 무대가 끝나면 1분간 강제 휴식이 주어집니다! 💦" },
                         { name: "백스테이지", desc: "모든 능력을 무효화시키는 <span class='highlight'>절대 중화 지대</span>예요! 여기선 다 같이 능력을 못 쓰는 진검승부가 펼쳐지죠. 🥊" },
@@ -609,7 +604,7 @@
             { img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
             { img: "https://igx.kr/u/tR/h/1", name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
             { img: "https://igx.kr/u/tR/w/1", name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
-            { img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 20, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "일반인", "시각장애"], reso: "없음 (일반인)", ability: "[미발현] 신체에 능력은 각인되었으나 일반인의 뇌로 인해 사용 불가", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 사실 그녀의 몸에도 강력한 능력이 각인되어 있으나, 뇌 구조가 일반인에 머물러 있어 평생 능력을 사용할 수 없다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
+            { img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 20, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "시각장애"], reso: "오르골", ability: "초근거리 진동 감지 (반경 1m 내 사물의 위치를 흐릿하게 느낌)", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 각성자로서 아주 미약한 능력을 지녔으나 전투나 실생활에는 큰 도움이 되지 않는 E급이다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
             { img: "https://igx.kr/u/tR/k/1", name: "송", faction: "델라쿠르아", rank: "B", age: 20, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 자신의 일을 대신 해주고 있다는 사실만을 모른 채, 누나가 예쁘다며 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
             { img: "https://igx.kr/u/tR/l/1", name: "세라피나(가주)", faction: "스타 더스트", rank: "S", age: 32, mbti: "ENFJ", ennea: "3w2", tags: ["진보파", "활발", "내강내유"], reso: "K-Pop", ability: "BPM 동기화 (적의 심박수와 움직임을 극악의 템포로 강제 동기화시켜 붕괴시킴)", curtain: "[Dome Tour] 영역 내 아군 극대화 버프 및 적 리듬 강제 종속", tune: "가능", back: "가능", over: "경험함", detail: "스타 더스트 가문의 가주. 겉보기에 매우 활발하고 부드러워 보이지만 속은 단단한 외유내강형 인물이다. 최신 K-Pop의 강렬한 비트를 레조넌스로 승화시켜 전장을 지배한다." },
             { img: "https://igx.kr/u/tR/r/1", name: "클로에", faction: "스타 더스트", rank: "A", age: 21, mbti: "INTP", ennea: "5w4", tags: ["진보파", "해커기질"], reso: "Pop", ability: "Auto-Tune (오토튠) - 범위 내 날아오는 투사체나 소리의 궤도/속도를 임의로 왜곡 조작", curtain: "[Billboard Top 100] 영역 내 모든 공격이 가장 위협적인 타겟을 자동 추적하여 필중", tune: "불가", back: "가능", over: "미경험", detail: "트렌디한 Pop 음악을 다루는 스타 더스트 소속 연주자. 오토튠을 물리법칙에 적용시켜 전장의 흐름 자체를 왜곡시키는 독특한 재능을 지녔다." },
@@ -620,13 +615,11 @@
             { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["차원너머", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "알 수 없는 차원 너머에서 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
         ];
 
-        // 사전 로딩
         const preloadedImages = [];
         charDB.forEach(char => {
             if(char.img) { const img = new Image(); img.src = char.img; preloadedImages.push(img); }
         });
 
-        // --- 네비게이션 ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
             document.querySelectorAll('#main-content > div').forEach(el => { el.style.display = 'none'; el.classList.remove('view-fade-in'); });
@@ -730,34 +723,38 @@
             });
         }
 
-        // --- 랜덤 뉴스 티커 ---
+        // --- 💡 고정 라벨이 포함된 뉴스 티커 ---
         const newsItems = [
-            "<span class='news-tag'>[속보]</span> 애스터 가문 관할 구역 레조넌스 폭주 발생... 사상자 파악 중",
-            "<span class='news-tag'>[속보]</span> 델라쿠르아 진영 병력 전진 배치... 국경 긴장감 고조",
-            "<span class='news-tag'>[뉴스]</span> 스타 더스트 신작 발표, 'BPM 동기화 시스템 탑재'",
-            "<span class='news-tag'>[사회]</span> 불법 '조율' 시술 받던 민간인 또다시 글리치화",
-            "<span class='news-tag'>[속보]</span> 서부 빈민가 대량의 'lo-fi' 유통 포착",
-            "<span class='news-tag'>[기상]</span> 동북부 지역 미세 '더 뮤트' 주의보",
-            "<span class='news-tag'>[종교]</span> 신흥 교단 급성장... 교황 크리스 박애주의 전파",
-            "<span class='news-tag'>[속보]</span> 중앙탑 부근 소속 불명 S급 파동 감지... 경계 태세",
-            "<span class='news-tag'>[사회]</span> 하층민 구역 불법 레조넌스 증폭기 암시장 적발",
-            "<span class='news-tag'>[사건]</span> 무소속 연주자, 애스터 가문 물류창고 기습 타격",
-            "<span class='news-tag'>[경제]</span> 조율 시술 비용 전년 대비 300% 폭등... 서민 절망",
-            "<span class='news-tag'>[가십]</span> 델라쿠르아 가문 유명 메이드, 사실 남성으로 밝혀져 논란",
-            "<span class='news-tag'>[기상]</span> 중부 사막 지대 대규모 노이즈 폭풍 발생 경고",
-            "<span class='news-tag'>[사회]</span> 정체불명의 차원 균열 관측... 'CORE NET'의 불안정성 대두",
-            "<span class='news-tag'>[사회]</span> 뒷골목 마약 'lo-fi' 중독자 급증... 심각한 치안 붕괴 우려",
-            "<span class='news-tag'>[속보]</span> 애리나 가문 루시, 연주회 도중 폭주... 주변 일대 폐허",
-            "<span class='news-tag'>[뉴스]</span> 정체불명 휘파람 소리 후 기적 완치 사례 잇달아 보고",
-            "<span class='news-tag'>[사건]</span> 하프 연주하는 수녀 목격담 SNS서 화제... '천사 강림'",
-            "<span class='news-tag'>[경제]</span> 레조넌스 차단 합금 '사일런티움' 광석 가격 급상승"
+            "애스터 가문 관할 구역 레조넌스 폭주 발생... 사상자 파악 중",
+            "델라쿠르아 진영 병력 전진 배치... 국경 긴장감 고조",
+            "스타 더스트 신작 발표, 'BPM 동기화 시스템 탑재'",
+            "불법 '조율' 시술 받던 민간인 또다시 글리치화",
+            "서부 빈민가 대량의 'lo-fi' 유통 포착",
+            "동북부 지역 미세 '더 뮤트' 주의보",
+            "신흥 교단 급성장... 교황 크리스 박애주의 전파",
+            "중앙탑 부근 소속 불명 S급 파동 감지... 경계 태세",
+            "하층민 구역 불법 레조넌스 증폭기 암시장 적발",
+            "무소속 연주자, 애스터 가문 물류창고 기습 타격",
+            "조율 시술 비용 전년 대비 300% 폭등... 서민 절망",
+            "델라쿠르아 가문 유명 메이드, 사실 남성으로 밝혀져 논란",
+            "중부 사막 지대 대규모 노이즈 폭풍 발생 경고",
+            "정체불명의 차원 균열 관측... 'CORE NET'의 불안정성 대두",
+            "뒷골목 마약 'lo-fi' 중독자 급증... 심각한 치안 붕괴 우려",
+            "애리나 가문 루시, 연주회 도중 폭주... 주변 일대 폐허",
+            "정체불명 휘파람 소리 후 기적 완치 사례 잇달아 보고",
+            "하프 연주하는 수녀 목격담 SNS서 화제... '천사 강림'",
+            "레조넌스 차단 합금 '사일런티움' 광석 가격 급상승"
         ];
         function updateNews() {
+            // 태그 내용 동적 변경
+            const labels = ["[ 속 보 ]", "[ 긴 급 ]", "[ 단 독 ]", "[ 공 지 ]"];
+            document.getElementById('news-label').innerText = labels[Math.floor(Math.random() * labels.length)];
+
             let shuffled = newsItems.sort(() => 0.5 - Math.random()).slice(0, 8);
             let newsHTML = ""; shuffled.forEach(news => { newsHTML += `<span>${news}</span>`; });
             document.getElementById('news-ticker').innerHTML = newsHTML;
         }
-        updateNews(); setInterval(updateNews, 50000); 
+        updateNews(); setInterval(updateNews, 40000); 
 
         // --- 캐릭터 카드 렌더링 ---
         function getFactionColor(faction) {
@@ -861,7 +858,7 @@
             setTimeout(() => { viewer.style.display = 'none'; }, 300);
         }
 
-        // --- 지도 모달 로직 ---
+        // --- 지도 모달 로직 (동적 텍스트 적용) ---
         function openMapModal(type, key) {
             const mapDataDict = themeTexts[currentTheme].mapData;
             if (!mapDataDict[type] || !mapDataDict[type][key]) return;
