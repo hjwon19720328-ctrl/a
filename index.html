@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v10.9</title>
+    <title>OVER SOUL - OS Terminal v11.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -85,6 +85,7 @@
         body.theme-pop .decor-corners::before, body.theme-pop .decor-corners::after { display: none; }
         body.theme-pop .view-title-decor { border-radius: 10px; height: 3px; background: var(--theme-main);}
 
+
         /* =========================================
            [ 공통 배경 및 UI ]
            ========================================= */
@@ -101,7 +102,6 @@
         .loading-bar { width: 100%; height: 3px; background: var(--theme-dim); position: relative; overflow: hidden; border-radius: 5px;}
         .loading-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--theme-bright); box-shadow: 0 0 10px var(--theme-bright); animation: fillBar 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
         
-        /* 💡 들어가기 버튼 사이즈 대폭 축소 */
         .enter-btn { display: none; margin-top: 25px; padding: 8px 18px; font-family: var(--font-title); font-size: 0.95rem; font-weight: bold; color: var(--theme-main); cursor: pointer; text-shadow: var(--theme-glow); letter-spacing: 1px; border-width: 1px; }
         .enter-btn:hover { background: var(--theme-main); color: #000; text-shadow: none; box-shadow: var(--theme-glow);}
 
@@ -121,35 +121,35 @@
         .menu-item.active-menu { color: var(--theme-bright); text-shadow: var(--theme-glow); font-weight: bold; }
         .menu-item:hover { color: var(--theme-main); }
 
-        #main-content > div { display: none; padding: 20px; padding-bottom: 90px; min-height: calc(100vh - 80px); box-sizing: border-box; }
+        #main-content > div { display: none; padding: 15px; padding-bottom: 60px; min-height: calc(100vh - 65px); box-sizing: border-box; }
         .view-fade-in { animation: smoothFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
-        .view-title { font-size: 1.4rem; color: var(--theme-bright); margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--theme-glow); letter-spacing: 1px;}
+        .view-title { font-size: 1.4rem; color: var(--theme-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--theme-glow); letter-spacing: 1px;}
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--theme-dim); margin-left: 15px; position: relative;}
 
         /* 로비 뷰 */
-        #lobby-view { flex-direction: column; gap: 18px; align-items: center; justify-content: center; padding-bottom: 30px;}
-        .lobby-main-title { font-size: 4.2rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main), 0 0 45px var(--theme-main); font-family: var(--font-title); letter-spacing: 6px; margin-bottom: 5px; font-style: italic; transition: 0.5s;}
-        .lobby-sub-title { font-size: 1rem; color: var(--theme-bright); letter-spacing: 10px; margin-bottom: 40px; opacity: 0.9; font-weight: bold; text-align: center; transition: 0.3s;}
-        .lobby-btn { width: 100%; max-width: 340px; padding: 20px 22px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.15rem; cursor: pointer; opacity: 0; transform: translateY(20px); letter-spacing: 1px; box-sizing: border-box;}
+        #lobby-view { flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding-bottom: 30px;}
+        .lobby-main-title { font-size: 2.8rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main); font-family: var(--font-title); letter-spacing: 4px; margin-bottom: 0; font-style: italic; transition: 0.5s;}
+        .lobby-sub-title { font-size: 0.8rem; color: var(--theme-bright); letter-spacing: 6px; margin-bottom: 15px; opacity: 0.9; font-weight: bold; text-align: center;}
+        .lobby-btn { width: 100%; max-width: 340px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; opacity: 0; transform: translateY(20px); letter-spacing: 1px; box-sizing: border-box;}
         #lobby-view.view-fade-in .lobby-btn { animation: slideUpFade 0.5s forwards; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(3) { animation-delay: 0.1s; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(4) { animation-delay: 0.2s; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(5) { animation-delay: 0.3s; }
-        #lobby-view.view-fade-in .lobby-btn:nth-child(6) { animation-delay: 0.4s; } 
+        #lobby-view.view-fade-in .lobby-btn:nth-child(3) { animation-delay: 0.05s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(4) { animation-delay: 0.1s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(5) { animation-delay: 0.15s; }
+        #lobby-view.view-fade-in .lobby-btn:nth-child(6) { animation-delay: 0.2s; } 
         .lobby-btn:active { transform: scale(0.96) !important; }
         .btn-text { transition: 0.3s; }
         .btn-arrow { font-size:0.6rem; color:var(--theme-bright); transition: 0.3s;}
 
         /* 설정 뷰 */
         .settings-btn-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .settings-btn { width: 100%; max-width: 400px; padding: 20px 25px; display: flex; justify-content: flex-start; align-items: center; font-family: var(--font-title); font-size: 1.1rem; cursor: pointer; opacity: 0; transform: translateY(20px); box-sizing: border-box; }
+        .settings-btn { width: 100%; max-width: 400px; padding: 18px 20px; display: flex; justify-content: flex-start; align-items: center; font-family: var(--font-title); font-size: 1rem; cursor: pointer; opacity: 0; transform: translateY(20px); box-sizing: border-box; }
         .settings-btn.active-theme { border-color: var(--theme-bright); color: var(--theme-bright); font-weight: bold; background: rgba(var(--theme-main-rgb), 0.3); box-shadow: var(--theme-glow);}
         #settings-view.view-fade-in .settings-btn { animation: slideUpFade 0.5s forwards; }
         #settings-view.view-fade-in .settings-btn-wrap .settings-btn:nth-child(1) { animation-delay: 0.1s; }
         #settings-view.view-fade-in .settings-btn-wrap .settings-btn:nth-child(2) { animation-delay: 0.2s; }
         #settings-view.view-fade-in .settings-btn-wrap .settings-btn:nth-child(3) { animation-delay: 0.3s; }
 
-        /* 💡 뉴스 티커 (왼쪽 고정 라벨 추가 & 텍스트만 스크롤) */
+        /* 뉴스 티커 */
         .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; height: 32px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); border-top: 1px solid var(--theme-main); display: flex; align-items: stretch; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);}
         .news-static-label { background: var(--theme-main); color: #000; padding: 0 15px; font-weight: bold; font-family: var(--font-title); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; z-index: 51; flex-shrink: 0; letter-spacing: 2px; box-shadow: 2px 0 5px rgba(0,0,0,0.5); transition: background 0.3s;}
         .news-scroll-area { flex: 1; overflow: hidden; display: flex; align-items: center; position: relative; }
@@ -245,7 +245,7 @@
         #img-viewer img { max-width: 95%; max-height: 95%; border: 2px solid var(--theme-main); object-fit: contain; border-radius: inherit;}
         .viewer-close { position: absolute; top: 20px; right: 30px; color: var(--theme-bright); font-size: 3.5rem; cursor: pointer; font-family: var(--font-title); z-index: 3010; }
 
-        @keyframes introEnd { to { opacity: 0; visibility: hidden; display: none;} }
+        @keyframes introEnd { to { opacity: 0; visibility: hidden; } } 
         @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; } }
         @keyframes fillBar { 0% { width: 0; } 50% { width: 70%; } 100% { width: 100%; } }
         @keyframes mapScan { 0% { top: -15px; } 100% { top: 100%; } }
@@ -408,7 +408,7 @@
                     <div class="m-desc cyber-border">
                         <span style="color:var(--theme-main); font-weight:bold;" id="lbl-reso">[공명]</span> <span id="md-reso"></span><br>
                         <span style="color:var(--theme-main); font-weight:bold;" id="lbl-abil">[특수 능력]</span> <span id="md-ability"></span><br>
-                        <span style="color:var(--theme-main); font-weight:bold;" id="lbl-curt">[영역]</span> <span id="md-curtain"></span><br>
+                        <span style="color:var(--theme-main); font-weight:bold;" id="lbl-curt">[커튼콜]</span> <span id="md-curtain"></span><br>
                         <span style="color:var(--theme-main); font-weight:bold; margin-top: 5px; display:inline-block;" id="lbl-stat">[현재 상태]</span> 조율: <span id="md-tune"></span> / 백스테이지: <span id="md-back"></span> / 오버소울: <span id="md-over"></span>
                     </div>
                 </div>
@@ -454,6 +454,7 @@
             } catch(err) { console.log("오디오 오류:", err); }
         }
         
+        // 💡 동적 텍스트 시스템
         const themeTexts = {
             'theme-classic': {
                 sidebar: ["> 로비 터미널", "> 인물 데이터베이스", "> 전술 상황도", "> 시스템 규정", "> 단말기 설정"],
@@ -466,7 +467,7 @@
                 ],
                 setSubtitle: "[ UI MUSIC THEME ]",
                 setDesc: "열람 환경을 원하시는 양식으로 변경하십시오.",
-                modalLabels: ["위협 등급", "연령", "성격 유형", "에니어그램", "COMBAT_DATA", "PERSONAL_RECORD", "[공명(Reso)]", "[특수 능력]", "[영역(Curtain)]", "[현재 상태]"],
+                modalLabels: ["위협 등급", "연령", "성격 유형", "에니어그램", "COMBAT_DATA", "PERSONAL_RECORD", "[공명(Reso)]", "[특수 능력]", "[커튼콜]", "[현재 상태]"],
                 systemDB: [
                     { category: "등급제도 (THREAT_LEVEL)", items: [
                         { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span> 단일 개체로 국가 시스템 전체를 붕괴시킬 수 있는 재앙적 등급입니다." },
@@ -478,7 +479,8 @@
                     { category: "연주자 (PERFORMERS)", items: [
                         { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는 마력 <span class='highlight'>'레조넌스'</span>를 다루는 각성자입니다.<br>> 각성 시 고유 능력이 뇌리에 각인되며, 레조넌스를 통한 신체강화 및 능력 구사가 가능해집니다." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는 이 세계의 <span class='highlight'>마력이자 생명력</span>입니다. 각성자는 이를 통해 신체강화 및 능력을 발동합니다." },
-                        { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 출력이 2배 강화되며 자신만의 영역인 <b>'커튼콜'</b> 전개가 가능해집니다. 종료 시 1분간 능력이 봉쇄됩니다." },
+                        { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 기존 대비 능력이 2배 강화되며, 특수 영역인 <b>'커튼콜'</b>의 사용이 해방됩니다." },
+                        { name: "커튼콜 (Curtain Call)", desc: "오버소울 도달자가 펼치는 특수 무대(영역)입니다. 시전자의 허락 없이는 탈출이 불가능하며, 등급에 따라 공간 장악력이 다릅니다.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 위력 및 범위 대폭 상승<br>- 페널티: 종료 후 1분간 능력 봉쇄<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 도달 없이 생명력을 연소시켜 강제 발동<br>- 페널티: 1분간 능력 봉쇄 및 <span class='warning'>레조넌스 영구 상실 위험 (일반인화)</span>" },
                         { name: "백스테이지", desc: "커튼콜의 필중 주파수와 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>입니다. 유지 중에는 시전자 역시 고유 능력이 봉쇄됩니다." },
                         { name: "조율 / 노이즈 / 글리치", desc: "<b>[노이즈]</b>: 레조넌스 과용 부작용으로 인한 신체 악기화 현상입니다. (완화 조건: 성적 교감 또는 휴식)<br><b>[글리치]</b>: 노이즈 잠식으로 인간성을 잃은 괴물입니다.<br><b>[조율]</b>: 노이즈 수치를 낮추는 고난도 치료 기술입니다." }
                     ]},
@@ -513,7 +515,7 @@
                 ],
                 setSubtitle: "[ TERMINAL TUNING ]",
                 setDesc: "원하는 리듬으로 터미널을 세팅해봐.",
-                modalLabels: ["위험도", "나이", "MBTI", "에니어그램", "FIGHT_SPEC", "BACKSTORY", "[울림(Reso)]", "[이능력]", "[무대(Curtain)]", "[컨디션]"],
+                modalLabels: ["위험도", "나이", "MBTI", "에니어그램", "FIGHT_SPEC", "BACKSTORY", "[울림(Reso)]", "[이능력]", "[커튼콜(무대)]", "[컨디션]"],
                 systemDB: [
                     { category: "등급제도 (THREAT_LEVEL)", items: [
                         { name: "SS Rank", desc: "<span class='warning'>[국가 멸망 급]</span> 단일 개체로 나라 하나쯤은 우습게 날려버리는 재앙 같은 녀석들이지." },
@@ -525,7 +527,8 @@
                     { category: "연주자 (PERFORMERS)", items: [
                         { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야.<br>> 각성하면 뇌리에 능력이 꽂히면서 초인적인 힘을 쓸 수 있지." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야." },
-                        { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 출력이 2배로 뛰고 자기만의 <b>'무대(커튼콜)'</b>를 펼칠 수 있어. 끝나면 1분간 골골대는 페널티가 있지." },
+                        { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 파워가 두 배로 뛰고, 녀석들만의 특별한 무대인 <b>'커튼콜'</b>을 열 수 있는 자격이 생기지." },
+                        { name: "커튼콜 (Curtain Call)", desc: "오버소울을 찍은 녀석들이 펼치는 구역이야. 한 번 열리면 주인의 허락 없인 못 나가지.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 파워/범위 뻥튀기<br>- 페널티: 무대 끝나면 1분간 능력치 바닥남<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 목숨 깎아서 억지로 엶<br>- 페널티: 1분간 능력 먹통에 <span class='warning'>레조넌스 영구 상실 위험 (그냥 민간인 되는 거야)</span>" },
                         { name: "백스테이지", desc: "모든 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>. 시전자 본인도 능력을 못 쓰니까 완전 개싸움이 되는 거지." },
                         { name: "조율 / 노이즈 / 글리치", desc: "<b>[노이즈]</b>: 힘을 너무 써서 몸이 악기로 변하는 부작용이야. (약은 성적 교감이나 푹 자는 것뿐이야)<br><b>[글리치]</b>: 노이즈에 잡아먹혀 이성을 잃은 괴물.<br><b>[조율]</b>: 노이즈를 억지로 낮추는 비싼 치료 시술이지." }
                     ]},
@@ -572,7 +575,8 @@
                     { category: "연주자 (PERFORMERS)", items: [
                         { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵<br>> 각성하면 머릿속에 능력이 촥! 새겨지면서 엄청난 파워를 쓸 수 있어요." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵" },
-                        { name: "오버소울 & 커튼콜", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 파워가 2배로 업! 나만의 <b>'단독 무대(커튼콜)'</b>를 열 수 있어요. 무대가 끝나면 1분간 강제 휴식이 주어집니다! 💦" },
+                        { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 파워가 2배로 업! 나만의 화려한 <b>'커튼콜'</b> 무대를 열 수 있는 갓성 상태예요! ✨" },
+                        { name: "커튼콜 (Curtain Call)", desc: "오버소울 달성자만 열 수 있는 특별한 무대예요! 호스트 허락 없인 퇴장 불가랍니다~ 💖<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 무대 장악력 폭발!<br>- 페널티: 앵콜 불가! 1분간 능력 휴식<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 생명력을 태워서 여는 위험한 억지 무대 😢<br>- 페널티: 1분간 능력 봉쇄 + <span class='warning'>레조넌스 영구 상실 위기 (일반인 됨)</span>" },
                         { name: "백스테이지", desc: "모든 능력을 무효화시키는 <span class='highlight'>절대 중화 지대</span>예요! 여기선 다 같이 능력을 못 쓰는 진검승부가 펼쳐지죠. 🥊" },
                         { name: "조율 / 노이즈 / 글리치", desc: "<b>[노이즈]</b>: 힘을 과하게 써서 몸이 악기로 변하는 현상이에요 😢 (사랑이나 휴식으로 힐링 가능!)<br><b>[글리치]</b>: 이성을 잃고 노이즈에 잡아먹힌 몬스터.<br><b>[조율]</b>: 수치를 팍팍 깎아주는 마법의 힐링 시술 💖" }
                     ]},
@@ -600,19 +604,19 @@
 
         const charDB = [
             { img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 조율을 외모에 쓰지 않아도 어린 꼬마처럼 보이는 외모를 지녔다. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
-            { img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "[미완성] 개화의 선율 - 영역 내 아군 생명력 서서히 회복", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
+            { img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "영역 내 아군 생명력 서서히 회복 (미완성)", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
             { img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
             { img: "https://igx.kr/u/tR/h/1", name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
             { img: "https://igx.kr/u/tR/w/1", name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
-            { img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 20, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "시각장애"], reso: "오르골", ability: "초근거리 진동 감지 (반경 1m 내 사물의 위치를 흐릿하게 느낌)", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 각성자로서 아주 미약한 능력을 지녔으나 전투나 실생활에는 큰 도움이 되지 않는 E급이다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있다." },
+            { img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 20, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "시각장애"], reso: "오르골", ability: "초근거리 진동 감지 (반경 1m 내 사물의 위치를 흐릿하게 느낌)", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 7살 때 부모님을 잃고 시각장애를 앓아 앞이 보이지 않음에도 동생을 홀로 키웠다. 각성자로서 아주 미약한 능력을 지녔으나 전투나 실생활에는 큰 도움이 되지 않는 E급이다. 동생이 재능을 피울 수 있도록 자신의 불편함을 억누른 채 궂은일을 대신 해주고 있으며, 평소 가슴골에 지갑이나 송에게 줄 간식 등을 넣어두고 다닌다." },
             { img: "https://igx.kr/u/tR/k/1", name: "송", faction: "델라쿠르아", rank: "B", age: 20, mbti: "ENFP", ennea: "7w6", tags: ["메이드", "오토코노코", "광역서포터", "청각장애"], reso: "클라리넷", ability: "광역 버프/디버프", curtain: "[환희의 송가] 능력치 3배 강화", tune: "가능", back: "불가", over: "미경험", detail: "시안의 쌍둥이 동생. 청각장애를 앓고 있어 소리를 전혀 듣지 못하지만, 누나가 입모양을 가르쳐 발음이 완벽하다. 누나가 자신의 일을 대신 해주고 있다는 사실만을 모른 채, 누나가 예쁘다며 입혀준 메이드복을 입고 성정체성에 혼란을 겪으며 해맑게 지낸다." },
             { img: "https://igx.kr/u/tR/l/1", name: "세라피나(가주)", faction: "스타 더스트", rank: "S", age: 32, mbti: "ENFJ", ennea: "3w2", tags: ["진보파", "활발", "내강내유"], reso: "K-Pop", ability: "BPM 동기화 (적의 심박수와 움직임을 극악의 템포로 강제 동기화시켜 붕괴시킴)", curtain: "[Dome Tour] 영역 내 아군 극대화 버프 및 적 리듬 강제 종속", tune: "가능", back: "가능", over: "경험함", detail: "스타 더스트 가문의 가주. 겉보기에 매우 활발하고 부드러워 보이지만 속은 단단한 외유내강형 인물이다. 최신 K-Pop의 강렬한 비트를 레조넌스로 승화시켜 전장을 지배한다." },
             { img: "https://igx.kr/u/tR/r/1", name: "클로에", faction: "스타 더스트", rank: "A", age: 21, mbti: "INTP", ennea: "5w4", tags: ["진보파", "해커기질"], reso: "Pop", ability: "Auto-Tune (오토튠) - 범위 내 날아오는 투사체나 소리의 궤도/속도를 임의로 왜곡 조작", curtain: "[Billboard Top 100] 영역 내 모든 공격이 가장 위협적인 타겟을 자동 추적하여 필중", tune: "불가", back: "가능", over: "미경험", detail: "트렌디한 Pop 음악을 다루는 스타 더스트 소속 연주자. 오토튠을 물리법칙에 적용시켜 전장의 흐름 자체를 왜곡시키는 독특한 재능을 지녔다." },
             { img: "https://igx.kr/u/tR/m/1", name: "노아", faction: "무소속", rank: "S", age: 23, mbti: "ESTP", ennea: "8w7", tags: ["사이코패스", "마약상", "완전동기화"], reso: "백색소음 (White Noise)", ability: "의도적으로 백색소음을 발생시켜 상대의 고막과 정신을 파괴", curtain: "백색소음 범위 극대화 및 침식 속도 가속", tune: "불가", back: "불가", over: "미경험", detail: "날 때부터 레조넌스가 뒤틀려 있어 몸과 정신이 글리치화와 완전 동기화된 사이코패스 연주자. 뒷골목에서 마약(lo-fi 등)을 판매하며 사람들을 쾌락과 광기로 몰아넣는 것을 즐긴다." },
-            { img: "https://igx.kr/u/tR/n/1", name: "아리아", faction: "무소속", rank: "A", age: 27, mbti: "ISFJ", ennea: "2w1", tags: ["수녀", "자기희생", "수명연소"], reso: "하프", ability: "주변 치유 (대가로 자신의 노이즈 수치가 증가함)", curtain: "[생명력 커튼콜] 강제 발동하여 회복 범위를 극대화", tune: "가능", back: "불가", over: "미경험", detail: "부드럽고 헌신적인 수녀. 타인을 치유하는 능력을 가졌으나, 그 부작용으로 노이즈를 전부 자신이 흡수해 영구적으로 레조넌스가 뒤틀려버렸다. 그럼에도 인간성을 잃지 않으며, 긴급 상황 시 생명력을 실시간으로 깎아먹는 '생명력 커튼콜'을 써서 대의를 위해 목숨을 던진다." },
+            { img: "https://igx.kr/u/tR/n/1", name: "아리아", faction: "무소속", rank: "A", age: 27, mbti: "ISFJ", ennea: "2w1", tags: ["수녀", "자기희생", "수명연소"], reso: "하프", ability: "주변 치유 (대가로 자신의 노이즈 수치가 증가함)", curtain: "강제 발동하여 회복 범위를 극대화", tune: "가능", back: "불가", over: "미경험", detail: "부드럽고 헌신적인 수녀. 타인을 치유하는 능력을 가졌으나, 그 부작용으로 노이즈를 전부 자신이 흡수해 영구적으로 레조넌스가 뒤틀려버렸다. 그럼에도 인간성을 잃지 않으며, 긴급 상황 시 생명력을 실시간으로 깎아먹는 '생명력 커튼콜'을 써서 대의를 위해 목숨을 던진다." },
             { img: "https://igx.kr/u/tR/q/1", name: "세라", faction: "무소속", rank: "일반인", age: 35, mbti: "ESTJ", ennea: "3w2", tags: ["일반인", "몰락", "알콜중독"], reso: "없음", ability: "없음", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "과거엔 가장 잘 나가는 세일즈맨이었으나, 모종의 사건으로 쫄딱 망한 뒤 현재는 뒷골목에 처박혀 매일 술만 퍼먹으며 사는 평범한 일반인." },
-            { img: "https://igx.kr/u/tR/v/1", name: "크리스", faction: "무소속", rank: "A+", age: 29, mbti: "ENFJ", ennea: "1w2", tags: ["교황", "고드신앙", "박애주의", "후원자"], reso: "파이프 오르간", ability: "주변인들의 신앙/감정을 흡수하여 절대적인 방어막으로 변환", curtain: "[Sanctuary (성역)] 구역 내 일체의 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'고드'를 신으로 믿고 모두를 사랑하라는 교리를 전파하는 신흥 종교의 교황. 부드러운 언변으로 일반인들에게 엄청난 인기를 누리고 있다. 교단의 모든 수입과 관리를 사비로 충당하며, 남몰래 수녀 아리아의 고아원 및 빈민 구호 활동을 막대한 자금으로 지원하고 있다." },
-            { img: "https://igx.kr/u/tR/p/1", name: "고드", faction: "무소속", rank: "UNKNOWN", age: "측정불가", mbti: "ENTP", ennea: "7w8", tags: ["차원너머", "농땡이", "규격외", "글리치"], reso: "휘파람", ability: "우주 그 너머의 단위의 창조와 소멸", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "알 수 없는 차원 너머에서 이승으로 넘어온 규격 외의 존재. 세계의 멸망 위기나 세력 다툼에는 전혀 관심이 없으며, 오직 자신의 유흥과 쾌락만을 쫓아 인간계에서 띵가띵가 놀고 있다. 레조넌스의 제약을 아예 받지 않는다." }
+            { img: "https://igx.kr/u/tR/v/1", name: "오라클", faction: "무소속", rank: "A+", age: 29, mbti: "INFJ", ennea: "1w2", tags: ["예언자", "맹신도", "침묵교단", "후원자"], reso: "초음파", ability: "주변인들의 뇌파에 간섭하여 맹목적인 신앙과 환상을 심고 방어막으로 변환", curtain: "[고요의 성역] 구역 내 일체의 소음과 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'니힐'이 가져오는 침묵이야말로 진정한 안식이라 믿는 눈먼 예언자. 거대한 파이프 오르간 대신 초음파 발신을 통해 일반인들에게 니힐의 강림을 준비하라고 가르친다. 니힐의 무심한 능력 때문에 발생하는 피해 지역에 아리아를 보내 구호 활동을 하게 하고, 뒤에서 막대한 자금으로 그녀를 후원한다." },
+            { img: "https://igx.kr/u/tR/p/1", name: "니힐", faction: "무소속", rank: "UNKNOWN", age: "불명", mbti: "INTP", ennea: "9w8", tags: ["더뮤트", "침묵", "규격외", "글리치"], reso: "절대 침묵", ability: "지정한 범위 내의 소리, 레조넌스, 존재의 개념을 영구적으로 소거", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "'더 뮤트' 현상에서 유일하게 걸어 나온 존재. 모든 소리와 진동을 흡수하는 블랙홀 같은 존재라 그가 나타나면 주변의 모든 레조넌스가 정지된다. 세계의 멸망이나 세력 다툼에는 전혀 관심이 없으며, 그저 세상이 시끄러워 조용히 낮잠 잘 곳을 찾아 인간계로 내려왔다." }
         ];
 
         const preloadedImages = [];
@@ -632,7 +636,6 @@
             window.scrollTo(0, 0);
         }
 
-        // 💡 테마 설정 & 오디오 & 동적 텍스트 적용 시스템
         function setTheme(themeClass, btn, audioSrc) {
             document.body.className = ''; 
             document.body.classList.add(themeClass);
@@ -687,7 +690,6 @@
             }
         }
 
-        // --- 시스템 DB 렌더링 함수 ---
         function renderSystemDB(dbData) {
             const dbContainer = document.getElementById('db-container');
             dbContainer.innerHTML = ''; 
@@ -723,7 +725,6 @@
             });
         }
 
-        // --- 💡 고정 라벨이 포함된 뉴스 티커 ---
         const newsItems = [
             "애스터 가문 관할 구역 레조넌스 폭주 발생... 사상자 파악 중",
             "델라쿠르아 진영 병력 전진 배치... 국경 긴장감 고조",
@@ -731,7 +732,7 @@
             "불법 '조율' 시술 받던 민간인 또다시 글리치화",
             "서부 빈민가 대량의 'lo-fi' 유통 포착",
             "동북부 지역 미세 '더 뮤트' 주의보",
-            "신흥 교단 급성장... 교황 크리스 박애주의 전파",
+            "신흥 교단 급성장... 예언자 오라클, 침묵의 안식 전파",
             "중앙탑 부근 소속 불명 S급 파동 감지... 경계 태세",
             "하층민 구역 불법 레조넌스 증폭기 암시장 적발",
             "무소속 연주자, 애스터 가문 물류창고 기습 타격",
@@ -741,12 +742,10 @@
             "정체불명의 차원 균열 관측... 'CORE NET'의 불안정성 대두",
             "뒷골목 마약 'lo-fi' 중독자 급증... 심각한 치안 붕괴 우려",
             "애리나 가문 루시, 연주회 도중 폭주... 주변 일대 폐허",
-            "정체불명 휘파람 소리 후 기적 완치 사례 잇달아 보고",
             "하프 연주하는 수녀 목격담 SNS서 화제... '천사 강림'",
             "레조넌스 차단 합금 '사일런티움' 광석 가격 급상승"
         ];
         function updateNews() {
-            // 태그 내용 동적 변경
             const labels = ["[ 속 보 ]", "[ 긴 급 ]", "[ 단 독 ]", "[ 공 지 ]"];
             document.getElementById('news-label').innerText = labels[Math.floor(Math.random() * labels.length)];
 
@@ -756,7 +755,6 @@
         }
         updateNews(); setInterval(updateNews, 40000); 
 
-        // --- 캐릭터 카드 렌더링 ---
         function getFactionColor(faction) {
             if(faction === "애스터") return "var(--color-aster)";
             if(faction === "델라쿠르아") return "var(--color-dela)";
@@ -771,7 +769,7 @@
             charDB.forEach((char, i) => {
                 if (filter === 'ALL' || char.faction === filter) {
                     let rColor = char.rank === 'UNKNOWN' ? 'var(--color-gord)' : char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--theme-bright)';
-                    let cNameClass = char.name === "고드" ? "char-name text-glitch" : "char-name";
+                    let cNameClass = char.name === "니힐" ? "char-name text-glitch" : "char-name";
                     let facColor = getFactionColor(char.faction);
 
                     const cardHtml = `
@@ -794,7 +792,6 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // --- 인물 모달 로직 ---
         function openCharModal(index) {
             const char = charDB[index];
             const facColor = getFactionColor(char.faction);
@@ -805,7 +802,7 @@
             
             const mdName = document.getElementById('md-name');
             const mdRank = document.getElementById('md-rank');
-            if(char.name === "고드") {
+            if(char.name === "니힐") {
                 mdName.innerText = char.name; mdName.className = "m-name text-glitch";
                 mdRank.innerText = char.rank; mdRank.className = "m-val text-glitch"; mdRank.style.color = 'var(--color-gord)';
             } else {
@@ -830,7 +827,7 @@
             char.tags.forEach(t => {
                 let cls = "tag";
                 if(t === "시각장애" || t === "청각장애" || t === "수명연소" || t === "사이코패스") cls = "tag tag-warning";
-                if(t === "글리치" || t === "규격외") cls = "tag tag-glitch"; 
+                if(t === "글리치" || t === "규격외" || t === "더뮤트") cls = "tag tag-glitch"; 
                 tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
             });
             
@@ -858,7 +855,6 @@
             setTimeout(() => { viewer.style.display = 'none'; }, 300);
         }
 
-        // --- 지도 모달 로직 (동적 텍스트 적용) ---
         function openMapModal(type, key) {
             const mapDataDict = themeTexts[currentTheme].mapData;
             if (!mapDataDict[type] || !mapDataDict[type][key]) return;
@@ -878,7 +874,7 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
-        // 초기 실행 (클래식 세팅 텍스트만 바인딩, 오디오는 대기)
+        // 초기 실행
         setTheme('theme-classic', null, null);
         renderCharacters('ALL');
     </script>
