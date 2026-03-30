@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OVER SOUL - OS Terminal v11.6 Full</title>
+    <title>OVER SOUL - OS Terminal v11.7 (Full Version)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -99,7 +99,6 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--theme-dim); background: rgba(var(--bg-nav-rgb), 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;}
         header h1 { font-size: 1.6rem; color: var(--theme-bright); letter-spacing: 4px; cursor: pointer; text-shadow: var(--theme-glow); }
         
-        /* 💡 헤더 컨트롤 버튼 */
         .header-controls { display: flex; align-items: center; gap: 8px; }
         .ctrl-btn { background: rgba(0,0,0,0.5); border: 1px solid var(--theme-main); color: var(--theme-bright); padding: 6px 10px; font-size: 0.7rem; font-family: var(--font-title); cursor: pointer; border-radius: 4px; transition: all 0.3s; box-shadow: 0 0 5px rgba(0,0,0,0.5);}
         .ctrl-btn:hover { background: var(--theme-main); color: #000; box-shadow: var(--theme-glow); }
@@ -158,7 +157,6 @@
         .filter-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .filter-btn { flex: 1 1 calc(33% - 8px); background: rgba(var(--bg-box-rgb), 0.5); border: 1px solid var(--theme-dim); color: var(--theme-main); padding: 10px 0; font-family: var(--font-title); font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px); border-radius: inherit;}
         .filter-btn.active { background: rgba(var(--theme-main-rgb), 0.3); border-color: var(--theme-bright); color: var(--theme-bright); text-shadow: var(--theme-glow); box-shadow: inset 0 0 12px rgba(var(--theme-main-rgb), 0.3); }
-        /* EXTRA 필터 버튼 강조 */
         .filter-btn.filter-extra { background: rgba(var(--theme-main-rgb), 0.1); border-color: var(--theme-bright); font-weight:bold; }
         .filter-btn.filter-extra.active { background: rgba(var(--theme-main-rgb), 0.4); box-shadow: inset 0 0 15px rgba(var(--theme-main-rgb), 0.5), 0 0 10px var(--theme-main); }
 
@@ -211,8 +209,8 @@
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
         .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2); border-radius: 3px;}
 
-        /* 💡 모달 팝업 및 감정표현 이미지 패널 추가 */
-        .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
+        /* 💡 모달 팝업 및 캐릭터 네비게이션(화살표) */
+        .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.85); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
         .generic-modal.show { display: flex; opacity: 1; }
         .modal-box { width: 100%; max-width: 440px; max-height: 85vh; position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; background: #0a0a0a;}
         .generic-modal.show .modal-box { transform: translateY(0) scale(1); }
@@ -222,6 +220,17 @@
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--theme-dim); border-radius: 3px;}
         
+        /* 화살표 스타일 */
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; padding: 20px; z-index: 520; transition: 0.3s; user-select: none; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
+        .nav-arrow:hover { color: var(--theme-bright); text-shadow: var(--theme-glow); transform: translateY(-50%) scale(1.1);}
+        .nav-arrow.left { left: 5%; }
+        .nav-arrow.right { right: 5%; }
+        @media (max-width: 768px) {
+            .nav-arrow { font-size: 2.5rem; padding: 10px; }
+            .nav-arrow.left { left: 0; }
+            .nav-arrow.right { right: 0; }
+        }
+
         .m-header { border-bottom: 2px dashed var(--theme-dim); padding-bottom: 15px; margin-bottom: 20px; }
         .m-name { font-size: 1.8rem; color: #fff; font-weight: bold; font-family: var(--font-title); }
         .m-profile-img-wrap { width: 100%; height: 240px; border: 1px solid var(--theme-dim); margin-bottom: 18px; overflow: hidden; position: relative; cursor: zoom-in; background: #000; display: flex; justify-content: center; align-items: center; border-radius: inherit;}
@@ -396,7 +405,7 @@
         </div>
     </div>
 
-    <div id="map-modal" class="generic-modal">
+    <div id="map-modal" class="generic-modal" onclick="if(event.target===this) closeMapModal()">
         <div class="modal-box cyber-border decor-corners" style="height: auto; max-height: 65vh;">
             <div class="modal-close" onclick="closeMapModal()">×</div>
             <div class="modal-scroll-area">
@@ -408,7 +417,9 @@
         </div>
     </div>
 
-    <div id="char-modal" class="generic-modal">
+    <div id="char-modal" class="generic-modal" onclick="if(event.target===this) closeCharModal()">
+        <div class="nav-arrow left" id="nav-arrow-left" onclick="prevChar(event)">&#10094;</div>
+        
         <div class="modal-box cyber-border decor-corners">
             <div class="modal-close" onclick="closeCharModal()">×</div>
             <div class="modal-scroll-area">
@@ -449,6 +460,8 @@
                 <div style="height: 30px;"></div>
             </div>
         </div>
+
+        <div class="nav-arrow right" id="nav-arrow-right" onclick="nextChar(event)">&#10095;</div>
     </div>
 
     <div id="img-viewer" onclick="closeImageViewer()">
@@ -459,6 +472,10 @@
     <script>
         let currentTheme = 'theme-pop';
         let isMuted = false;
+        
+        // 💡 현재 렌더링된 캐릭터 목록과 모달에 떠있는 인덱스를 추적하기 위한 변수
+        let currentFilteredChars = [];
+        let currentCharIndex = 0;
         
         setTimeout(() => {
             document.getElementById('loading-wrap').style.display = 'none';
@@ -677,7 +694,6 @@
             { type: "main", code: "z", img: "https://igx.kr/u/tR/z/1", name: "오라클", faction: "무소속", rank: "A+", age: 29, mbti: "INFJ", ennea: "1w2", tags: ["예언자", "맹신도", "침묵교단", "후원자"], reso: "초음파", ability: "주변인들의 뇌파에 간섭하여 맹목적인 신앙과 환상을 심고 방어막으로 변환", curtain: "[고요의 성역] 구역 내 일체의 소음과 폭력을 금지하는 절대 평화 지대 전개", tune: "가능", back: "가능", over: "미경험", detail: "'니힐'이 가져오는 침묵이야말로 진정한 안식이라 맹신하는 눈먼 예언자. 초음파 발신을 통해 맹신도들을 이끌며 니힐의 강림을 준비한다. 니힐의 무심한 파괴 흔적을 지우기 위해 아리아를 구호 활동에 투입하고 은밀히 막대한 자금을 지원한다." },
             { type: "main", code: "y", img: "https://igx.kr/u/tR/y/1", name: "니힐", faction: "무소속", rank: "UNKNOWN", age: "불명", mbti: "INTP", ennea: "9w8", tags: ["더뮤트", "침묵", "규격외", "글리치"], reso: "절대 침묵", ability: "지정한 범위 내의 소리, 레조넌스, 존재의 개념을 영구적으로 소거", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "'더 뮤트' 현상에서 유일하게 걸어 나온 규격 외의 존재. 모든 소리와 진동을 흡수해버려 그가 나타나면 주변의 모든 레조넌스가 정지된다. 세상사에 관심이 없으며 조용히 낮잠 잘 곳을 찾아 이승을 떠돌고 있다." },
             
-            // 💡 엑스트라 추가 완료 (성격 묘사 제거, 객관적 서술로 통일)
             { type: "extra", name: "빈민층 (남)", faction: "무소속", rank: "E", age: "불명", img: "https://igx.kr/u/tR/B/1", tags: ["엑스트라", "일반인"], detail: "도시 하층 구역에 거주하는 남성. 각성 전 상태로 특별한 능력을 지니지 않은 일반 시민이다." },
             { type: "extra", name: "빈민층 (여)", faction: "무소속", rank: "E", age: "불명", img: "https://igx.kr/u/tR/B/2", tags: ["엑스트라", "일반인"], detail: "빈민 구역에서 생활하는 여성. 무력 충돌이나 레조넌스 폭주 발생 시 대응할 수단이 없다." },
             { type: "extra", name: "중산층 (남)", faction: "무소속", rank: "E", age: "불명", img: "https://igx.kr/u/tR/B/3", tags: ["엑스트라", "일반인"], detail: "비교적 안정적인 도심 구역에서 상업이나 사무직에 종사하며 살아가는 시민 계층이다." },
@@ -855,6 +871,8 @@
         function renderCharacters(filter) {
             const container = document.getElementById('char-container');
             container.innerHTML = ''; 
+            currentFilteredChars = []; // 배열 초기화
+            
             let delayTime = 0;
             charDB.forEach((char, i) => {
                 let isMatch = false;
@@ -864,10 +882,12 @@
                 } else if (filter === 'EXTRA') {
                     isMatch = (char.type === 'extra');
                 } else if (char.faction === filter) {
-                    isMatch = true; // 무소속, 애스터, 델라쿠르아, 스타 더스트 선택 시 해당 진영의 메인+엑스트라 출력
+                    isMatch = true; 
                 }
 
                 if (isMatch) {
+                    currentFilteredChars.push(i); // 현재 노출된 캐릭터의 원본 인덱스 저장
+                    
                     let rColor = char.rank === 'UNKNOWN' ? 'var(--color-gord)' : char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--theme-bright)';
                     let cNameClass = char.name === "니힐" ? "char-name text-glitch" : "char-name";
                     let facColor = getFactionColor(char.faction);
@@ -892,8 +912,24 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // 💡 인물 모달 로직 (엑스트라 스탯 숨김 완벽 적용)
+        // 💡 화살표 네비게이션 함수
+        function prevChar(e) {
+            e.stopPropagation(); // 배경 클릭 이벤트 방지
+            if(currentFilteredChars.length <= 1) return;
+            currentCharIndex = (currentCharIndex - 1 + currentFilteredChars.length) % currentFilteredChars.length;
+            openCharModal(currentFilteredChars[currentCharIndex]);
+        }
+
+        function nextChar(e) {
+            e.stopPropagation();
+            if(currentFilteredChars.length <= 1) return;
+            currentCharIndex = (currentCharIndex + 1) % currentFilteredChars.length;
+            openCharModal(currentFilteredChars[currentCharIndex]);
+        }
+
+        // 💡 인물 모달 로직 
         function openCharModal(index) {
+            currentCharIndex = currentFilteredChars.indexOf(index); // 화살표용 위치 추적 동기화
             const char = charDB[index];
             const facColor = getFactionColor(char.faction || '무소속');
             const isExtra = (char.type === 'extra');
@@ -927,7 +963,11 @@
                 });
             }
 
-            // 💡 엑스트라일 경우 필요 없는 요소 숨기기
+            // 화살표 보이기/숨기기 (리스트에 1명뿐이면 숨김)
+            document.getElementById('nav-arrow-left').style.display = currentFilteredChars.length > 1 ? 'block' : 'none';
+            document.getElementById('nav-arrow-right').style.display = currentFilteredChars.length > 1 ? 'block' : 'none';
+
+            // 엑스트라일 경우 필요 없는 요소 숨기기
             document.getElementById('box-mbti').style.display = isExtra ? 'none' : 'block';
             document.getElementById('box-ennea').style.display = isExtra ? 'none' : 'block';
             document.getElementById('sec-combat').style.display = isExtra ? 'none' : 'block';
