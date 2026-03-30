@@ -606,7 +606,7 @@
         const charDB = [
             { code: "c", img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
             { code: "d", img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "영역 내 아군 생명력 서서히 회복 (미완성)", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
-            { code: "g", img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
+            { code: "g", img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌 준스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
             { code: "h", img: "https://igx.kr/u/tR/h/1", name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
             { code: "w", img: "https://igx.kr/u/tR/w/1", name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
             { code: "j", img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 20, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "시각장애"], reso: "오르골", ability: "초근거리 진동 감지 (반경 1m 내 사물의 위치를 흐릿하게 느낌)", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 어릴 적 부모를 잃고 시각장애를 앓음에도 동생을 홀로 키웠다. 각성자로서 아주 미약한 능력을 지녔으나 전투나 실생활에는 큰 도움이 되지 않는 수준이다. 평소 품속에 지갑이나 송에게 줄 간식 등을 소중히 넣어두고 다닌다." },
@@ -791,74 +791,80 @@
             });
         }
 
-        function filterData(f, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); renderCharacters(f);
-        }
-
-        // 💡 인물 모달 로직 (표정 갤러리 연동)
+        // 💡 인물 모달 로직 (표정 갤러리 연동 및 누락 방어코드 적용)
         function openCharModal(index) {
             const char = charDB[index];
-            const facColor = getFactionColor(char.faction);
+            // 값이 비어있을 경우 기본값 적용 방어 코드 추가
+            const facColor = getFactionColor(char.faction || '무소속');
             
-            document.getElementById('md-img').src = char.img;
-            document.getElementById('md-faction').innerText = `[ ${char.faction} ]`;
+            document.getElementById('md-img').src = char.img || '';
+            document.getElementById('md-faction').innerText = `[ ${char.faction || '미상'} ]`;
             document.getElementById('md-faction').style.color = facColor;
             
             const mdName = document.getElementById('md-name');
             const mdRank = document.getElementById('md-rank');
             if(char.name === "니힐") {
                 mdName.innerText = char.name; mdName.className = "m-name text-glitch";
-                mdRank.innerText = char.rank; mdRank.className = "m-val text-glitch"; mdRank.style.color = 'var(--color-gord)';
+                mdRank.innerText = char.rank || 'UNKNOWN'; mdRank.className = "m-val text-glitch"; mdRank.style.color = 'var(--color-gord)';
             } else {
-                mdName.innerText = char.name; mdName.className = "m-name";
-                mdRank.innerText = char.rank; mdRank.className = "m-val";
-                mdRank.style.color = char.rank === 'SS' || char.rank === 'S' ? 'var(--neon-red)' : 'var(--theme-bright)';
+                mdName.innerText = char.name || '미상'; mdName.className = "m-name";
+                mdRank.innerText = char.rank || '미상'; mdRank.className = "m-val";
+                mdRank.style.color = (char.rank === 'SS' || char.rank === 'S') ? 'var(--neon-red)' : 'var(--theme-bright)';
             }
 
-            document.getElementById('md-age').innerText = char.age;
-            document.getElementById('md-mbti').innerText = char.mbti;
-            document.getElementById('md-ennea').innerText = char.ennea;
-            document.getElementById('md-reso').innerText = char.reso;
-            document.getElementById('md-ability').innerText = char.ability;
-            document.getElementById('md-curtain').innerText = char.curtain;
-            document.getElementById('md-tune').innerText = char.tune;
-            document.getElementById('md-back').innerText = char.back;
-            document.getElementById('md-over').innerText = char.over;
-            document.getElementById('md-detail').innerText = char.detail;
+            // 💡 데이터가 누락되었을 경우 하이픈(-)으로 덮어씌워 이전 데이터가 남지 않도록 처리
+            document.getElementById('md-age').innerText = char.age || '-';
+            document.getElementById('md-mbti').innerText = char.mbti || '-';
+            document.getElementById('md-ennea').innerText = char.ennea || '-';
+            document.getElementById('md-reso').innerText = char.reso || '-';
+            document.getElementById('md-ability').innerText = char.ability || '-';
+            document.getElementById('md-curtain').innerText = char.curtain || '-';
+            document.getElementById('md-tune').innerText = char.tune || '-';
+            document.getElementById('md-back').innerText = char.back || '-';
+            document.getElementById('md-over').innerText = char.over || '-';
+            document.getElementById('md-detail').innerText = char.detail || '-';
 
+            // 💡 tags 배열이 아예 누락되었을 때 forEach가 에러를 뿜어 렌더링이 멈추는 현상 방지
             const tagsDiv = document.getElementById('md-tags');
             tagsDiv.innerHTML = '';
-            char.tags.forEach(t => {
-                let cls = "tag";
-                if(t === "시각장애" || t === "청각장애" || t === "수명연소" || t === "사이코패스") cls = "tag tag-warning";
-                if(t === "글리치" || t === "규격외" || t === "더뮤트") cls = "tag tag-glitch"; 
-                tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
-            });
+            if (char.tags && Array.isArray(char.tags)) {
+                char.tags.forEach(t => {
+                    let cls = "tag";
+                    if(t === "시각장애" || t === "청각장애" || t === "수명연소" || t === "사이코패스") cls = "tag tag-warning";
+                    if(t === "글리치" || t === "규격외" || t === "더뮤트") cls = "tag tag-glitch"; 
+                    tagsDiv.innerHTML += `<span class="${cls}">#${t}</span>`;
+                });
+            }
             
-            // 💡 표정 갤러리 동적 렌더링
+            // 표정 갤러리 동적 렌더링 (code가 없을 경우 에러 방지)
             const expDiv = document.getElementById('md-expressions');
+            const charCode = char.code || 'default';
             expDiv.innerHTML = `
-                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${char.code}/24')">
-                    <img src="https://igx.kr/u/tR/${char.code}/24" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
+                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${charCode}/24')">
+                    <img src="https://igx.kr/u/tR/${charCode}/24" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
                     <span class="exp-label">흥분</span>
                 </div>
-                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${char.code}/15')">
-                    <img src="https://igx.kr/u/tR/${char.code}/15" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
+                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${charCode}/15')">
+                    <img src="https://igx.kr/u/tR/${charCode}/15" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
                     <span class="exp-label">부끄러움</span>
                 </div>
-                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${char.code}/8')">
-                    <img src="https://igx.kr/u/tR/${char.code}/8" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
+                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${charCode}/8')">
+                    <img src="https://igx.kr/u/tR/${charCode}/8" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
                     <span class="exp-label">짜증</span>
                 </div>
-                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${char.code}/26')">
-                    <img src="https://igx.kr/u/tR/${char.code}/26" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
+                <div class="exp-box cyber-border" onclick="openImageViewer('https://igx.kr/u/tR/${charCode}/26')">
+                    <img src="https://igx.kr/u/tR/${charCode}/26" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23333\\'/></svg>'">
                     <span class="exp-label">능력사용</span>
                 </div>
             `;
 
             const modal = document.getElementById('char-modal');
             document.body.classList.add('no-scroll'); 
+            
+            // 💡 스크롤 위치 강제 초기화 (이전 캐릭터의 스크롤을 보고 창을 닫았을 때, 새 캐릭터 모달이 스크롤다운 되어있는 현상 수정)
+            const scrollArea = modal.querySelector('.modal-scroll-area');
+            if (scrollArea) scrollArea.scrollTop = 0;
+
             modal.style.display = 'flex'; void modal.offsetWidth; modal.classList.add('show'); 
         }
         
