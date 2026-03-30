@@ -249,7 +249,7 @@
         @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
     </style>
 </head>
-<body class="theme-classic">
+<body class="theme-pop">
 
     <audio id="bgm-player" loop></audio>
 
@@ -346,13 +346,13 @@
             <div style="color:var(--theme-bright); font-size:0.8rem; margin-bottom: 15px; opacity:0.8;" id="setting-desc">열람 환경을 원하시는 양식으로 변경하십시오.</div>
             
             <div class="settings-btn-wrap">
-                <div class="settings-btn cyber-border decor-corners active-theme" onclick="setTheme('theme-classic', this, '1.mp3')">
+                <div class="settings-btn cyber-border decor-corners" onclick="setTheme('theme-classic', this, '1.mp3')">
                     <span id="set-btn-1">[01] CLASSIC (클래식 - 장엄한 관현악)</span>
                 </div>
                 <div class="settings-btn cyber-border decor-corners" onclick="setTheme('theme-jazz', this, '2.mp3')">
                     <span id="set-btn-2">[02] JAZZ (재즈 - 심야의 즉흥곡)</span>
                 </div>
-                <div class="settings-btn cyber-border decor-corners" onclick="setTheme('theme-pop', this, '3.mp3')">
+                <div class="settings-btn cyber-border decor-corners active-theme" id="default-theme-btn" onclick="setTheme('theme-pop', this, '3.mp3')">
                     <span id="set-btn-3">[03] POP (팝 - 화려한 네온 비트)</span>
                 </div>
             </div>
@@ -427,7 +427,7 @@
     </div>
 
     <script>
-        let currentTheme = 'theme-classic';
+        let currentTheme = 'theme-pop';
         
         setTimeout(() => {
             document.getElementById('loading-wrap').style.display = 'none';
@@ -444,8 +444,9 @@
 
             try {
                 const player = document.getElementById('bgm-player');
-                if(!player.src || player.src.indexOf('1.mp3') === -1) {
-                    player.src = '1.mp3'; 
+                // 💡 시작 시 재생되는 기본 BGM을 팝(3.mp3)으로 변경
+                if(!player.src || player.src.indexOf('3.mp3') === -1) {
+                    player.src = '3.mp3'; 
                 }
                 let playPromise = player.play();
                 if (playPromise !== undefined) {
@@ -602,11 +603,10 @@
             }
         };
 
-        // 💡 캐릭터 코드(code) 속성 추가 및 설명에서 "외형 묘사" 제거 완료
         const charDB = [
             { code: "c", img: "https://igx.kr/u/tR/c/1", name: "엘라라(가주)", faction: "애스터", rank: "SS", age: 52, mbti: "ENTP", ennea: "8w7", tags: ["보수파", "메스가키", "츤데레"], reso: "지휘", ability: "지휘를 통한 염력 등 복합 능력", curtain: "모든 공격 위력 2배 및 대상 필중", tune: "가능", back: "가능", over: "경험함", detail: "애스터 가문의 가주. 항상 도발적이고 마음에 들수록 더 놀리는 '메스가키' 성향이지만, 속은 츤데레. 가문에 의한 원치 않은 결혼으로 남편은 딸 루나를 낳기 전 사망했으나, 유일한 핏줄인 루나만큼은 진심으로 사랑한다." },
             { code: "d", img: "https://igx.kr/u/tR/d/1", name: "루나", faction: "애스터", rank: "A", age: 24, mbti: "INFJ", ennea: "9w1", tags: ["후계자", "진보파", "내향적"], reso: "지휘 (열화판)", ability: "지휘를 통한 염력 및 복합 능력 (위력/범위 제한적)", curtain: "영역 내 아군 생명력 서서히 회복 (미완성)", tune: "불가", back: "불가", over: "미경험", detail: "엘라라의 친딸이자 애스터의 후계자 후보. 조용하고 내향적이며 진보파에 속해 있다. 압도적인 천재인 엘라라에게 열등감을 느끼고 있으며, 전투적 재능은 그녀에 미치지 못한다." },
-            { code: "g", img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌 준스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
+            { code: "g", img: "https://igx.kr/u/tR/g/1", name: "루시", faction: "애스터", rank: "S", age: 23, mbti: "ESFP", ennea: "3w4", tags: ["애리나 소속", "약메스가키", "나르시스트"], reso: "피아노", ability: "전투 시작 시 악보 제작 후 연주. 레조넌스 무제한화.", curtain: "악보 제작 속도 3배. 곡 분위기에 따른 특수효과.", tune: "불가", back: "가능", over: "미경험", detail: "애스터 산하 애리나 가문의 후계자 후보. 연주 시 폭주하는 무한한 레조넌스를 육체가 버티지 못해 '조율'이 강제 패시브로 발동하며, 사실상 죽지 않는 '불사'에 가까운 전투를 펼친다." },
             { code: "h", img: "https://igx.kr/u/tR/h/1", name: "시몬(가주)", faction: "델라쿠르아", rank: "S", age: 60, mbti: "ISTJ", ennea: "1w9", tags: ["보수파", "과묵함", "외유내강"], reso: "첼로", ability: "중력 및 질량 조작", curtain: "[절대 중력장] 능력 2배 강화 및 필중", tune: "가능", back: "가능", over: "경험함", detail: "델라쿠르아 가문의 가주. 옛날 반역자들에게 남편을 잃은 슬픔을 간직하고 있다. 과묵하지만 아랫사람을 챙긴다." },
             { code: "w", img: "https://igx.kr/u/tR/w/1", name: "사라", faction: "델라쿠르아", rank: "B+", age: 20, mbti: "ISFJ", ennea: "6w5", tags: ["후계자", "과묵함"], reso: "바이올린", ability: "염력", curtain: "[보이지 않는 손] 대상 필중", tune: "불가", back: "불가", over: "미경험", detail: "시몬의 친딸이자 후계자. 차분하고 과묵한 성격이다. 공간을 짓누르는 거대한 힘 대신, 바이올린의 날카로운 선율을 이용해 정밀한 염력 타격을 가한다." },
             { code: "j", img: "https://igx.kr/u/tR/j/1", name: "시안", faction: "델라쿠르아", rank: "E", age: 20, mbti: "ISFJ", ennea: "2w1", tags: ["메이드", "브라콘", "시각장애"], reso: "오르골", ability: "초근거리 진동 감지 (반경 1m 내 사물의 위치를 흐릿하게 느낌)", curtain: "-", tune: "불가", back: "불가", over: "미경험", detail: "송의 쌍둥이 누나. 어릴 적 부모를 잃고 시각장애를 앓음에도 동생을 홀로 키웠다. 각성자로서 아주 미약한 능력을 지녔으나 전투나 실생활에는 큰 도움이 되지 않는 수준이다. 평소 품속에 지갑이나 송에게 줄 간식 등을 소중히 넣어두고 다닌다." },
@@ -620,9 +620,22 @@
             { code: "y", img: "https://igx.kr/u/tR/y/1", name: "니힐", faction: "무소속", rank: "UNKNOWN", age: "불명", mbti: "INTP", ennea: "9w8", tags: ["더뮤트", "침묵", "규격외", "글리치"], reso: "절대 침묵", ability: "지정한 범위 내의 소리, 레조넌스, 존재의 개념을 영구적으로 소거", curtain: "귀찮아서 안 씀", tune: "자유자재", back: "자유자재", over: "상시", detail: "'더 뮤트' 현상에서 유일하게 걸어 나온 규격 외의 존재. 모든 소리와 진동을 흡수해버려 그가 나타나면 주변의 모든 레조넌스가 정지된다. 세상사에 관심이 없으며 조용히 낮잠 잘 곳을 찾아 이승을 떠돌고 있다." }
         ];
 
+        // 💡 페이지 로드 시 프로필 + 감정표현 이미지 모두 백그라운드 프리로드
         const preloadedImages = [];
         charDB.forEach(char => {
-            if(char.img) { const img = new Image(); img.src = char.img; preloadedImages.push(img); }
+            // 프로필 이미지 프리로드
+            if(char.img) { 
+                const img = new Image(); img.src = char.img; preloadedImages.push(img); 
+            }
+            // 감정표현 갤러리 이미지 프리로드
+            if(char.code) {
+                const expNums = [24, 15, 8, 26]; // 갤러리에 사용된 번호들
+                expNums.forEach(num => {
+                    const expImg = new Image(); 
+                    expImg.src = `https://igx.kr/u/tR/${char.code}/${num}`; 
+                    preloadedImages.push(expImg);
+                });
+            }
         });
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
@@ -794,7 +807,6 @@
         // 💡 인물 모달 로직 (표정 갤러리 연동 및 누락 방어코드 적용)
         function openCharModal(index) {
             const char = charDB[index];
-            // 값이 비어있을 경우 기본값 적용 방어 코드 추가
             const facColor = getFactionColor(char.faction || '무소속');
             
             document.getElementById('md-img').src = char.img || '';
@@ -812,7 +824,6 @@
                 mdRank.style.color = (char.rank === 'SS' || char.rank === 'S') ? 'var(--neon-red)' : 'var(--theme-bright)';
             }
 
-            // 💡 데이터가 누락되었을 경우 하이픈(-)으로 덮어씌워 이전 데이터가 남지 않도록 처리
             document.getElementById('md-age').innerText = char.age || '-';
             document.getElementById('md-mbti').innerText = char.mbti || '-';
             document.getElementById('md-ennea').innerText = char.ennea || '-';
@@ -824,7 +835,6 @@
             document.getElementById('md-over').innerText = char.over || '-';
             document.getElementById('md-detail').innerText = char.detail || '-';
 
-            // 💡 tags 배열이 아예 누락되었을 때 forEach가 에러를 뿜어 렌더링이 멈추는 현상 방지
             const tagsDiv = document.getElementById('md-tags');
             tagsDiv.innerHTML = '';
             if (char.tags && Array.isArray(char.tags)) {
@@ -836,7 +846,6 @@
                 });
             }
             
-            // 표정 갤러리 동적 렌더링 (code가 없을 경우 에러 방지)
             const expDiv = document.getElementById('md-expressions');
             const charCode = char.code || 'default';
             expDiv.innerHTML = `
@@ -861,7 +870,6 @@
             const modal = document.getElementById('char-modal');
             document.body.classList.add('no-scroll'); 
             
-            // 💡 스크롤 위치 강제 초기화 (이전 캐릭터의 스크롤을 보고 창을 닫았을 때, 새 캐릭터 모달이 스크롤다운 되어있는 현상 수정)
             const scrollArea = modal.querySelector('.modal-scroll-area');
             if (scrollArea) scrollArea.scrollTop = 0;
 
@@ -907,8 +915,8 @@
             setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('no-scroll'); }, 300);
         }
 
-        // 초기 실행
-        setTheme('theme-classic', null, null);
+        // 💡 초기 실행을 'theme-pop'으로 강제 지정
+        setTheme('theme-pop', document.getElementById('default-theme-btn'), null);
         renderCharacters('ALL');
     </script>
 </body>
