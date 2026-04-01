@@ -57,28 +57,33 @@
         }
 
         /* =========================================
-           [2] 테마 2: JAZZ (심야의 즉흥곡 / 바이올렛)
+           [2] 테마 2: JAZZ (심야의 즉흥곡 / 바이올렛) - 가독성 향상 버전
            ========================================= */
         body.theme-jazz {
-            --bg-base: #0a0514; --theme-main: #a64dff; --theme-main-rgb: 166, 77, 255;
-            --theme-bright: #d9b3ff; --theme-dim: #4d0099; 
+            --bg-base: #0a0514; 
+            --theme-main: #b870ff; /* 조금 더 밝고 선명한 보라색으로 톤업 */
+            --theme-main-rgb: 184, 112, 255;
+            --theme-bright: #ebd6ff; /* 텍스트가 확 띄도록 훨씬 밝게 */
+            --theme-dim: #6b1aa6; 
             --bg-box-rgb: 20, 10, 35; --bg-nav-rgb: 15, 8, 25; --bg-side-rgb: 10, 5, 18;
-            --theme-glow: 0 0 20px rgba(166, 77, 255, 0.7);
-            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><circle cx="50" cy="50" r="40" stroke="%23a64dff" stroke-width="1" fill="none"/></svg>');
-            background-color: var(--bg-base); color: var(--theme-main); text-shadow: 0 0 5px var(--theme-main);
+            --theme-glow: 0 0 20px rgba(184, 112, 255, 0.7);
+            --bg-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.1"><circle cx="50" cy="50" r="40" stroke="%23b870ff" stroke-width="1" fill="none"/></svg>');
+            background-color: var(--bg-base); color: var(--theme-main); 
+            text-shadow: 0 0 8px rgba(184, 112, 255, 0.6), 0 0 2px #000; /* 가독성을 위해 섀도우 추가 */
         }
         body.theme-jazz .cyber-border { border: 2px dashed var(--theme-dim); background: rgba(var(--bg-box-rgb), 0.6); border-radius: 12px; backdrop-filter: blur(8px); }
         body.theme-jazz .cyber-border:hover { border-color: var(--theme-bright); box-shadow: var(--theme-glow); background: rgba(var(--bg-box-rgb), 0.85); }
         body.theme-jazz .decor-corners::before, body.theme-jazz .decor-corners::after { display: none; }
         
         body.theme-jazz .m-desc {
-            background: rgba(166, 77, 255, 0.05);
+            background: rgba(184, 112, 255, 0.08);
             border: none;
             border-left: 4px dashed var(--theme-main);
             border-radius: 0 10px 10px 0;
             font-style: italic;
-            color: #d9b3ff !important;
+            color: #ebd6ff !important;
             letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px #000, 0 0 5px #000; /* 텍스트 강한 그림자 처리 */
         }
 
         /* =========================================
@@ -135,7 +140,6 @@
         .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; margin-left: 5px;}
         .hamburger div { width: 26px; height: 2px; background-color: var(--theme-main); box-shadow: var(--theme-glow); transition: 0.3s;}
         
-        /* [버그수정] 사이드바 설정 업데이트 */
         #sidebar { 
             position: fixed; 
             top: 0; 
@@ -147,9 +151,9 @@
             transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
             display: flex; 
             flex-direction: column; 
-            padding: 110px 20px 35px; /* 상단 여백 확보 */
+            padding: 110px 20px 35px; /* 헤더 겹침 방지 */
             box-sizing: border-box; 
-            overflow-y: auto; /* 내부 스크롤 허용 */
+            overflow-y: auto; /* 스크롤 허용 */
             z-index: 90; 
             backdrop-filter: blur(15px);
         }
@@ -214,7 +218,17 @@
         .char-name { font-size: 0.9rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; text-shadow: 0 0 3px #fff; line-height: 1.1; white-space: normal; word-break: keep-all;}
         .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 2px; font-weight: bold; font-size: 0.65rem;}
 
-        .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--theme-main); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(30,30,30,0.8) 0%, rgba(0,0,0,1) 100%); }
+        /* 👇 변경된 지도 래퍼 (aspect-ratio 적용) */
+        .map-wrapper { 
+            width: 100%; 
+            aspect-ratio: 4 / 3; /* 반응형 화면비율 */
+            max-height: 65vh; 
+            border: 2px solid var(--theme-main); 
+            position: relative; 
+            overflow: hidden; 
+            background-color: #010101; 
+            background-image: radial-gradient(circle at center, rgba(30,30,30,0.8) 0%, rgba(0,0,0,1) 100%); 
+        }
         .map-overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
         .map-grid { background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px; }
         .map-scanlines { height: 15px; background: rgba(255, 255, 255, 0.1); animation: mapScan 6s linear infinite; }
@@ -375,6 +389,11 @@
 
         <div id="character-view">
             <div class="view-title" id="title-char">DB_ENTITIES <div class="view-title-decor"></div></div>
+            
+            <div style="margin-bottom: 15px; display: flex;">
+                <input type="text" id="char-search-input" placeholder="인물 이름 검색..." oninput="searchChar()" style="flex:1; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid var(--theme-dim); color: var(--theme-bright); font-family: var(--font-data); font-size: 0.9rem; outline: none; border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);">
+            </div>
+            
             <div class="filter-container">
                 <button class="filter-btn active cyber-border" onclick="filterData('ALL', this)">ALL</button>
                 <button class="filter-btn cyber-border" onclick="filterData('애스터', this)">ASTER</button>
@@ -521,6 +540,10 @@
         
         let currentFilteredChars = [];
         let currentCharIndex = 0;
+        
+        // 👇 추가된 검색어 및 필터 상태 변수
+        let currentSearchQuery = '';
+        let currentFilter = 'ALL';
         
         setTimeout(() => {
             document.getElementById('loading-wrap').style.display = 'none';
@@ -913,6 +936,21 @@
             return "var(--theme-main)"; 
         }
 
+        // 👇 추가된 검색 함수
+        function searchChar() {
+            currentSearchQuery = document.getElementById('char-search-input').value.trim().toLowerCase();
+            renderCharacters(currentFilter);
+        }
+
+        // 👇 수정된 필터 함수
+        function filterData(f, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active'); 
+            currentFilter = f;
+            renderCharacters(currentFilter);
+        }
+
+        // 👇 수정된 렌더링 함수 (검색어 필터 적용)
         function renderCharacters(filter) {
             const container = document.getElementById('char-container');
             container.innerHTML = ''; 
@@ -928,6 +966,12 @@
                     isMatch = (char.type === 'extra');
                 } else if (char.faction === filter) {
                     isMatch = true; 
+                }
+
+                if (isMatch && currentSearchQuery !== '') {
+                    if (!char.name.toLowerCase().includes(currentSearchQuery)) {
+                        isMatch = false;
+                    }
                 }
 
                 if (isMatch) {
@@ -950,11 +994,6 @@
                     delayTime += 0.04; 
                 }
             });
-        }
-
-        function filterData(f, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); renderCharacters(f);
         }
 
         function prevChar(e) {
