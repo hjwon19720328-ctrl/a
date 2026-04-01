@@ -45,13 +45,12 @@
         body.theme-classic .decor-corners::before { content:''; position: absolute; top:-2px; left:-2px; width:12px; height:12px; border-top:2px solid var(--theme-bright); border-left:2px solid var(--theme-bright); pointer-events: none;}
         body.theme-classic .decor-corners::after { content:''; position: absolute; bottom:-2px; right:-2px; width:12px; height:12px; border-bottom:2px solid var(--theme-bright); border-right:2px solid var(--theme-bright); pointer-events: none;}
         
-        /* Classic 테마 캐릭터 설명란 디자인 */
         body.theme-classic .m-desc {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(0,0,0,0.5) 100%);
             border: 1px solid var(--theme-dim);
             border-radius: 0;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
-            font-family: 'Nanum Myeongjo', serif; /* 클래식한 명조체 느낌 */
+            font-family: 'Nanum Myeongjo', serif;
             color: #f0e6d2 !important;
             text-align: justify;
             line-height: 1.9;
@@ -72,13 +71,12 @@
         body.theme-jazz .cyber-border:hover { border-color: var(--theme-bright); box-shadow: var(--theme-glow); background: rgba(var(--bg-box-rgb), 0.85); }
         body.theme-jazz .decor-corners::before, body.theme-jazz .decor-corners::after { display: none; }
         
-        /* Jazz 테마 캐릭터 설명란 디자인 */
         body.theme-jazz .m-desc {
             background: rgba(166, 77, 255, 0.05);
             border: none;
             border-left: 4px dashed var(--theme-main);
             border-radius: 0 10px 10px 0;
-            font-style: italic; /* 재즈 특유의 기울임꼴 */
+            font-style: italic;
             color: #d9b3ff !important;
             letter-spacing: 0.5px;
         }
@@ -99,7 +97,6 @@
         body.theme-pop .decor-corners::before, body.theme-pop .decor-corners::after { display: none; }
         body.theme-pop .view-title-decor { border-radius: 10px; height: 3px; background: var(--theme-main);}
 
-        /* Pop 테마 캐릭터 설명란 디자인 */
         body.theme-pop .m-desc {
             background: linear-gradient(45deg, rgba(255, 0, 127, 0.15), rgba(0,0,0,0.2));
             border: 2px solid var(--theme-main);
@@ -108,7 +105,6 @@
             color: #fff !important;
             font-weight: 500;
         }
-
 
         /* =========================================
            [ 공통 배경 및 UI ]
@@ -139,9 +135,26 @@
         .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; margin-left: 5px;}
         .hamburger div { width: 26px; height: 2px; background-color: var(--theme-main); box-shadow: var(--theme-glow); transition: 0.3s;}
         
-        #sidebar { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(var(--bg-side-rgb), 0.95); border-left: 1px solid var(--theme-main); transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; padding: 80px 20px 35px; z-index: 90; backdrop-filter: blur(15px);}
+        /* [버그수정] 사이드바 설정 업데이트 */
+        #sidebar { 
+            position: fixed; 
+            top: 0; 
+            right: -100%; 
+            width: 250px; 
+            height: 100vh; 
+            background: rgba(var(--bg-side-rgb), 0.95); 
+            border-left: 1px solid var(--theme-main); 
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: flex; 
+            flex-direction: column; 
+            padding: 110px 20px 35px; /* 상단 여백 확보 */
+            box-sizing: border-box; 
+            overflow-y: auto; /* 내부 스크롤 허용 */
+            z-index: 90; 
+            backdrop-filter: blur(15px);
+        }
         #sidebar.open { right: 0; box-shadow: -15px 0 40px rgba(0,0,0,0.9); }
-        .menu-item { font-family: var(--font-title); font-size: 1.15rem; margin-bottom: 25px; color: var(--theme-dim); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s, text-shadow 0.3s; }
+        .menu-item { font-family: var(--font-title); font-size: 1.15rem; margin-bottom: 25px; color: var(--theme-dim); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s, text-shadow 0.3s; flex-shrink: 0; }
         .menu-item.active-menu { color: var(--theme-bright); text-shadow: var(--theme-glow); font-weight: bold; }
         .menu-item:hover { color: var(--theme-main); }
 
@@ -150,7 +163,6 @@
         .view-title { font-size: 1.4rem; color: var(--theme-bright); margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; text-shadow: var(--theme-glow); letter-spacing: 1px;}
         .view-title-decor { flex-grow: 1; height: 1px; background: var(--theme-dim); margin-left: 15px; position: relative;}
 
-        /* 로비 뷰 */
         #lobby-view { flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding-bottom: 30px;}
         .lobby-main-title { font-size: 2.8rem; color: #fff; text-shadow: 0 0 10px var(--theme-main), 0 0 25px var(--theme-main); font-family: var(--font-title); letter-spacing: 4px; margin-bottom: 0; font-style: italic; transition: 0.5s;}
         .lobby-sub-title { font-size: 0.8rem; color: var(--theme-bright); letter-spacing: 6px; margin-bottom: 15px; opacity: 0.9; font-weight: bold; text-align: center;}
@@ -164,7 +176,6 @@
         .btn-text { transition: 0.3s; }
         .btn-arrow { font-size:0.6rem; color:var(--theme-bright); transition: 0.3s;}
 
-        /* 설정 뷰 및 슬라이더 */
         .settings-btn-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .settings-btn { width: 100%; max-width: 400px; padding: 18px 20px; display: flex; justify-content: flex-start; align-items: center; font-family: var(--font-title); font-size: 1rem; cursor: pointer; opacity: 0; transform: translateY(20px); box-sizing: border-box; }
         .settings-btn.active-theme { border-color: var(--theme-bright); color: var(--theme-bright); font-weight: bold; background: rgba(var(--theme-main-rgb), 0.3); box-shadow: var(--theme-glow);}
@@ -179,14 +190,12 @@
         #settings-view.view-fade-in .settings-btn-wrap .settings-btn:nth-child(3) { animation-delay: 0.3s; }
         #settings-view.view-fade-in .vol-wrap { animation: slideUpFade 0.5s forwards; animation-delay: 0.4s; opacity: 0; transform: translateY(20px);}
 
-        /* 뉴스 티커 */
         .news-ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; height: 32px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); border-top: 1px solid var(--theme-main); display: flex; align-items: stretch; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);}
         .news-static-label { background: var(--theme-main); color: #000; padding: 0 15px; font-weight: bold; font-family: var(--font-title); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; z-index: 51; flex-shrink: 0; letter-spacing: 2px; box-shadow: 2px 0 5px rgba(0,0,0,0.5); transition: background 0.3s;}
         .news-scroll-area { flex: 1; overflow: hidden; display: flex; align-items: center; position: relative; }
         .news-content { display: inline-block; white-space: nowrap; font-size: 0.85rem; color: var(--theme-bright); font-family: 'Malgun Gothic', sans-serif; animation: ticker 40s linear infinite; padding-left: 100%;}
         .news-content span { margin-right: 80px; text-shadow: none; letter-spacing: 0.5px;}
 
-        /* 인물 뷰 */
         .filter-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .filter-btn { flex: 1 1 calc(33% - 8px); background: rgba(var(--bg-box-rgb), 0.5); border: 1px solid var(--theme-dim); color: var(--theme-main); padding: 10px 0; font-family: var(--font-title); font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px); border-radius: inherit;}
         .filter-btn.active { background: rgba(var(--theme-main-rgb), 0.3); border-color: var(--theme-bright); color: var(--theme-bright); text-shadow: var(--theme-glow); box-shadow: inset 0 0 12px rgba(var(--theme-main-rgb), 0.3); }
@@ -205,7 +214,6 @@
         .char-name { font-size: 0.9rem; color: #fff; font-weight: bold; font-family: var(--font-title); margin-bottom: 2px; text-shadow: 0 0 3px #fff; line-height: 1.1; white-space: normal; word-break: keep-all;}
         .char-faction { text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 2px; font-weight: bold; font-size: 0.65rem;}
 
-        /* 지도 뷰 */
         .map-wrapper { width: 100%; height: 60vh; border: 2px solid var(--theme-main); position: relative; overflow: hidden; background-color: #010101; background-image: radial-gradient(circle at center, rgba(30,30,30,0.8) 0%, rgba(0,0,0,1) 100%); }
         .map-overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
         .map-grid { background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px; }
@@ -229,7 +237,6 @@
 
         .map-data-panel { font-size: 0.8rem; color: var(--theme-main); margin-top: 15px; border-top: 1px solid var(--theme-dim); padding-top: 12px; cursor: default; transition: 0.3s;}
 
-        /* 시스템 DB 뷰 */
         .db-container { display: flex; flex-direction: column; gap: 15px; }
         .db-folder { padding: 16px 20px; font-family: var(--font-title); font-size: 1.15rem; color: var(--theme-bright); cursor: pointer; }
         .db-folder::before { content: '[+] '; color: var(--theme-main); margin-right: 8px; }
@@ -242,7 +249,6 @@
         .db-data-box.show { display: block; animation: slideDownFade 0.3s ease forwards; }
         .highlight { color: #fff; padding: 2px 5px; font-family: var(--font-title); background: rgba(255,255,255,0.2); border-radius: 3px;}
 
-        /* 💡 모달 팝업 및 캐릭터 네비게이션(화살표) */
         .generic-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.85); z-index: 500; backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; opacity: 0; transition: opacity 0.3s ease; }
         .generic-modal.show { display: flex; opacity: 1; }
         .modal-box { width: 100%; max-width: 440px; max-height: 85vh; position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; background: #0a0a0a;}
@@ -253,12 +259,10 @@
         .modal-scroll-area::-webkit-scrollbar { width: 6px; }
         .modal-scroll-area::-webkit-scrollbar-thumb { background: var(--theme-dim); border-radius: 3px;}
         
-        /* 💡 프로필 전환 애니메이션 클래스 */
         .anim-next { animation: slideInRight 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
         .anim-prev { animation: slideInLeft 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
         .anim-pop { animation: popIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
 
-        /* 화살표 스타일 */
         .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; padding: 20px; z-index: 520; transition: 0.3s; user-select: none; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
         .nav-arrow:hover { color: var(--theme-bright); text-shadow: var(--theme-glow); transform: translateY(-50%) scale(1.1);}
         .nav-arrow.left { left: 5%; }
@@ -309,7 +313,6 @@
         @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
         @keyframes textGlitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(2px, 1px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0); } }
         
-        /* 💡 추가 모션 애니메이션 키프레임 */
         @keyframes slideInRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideInLeft { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -569,7 +572,6 @@
             else document.getElementById('btn-theme-pop').click();
         }
         
-        // 데이터 부분은 기존과 완벽히 동일 (공간상 생략하지 않고 모두 포함)
         const themeTexts = {
             'theme-classic': {
                 sidebar: ["> 로비 터미널", "> 인물 데이터베이스", "> 전술 상황도", "> 시스템 규정", "> 단말기 설정"],
@@ -651,7 +653,7 @@
                         { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야.<br>> <span class='highlight'>원래 인간은 다들 태어날 때부터 자기만의 능력을 하나씩 품고 태어나. 근데 각성하기 전까진 그게 뭔지 며느리도 모르지.</span> 각성하면 뇌리에 능력이 꽂히면서 초인적인 힘을 쓸 수 있지. <br><span class='warning'>[참고]</span> 몸에 능력이 새겨져 봤자, 뇌가 일반인 수준이면 단 한 번도 쓸 수 없어. 하드웨어만 좋고 소프트웨어가 없는 셈이지." },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 비트는, 이 바닥의 <span class='highlight'>마력이자 밥줄</span>이야." },
                         { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 파워가 두 배로 뛰고, 녀석들만의 특별한 무대인 <b>'커튼콜'</b>을 열 수 있는 자격이 생기지." },
-                        { name: "커튼콜 (Curtain Call)", desc: "오버소울을 찍은 녀석들이 펼치는 구역이야. 한 번 열리면 주인의 허락 없인 못 나가지.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 파워/범위 뻥튀기<br>- 페널티: 무대 끝나면 1분간 능력치 바닥남<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 목숨 깎아서 억지로 엶<br>- 페널티: 1분간 능력 먹통에 <span class='warning'>레조넌스 영구 상실 위험 (그냥 민간인 되는 거야)</span>" },
+                        { name: "커튼콜 (Curtain Call)", desc: "오버소울을 찍은 녀석들이 펼치는 구역이야. 한 번 열리면 주인의 허락 없 인 못 나가지.<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 파워/범위 뻥튀기<br>- 페널티: 무대 끝나면 1분간 능력치 바닥남<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 오버소울 없이 목숨 깎아서 억지로 엶<br>- 페널티: 1분간 능력 먹통에 <span class='warning'>레조넌스 영구 상실 위험 (그냥 민간인 되는 거야)</span>" },
                         { name: "백스테이지", desc: "모든 능력을 무효화하는 <span class='highlight'>3m³의 절대 중화 지대</span>. 시전자 본인도 능력을 못 쓰니까 완전 개싸움이 되는 거지." },
                         { name: "조율 / 노이즈 / 글리치", desc: "<b>[노이즈]</b>: 힘을 너무 써서 몸이 악기로 변하는 부작용이야.<br><b>[글리치]</b>: 노이즈에 잡아먹혀 이성을 잃은 괴물.<br><b>[조율]</b>: 노이즈를 억지로 낮추는 비싼 치료지." }
                     ]},
@@ -706,7 +708,7 @@
                         { name: "연주자 (능력자)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵<br>> <span class='highlight'>사실 모든 사람은 태어날 때부터 자기만의 특별한 능력을 하나씩 가지고 있답니다! 각성하기 전까지는 그게 뭔지 절대 알 수 없는 서프라이즈 박스 같은 거죠 🎁!</span> 각성하면 머릿속에 능력이 촥! 새겨지면서 엄청난 파워를 쓸 수 있어요.<br><span class='warning'>[앗!]</span> 몸에 멋진 능력이 새겨져도 뇌가 일반인이면 절대 사용할 수 없답니다! 소프트웨어 업데이트가 필수예요! 💻" },
                         { name: "레조넌스 (Resonance)", desc: "소리의 진동으로 물리법칙을 춤추게 만드는 생명력 뿜뿜 <span class='highlight'>마력</span>이에요! 🎵" },
                         { name: "오버소울 (Over Soul)", desc: "<span class='highlight'>[노이즈 극복 각성 상태]</span> 파워가 2배로 업! 나만의 화려한 <b>'커튼콜'</b> 무대를 열 수 있는 갓성 상태예요! ✨" },
-                        { name: "커튼콜 (Curtain Call)", desc: "오버소울 달성자만 열 수 있는 특별한 무대예요! 호스트 허락 없인 퇴장 불가랍니다~ 💖<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 무대 장악력 폭발!<br>- 페널티: 앵콜 불가! 1분간 능력 휴식<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 생명력을 태워서 여는 위험한 억지 무대 😢<br>- 페널티: 1분간 능력 봉쇄 + <span class='warning'>레조넌스 영구 상실 위기 (일반인 됨)</span>" },
+                        { name: "커튼콜 (Curtain Call)", desc: "오버소울 달성자만 열 수 있는 특별한 무대예요! 호스트 허락 없 인 못 나가지~ 💖<br><br><span class='highlight'>1. 오버소울 커튼콜</span><br>- 효과: 무대 장악력 폭발!<br>- 페널티: 앵콜 불가! 1분간 능력 휴식<br><br><span class='highlight'>2. 생명력 커튼콜</span><br>- 조건: 생명력을 태워서 여는 위험한 억지 무대 😢<br>- 페널티: 1분간 능력 봉쇄 + <span class='warning'>레조넌스 영구 상실 위기 (일반인 됨)</span>" },
                         { name: "백스테이지", desc: "모든 능력을 무효화시키는 <span class='highlight'>절대 중화 지대</span>예요! 여기선 다 같이 능력을 못 쓰는 진검승부가 펼쳐지죠. 🥊" },
                         { name: "조율 / 노이즈 / 글리치", desc: "<b>[노이즈]</b>: 힘을 과하게 써서 몸이 악기로 변하는 현상이에요 😢<br><b>[글리치]</b>: 이성을 잃고 노이즈에 잡아먹힌 몬스터.<br><b>[조율]</b>: 수치를 팍팍 깎아주는 마법의 힐링 시술 💖" }
                     ]},
@@ -770,21 +772,6 @@
             { type: "extra", name: "상류층 (남)", faction: "스타 더스트", rank: "E", age: "불명", img: "https://igx.kr/u/tR/B/9", tags: ["엑스트라", "셀럽", "팝"], detail: "스타 더스트 구역의 엔터테인먼트 산업에 종사하거나 유행을 좇는 셀러브리티 계층." },
             { type: "extra", name: "상류층 (여)", faction: "스타 더스트", rank: "E", age: "불명", img: "https://igx.kr/u/tR/B/10", tags: ["엑스트라", "셀럽", "팝"], detail: "대중음악과 최신 기술, 팝 아트에 열광하는 스타 더스트 구역 소속의 여성 인플루언서 계층." }
         ];
-
-        const preloadedImages = [];
-        charDB.forEach(char => {
-            if(char.img) { 
-                const img = new Image(); img.src = char.img; preloadedImages.push(img); 
-            }
-            if(char.code) {
-                const expNums = [24, 15, 8, 26];
-                expNums.forEach(num => {
-                    const expImg = new Image(); 
-                    expImg.src = `https://igx.kr/u/tR/${char.code}/${num}`; 
-                    preloadedImages.push(expImg);
-                });
-            }
-        });
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
         function navTo(viewId) {
@@ -970,7 +957,6 @@
             btn.classList.add('active'); renderCharacters(f);
         }
 
-        // 💡 화살표 네비게이션 시 모션 트리거 추가
         function prevChar(e) {
             e.stopPropagation(); 
             if(currentFilteredChars.length <= 1) return;
@@ -985,17 +971,15 @@
             openCharModal(currentFilteredChars[currentCharIndex], 'next');
         }
 
-        // 💡 인물 모달 로직 (모션 방향성 처리 포함)
         function openCharModal(index, direction='pop') {
             currentCharIndex = currentFilteredChars.indexOf(index);
             const char = charDB[index];
             const facColor = getFactionColor(char.faction || '무소속');
             const isExtra = (char.type === 'extra');
             
-            // 모달 스크롤 영역에 애니메이션 재할당을 위한 초기화 및 강제 리플로우
             const scrollArea = document.getElementById('char-modal-scroll');
             scrollArea.classList.remove('anim-next', 'anim-prev', 'anim-pop');
-            void scrollArea.offsetWidth; // Reflow
+            void scrollArea.offsetWidth;
             
             if(direction === 'next') scrollArea.classList.add('anim-next');
             else if(direction === 'prev') scrollArea.classList.add('anim-prev');
